@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/MutakamwoyoCloud/MCloud/issues"
   },
-  "homepage": "https://github.com/MutakamwoyoCloud/MCloud#readme"
+  "homepage": "https://github.com/MutakamwoyoCloud/MCloud#readme",
+  "dependencies": {
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0"
+  }
 }
