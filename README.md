@@ -17,8 +17,7 @@ Mutokamwoyo Cloud  volunteer project, Universidad Complutense de Madrid
 4. execute the script: ./arranque.sh
 5. Go into folder: `cd MCloud`
 6. Install dependencies: `npm install`
-7. Start the app: `node server`
-8. View in browser at: `http://localhost:3080`
+7. Start the app: `npm start`
 
   
   
