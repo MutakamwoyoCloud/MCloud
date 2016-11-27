@@ -7,11 +7,15 @@ var c = new Client();
 * once we already stablished the connection
 */
 function make_operations(list){
-  console.log("estoy dentro del directorio")
+  console.log("estoy dentro del directorio");
   console.dir(list);
 }
 
-
+/*
+* We attach an event handler function for the event 'ready'
+* this event will be triggered when we are connected to
+* ftp.
+*/
 c.on('ready', function() {
   c.list(function(err, list) {
     if (err) throw err;
@@ -23,11 +27,12 @@ c.on('ready', function() {
 
 
 
-function create_petition(){
-  var options = new Object();
-  options.user="semedi";
-  options.password="qazwsx123321"
+function send_info(){
+  var options = {
+    user:"semedi",
+    password:"qazwsx123321"
+  };
   c.connect(options);
 }
 
-create_petition();
+send_info();
