@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NameForm from './NameForm';
-import './App.css';
+//import './App.css';
+import 'react-foundation';
 
 class App extends Component {
   render() {
