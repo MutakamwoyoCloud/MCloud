@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import NameForm from './NameForm';
 //import './App.css';
-import 'react-foundation';
+import '../node_modules/react-foundation/node_modules/foundation-sites/dist/foundation.min.css'
+require('react-foundation');
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <div className="App-header">
+        <fieldset>
+          <legend>Nueva Peticion</legend>
           <NameForm/>
-        </div>
+        </fieldset>
+        <fieldset>
+          <legend>Resultados</legend>
+          <span id="show_result"></span>
+        </fieldset>
       </div>
     );
   }
