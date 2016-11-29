@@ -1,37 +1,50 @@
-var React = require('react');  
+import React, { Component } from 'react';
+import Send from '../node_modules/react-icons/lib/md/send';
+
 var Button = require('react-foundation').Button;
 var Row = require('react-foundation').Row;
 var Column = require('react-foundation').Column;
 var Sizes = require('react-foundation').Sizes;
-var Icon = require('react-foundation').Icon;
-//import {Row, Column, Button, Sizes, Icon} from '../node_modules/react-foundation';
-var NameForm = React.createClass({
-  render: function() {
+
+class NameForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: ''};
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
     return (
       <div className="grid_form_request">
-       <form>
+       <form onSubmit={this.handleSubmit}>
         <Row className="search">
           <Column small={10} large={8}>
              Dato: <input type="text"/>
           </Column>
         </Row>
-        <Row className="display">
-          <Column small={10} large={6}>
+        <Row className="search">
+          <Column small={5} large={6}>
             <label>Escoger un dia determinado (por defecto: esta noche)</label>
               <input type="Date"/>
           </Column>
-          <Column small={10} large={3}>
+          <Column small={5} large={3}>
               <label>Numero de coincidencias</label>
               <input type="number"/>
           </Column>
-           <Column small={2} large={3}>
-             <Button size={Sizes.SMALL}><Icon name="fi-list"/></Button>
+          <Column small={2} large={3}>
+             <a><Send size={Sizes.small} /></a>
           </Column>
         </Row>
        </form>
       </div>
     );
   }
-});
+}
 
-module.exports = NameForm;
+export default NameForm;
