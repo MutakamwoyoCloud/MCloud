@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Send from '../node_modules/react-icons/lib/md/send';
 
-var Button = require('react-foundation').Button;
+//var Button = require('react-foundation').Button;
 var Row = require('react-foundation').Row;
 var Column = require('react-foundation').Column;
 var Sizes = require('react-foundation').Sizes;
