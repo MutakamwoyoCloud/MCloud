@@ -5,6 +5,7 @@ import Send from '../node_modules/react-icons/lib/md/send';
 var Row = require('react-foundation').Row;
 var Column = require('react-foundation').Column;
 var Sizes = require('react-foundation').Sizes;
+var Button = require('react-foundation').Button;
 
 class NameForm extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class NameForm extends Component {
               <input type="number"/>
           </Column>
           <Column small={2} large={3}>
-             <a><Send size={Sizes.small} /></a>
+             <Button type="submit"><Send size={Sizes.small} /></Button>
           </Column>
         </Row>
        </form>

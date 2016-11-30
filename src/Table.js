@@ -4,6 +4,7 @@ import Read from '../node_modules/react-icons/lib/md/chrome-reader-mode';
 var Table = require('fixed-data-table').Table;
 var Column = require('fixed-data-table').Column;
 var Cell = require('fixed-data-table').Cell;
+var Button = require('react-foundation').Button;
 
 // Table data as a list of array.
 class TableResult extends Component {
@@ -11,6 +12,13 @@ class TableResult extends Component {
   constructor(props) {
     super(props);
     this.rows = props.rows;
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+
+  handleSubmit(event) {
+    alert("Pulsada fila: "+event.target["id"]);
+    event.preventDefault();
   }
   
   render(){
@@ -60,7 +68,9 @@ class TableResult extends Component {
           header={<Cell>Col C</Cell>}
           cell={({rowIndex, ...props}) => (
             <Cell {...props}>
-              <a><Read /></a>
+              <form id={rowIndex} onSubmit={this.handleSubmit}>
+                <Button><Read /></Button>
+              </form>
             </Cell>
           )}
           width={screen.width/numCols}
