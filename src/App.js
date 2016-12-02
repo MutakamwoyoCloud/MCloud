@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
-import NameForm from './NameForm';
-import './App.css';
+import Peticiones from './Peticiones';
+//import './App.css';
+import '../node_modules/react-foundation/node_modules/foundation-sites/dist/foundation.min.css'
+import '../node_modules/fixed-data-table/dist/fixed-data-table.min.css'
+
+require('react-foundation');
 
 class App extends Component {
+  construct(props){
+    this.name = props.name;
+  }
   render() {
+    console.log(this);
     return (
       <div className="App">
-        <div className="App-header">
-          <NameForm/>
-        </div>
+        <Peticiones name={this.props.name}/>
       </div>
     );
   }
