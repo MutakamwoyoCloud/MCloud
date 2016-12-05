@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import NameForm from './NameForm';
 import Table from './Table';
 //import './App.css';
-import '../node_modules/react-foundation/node_modules/foundation-sites/dist/foundation.min.css'
+import '../node_modules/foundation-sites/dist/css/foundation.min.css'
 import '../node_modules/fixed-data-table/dist/fixed-data-table.min.css'
 
 require('react-foundation');
