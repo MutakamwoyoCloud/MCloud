@@ -25,6 +25,10 @@ const COLUMNS = [
   'description',
 ];
 
+app.get('/api/petition', (req, res) => {
+
+});
+
 app.get('/api/food', (req, res) => {
   const param = req.query.q;
 

@@ -4,10 +4,10 @@ Mutokamwoyo Cloud  volunteer project, Universidad Complutense de Madrid
 
 
 ### Dependencies
-    Node v7.0.0
-    React v15.3.0
+    Node v7.0.0 (with npm)
     Python v3.0
-    npm v?
+    create-react-app installed globally
+
 
 
 ### Use
