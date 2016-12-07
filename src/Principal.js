@@ -23,7 +23,6 @@ class Principal extends Component {
 
 
   handleClick(event) {
-    //console.log(event.target.id);
     var name = event.target.id;
     ReactDOM.render(<App name={name}/>, document.getElementById('root'));
   }
