@@ -16,7 +16,7 @@ const rows = [
 ];
 const TextCell = ({rowIndex, data, col, ...props}) => (
   <Cell {...props}>
-    {data.getObjectAt(rowIndex)[col]}
+    {data[rowIndex][col].toString()}
   </Cell>
 );
 
@@ -25,84 +25,79 @@ class TableResult extends Component {
 // Render your table
   constructor(props) {
     super(props);
+    this.rows;
     var that = this;
-    var rows = $.getJSON({
+    $.getJSON({
         url: "/api/food?"+ "q=hash+browns",
         type: "GET",
         datatype: "json",
-        //contentType: "application/json; charset=utf-8",
-        //data: JSON.stringify(action),
         success: function(response) {
-          console.log("ajax",response);
           that.rows = response;
-          console.log("ajax",that.rows);
-          return response;
+          that.render();
+          //return response;
+          that.forceUpdate();
         },
         error: function(response) {
-          console.log("null")
-          return null;
+          //return null;
         }
     });
-    console.log(this.rows);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-
-
-
   handleSubmit(event) {
     alert("Pulsada fila: "+event.target["id"]);
-    //console.log(partitionHandler.pruebaDatos());
     event.preventDefault();
   }
   
   render(){
     var numCols = 4;
-    //console.log(width)
-    var rows = null;
-    var length = 0;
+    var length = 10;
     var width = screen.width - 100;
+    var that = this;
     if(this.rows){
-      rows = this.rows;
-      length = rows.length;
+      var rows = Object.keys(this.rows).map(function (key) { return that.rows[key]; });
+      //var rows = this.rows;
+      length = this.rows.length;
+      console.log(rows);
+      console.log(rows[0]["description"]);
+      return(
+        <Table
+          rowHeight={50}
+          rowsCount={length}
+          width={width}
+          height={50*(length+1)}
+          headerHeight={50}>
+          <Column
+            header={<Cell>Description</Cell>}
+            cell={<TextCell data={rows} col="description" />}
+            width={width/numCols}
+          />
+          <Column
+            header={<Cell>G</Cell>}
+            cell={<TextCell data={rows} col="fat_g" />} 
+            width={width/numCols}
+          />
+          <Column
+            header={<Cell>Kcal</Cell>}
+            cell={<TextCell data={rows} col="kcal" />}
+            width={width/numCols}
+          />
+          <Column
+            header={<Cell>Read</Cell>}
+            cell={({rowIndex, ...props}) => (
+              <Cell {...props}>
+                <form id={rowIndex} onSubmit={this.handleSubmit}>
+                  <Button><Read /></Button>
+                </form>
+              </Cell>
+            )}
+            width={width/numCols}
+            align={'center'}
+          />
+        </Table>
+      );
     }
-    console.log(this.rows);
-    return(
-      <Table
-        rowHeight={50}
-        rowsCount={length}
-        width={width}
-        height={50*(length+1)}
-        headerHeight={50}>
-        <Column
-          header={<Cell>Col A</Cell>}
-          cell={<TextCell data={this.rows} col="description" />}
-          width={width/numCols}
-        />
-        <Column
-          header={<Cell>Col B</Cell>}
-          cell={<TextCell data={this.rows} col="fat_g" />} 
-          width={width/numCols}
-        />
-        <Column
-          header={<Cell>Col C</Cell>}
-          cell={<TextCell data={this.rows} col="kcal" />}
-          width={width/numCols}
-        />
-        <Column
-          header={<Cell>Col C</Cell>}
-          cell={({rowIndex, ...props}) => (
-            <Cell {...props}>
-              <form id={rowIndex} onSubmit={this.handleSubmit}>
-                <Button><Read /></Button>
-              </form>
-            </Cell>
-          )}
-          width={width/numCols}
-          align={'center'}
-        />
-      </Table>
-    );
+    else 
+      return(<div>"Loading..."</div>);
   }
 }
 
