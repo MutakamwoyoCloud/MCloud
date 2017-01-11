@@ -5,17 +5,44 @@ var Table = require('fixed-data-table').Table;
 var Column = require('fixed-data-table').Column;
 var Cell = require('fixed-data-table').Cell;
 var Button = require('react-foundation').Button;
+//var partitionHandler = require('./core/PetitionHandler');
+var $ = require('jquery');
 
-// Table data as a list of array.
+const rows = [
+  ['a1', 'b1', 'c1'],
+  ['a2', 'b2', 'c2'],
+  ['a3', 'b3', 'c3'],
+  // .... and more
+];
+const TextCell = ({rowIndex, data, col, ...props}) => (
+  <Cell {...props}>
+    {data[rowIndex][col].toString()}
+  </Cell>
+);
+
+// Table data as a list of array./
 class TableResult extends Component {
 // Render your table
   constructor(props) {
     super(props);
-    this.rows = props.rows;
+    this.rows;
+    var that = this;
+    $.getJSON({
+        url: "/api/food?"+ "q=hash+browns",
+        type: "GET",
+        datatype: "json",
+        success: function(response) {
+          that.rows = response;
+          that.render();
+          //return response;
+          that.forceUpdate();
+        },
+        error: function(response) {
+          //return null;
+        }
+    });
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-
   handleSubmit(event) {
     alert("Pulsada fila: "+event.target["id"]);
     event.preventDefault();
@@ -23,61 +50,54 @@ class TableResult extends Component {
   
   render(){
     var numCols = 4;
-    //ar screen = screen.width;
-    var rows = null;
-    var length = 0;
+    var length = 10;
+    var width = screen.width - 100;
+    var that = this;
     if(this.rows){
-      rows = this.rows;
-      length = rows.length;
+      var rows = Object.keys(this.rows).map(function (key) { return that.rows[key]; });
+      //var rows = this.rows;
+      length = this.rows.length;
+      console.log(rows);
+      console.log(rows[0]["description"]);
+      return(
+        <Table
+          rowHeight={50}
+          rowsCount={length}
+          width={width}
+          height={50*(length+1)}
+          headerHeight={50}>
+          <Column
+            header={<Cell>Description</Cell>}
+            cell={<TextCell data={rows} col="description" />}
+            width={width/numCols}
+          />
+          <Column
+            header={<Cell>G</Cell>}
+            cell={<TextCell data={rows} col="fat_g" />} 
+            width={width/numCols}
+          />
+          <Column
+            header={<Cell>Kcal</Cell>}
+            cell={<TextCell data={rows} col="kcal" />}
+            width={width/numCols}
+          />
+          <Column
+            header={<Cell>Read</Cell>}
+            cell={({rowIndex, ...props}) => (
+              <Cell {...props}>
+                <form id={rowIndex} onSubmit={this.handleSubmit}>
+                  <Button><Read /></Button>
+                </form>
+              </Cell>
+            )}
+            width={width/numCols}
+            align={'center'}
+          />
+        </Table>
+      );
     }
-    return(
-      <Table
-        rowHeight={50}
-        rowsCount={length}
-        width={screen.width}
-        height={50*(length+1)}
-        headerHeight={50}>
-        <Column
-          header={<Cell>Col A</Cell>}
-           cell={({rowIndex, ...props}) => (
-            <Cell {...props}>
-              {rows[rowIndex][0]}
-            </Cell>
-          )}
-          width={screen.width/numCols}
-        />
-        <Column
-          header={<Cell>Col B</Cell>}
-           cell={({rowIndex, ...props}) => (
-            <Cell {...props}>
-              {rows[rowIndex][1]}
-            </Cell>
-          )}
-          width={screen.width/numCols}
-        />
-        <Column
-          header={<Cell>Col C</Cell>}
-          cell={({rowIndex, ...props}) => (
-            <Cell {...props}>
-              {rows[rowIndex][2]}
-            </Cell>
-          )}
-          width={screen.width/numCols}
-        />
-        <Column
-          header={<Cell>Col C</Cell>}
-          cell={({rowIndex, ...props}) => (
-            <Cell {...props}>
-              <form id={rowIndex} onSubmit={this.handleSubmit}>
-                <Button><Read /></Button>
-              </form>
-            </Cell>
-          )}
-          width={screen.width/numCols}
-          align={'center'}
-        />
-      </Table>
-    );
+    else 
+      return(<div>"Loading..."</div>);
   }
 }
 
