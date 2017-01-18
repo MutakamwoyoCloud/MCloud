@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 //import './App.css';
 import App from './App'
-import '../node_modules/react-foundation/node_modules/foundation-sites/dist/foundation.min.css';
+import '../node_modules/foundation-sites/dist/css/foundation.min.css';
 import '../node_modules/fixed-data-table/dist/fixed-data-table.min.css';
 import WikipediaIcon from '../node_modules/react-icons/lib/fa/wikipedia-w';
 import HospitalIcon from '../node_modules/react-icons/lib/fa/hospital-o';
