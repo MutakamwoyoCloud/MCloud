@@ -32,9 +32,9 @@ app.get('/api/petition', (req, res) => {
 });
 
 app.post('/api/form', (req, res) => {
-    console.log(JSON.stringify(req.stack));
+    console.log(req);
     console.log("__________________________________")
-    console.log(JSON.stringify(req.body));
+    console.log(req.body);
 });
 
 app.get('/api/food', (req, res) => {
