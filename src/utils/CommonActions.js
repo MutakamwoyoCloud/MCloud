@@ -42,7 +42,7 @@ define(function(require) {
       var reqPath = path ? path : resource.toLowerCase();
 
       $.ajax({
-        url: urlpath,
+        url: reqpath,
         type: "POST",
         data: data,
         datatype: "application/json",
