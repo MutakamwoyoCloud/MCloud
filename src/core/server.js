@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const sqlite = require('sql.js');
+const bodyParser = require("body-parser");
 
 const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
 
@@ -9,6 +10,7 @@ const db = new sqlite.Database(filebuffer);
 const app = express();
 
 app.set('port', (process.env.PORT || 3001));
+app.use(bodyParser.json());
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -27,6 +29,12 @@ const COLUMNS = [
 
 app.get('/api/petition', (req, res) => {
 
+});
+
+app.post('/api/form', (req, res) => {
+    console.log(req);
+    console.log("__________________________________")
+    console.log(req.body);
 });
 
 app.get('/api/food', (req, res) => {
