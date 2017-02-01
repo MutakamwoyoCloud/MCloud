@@ -25,22 +25,9 @@ class TableResult extends Component {
 // Render your table
   constructor(props) {
     super(props);
-    this.rows;
-    var that = this;
-    $.getJSON({
-        url: "/api/food?"+ "q=hash+browns",
-        type: "GET",
-        datatype: "json",
-        success: function(response) {
-          that.rows = response;
-          that.render();
-          //return response;
-          that.forceUpdate();
-        },
-        error: function(response) {
-          //return null;
-        }
-    });
+    console.log("entro");
+    this.rows = this.props.rows;
+   
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
@@ -49,6 +36,7 @@ class TableResult extends Component {
   }
   
   render(){
+    this.rows = this.props.rows;
     var numCols = 4;
     var length = 10;
     var width = screen.width - 100;
@@ -57,8 +45,6 @@ class TableResult extends Component {
       var rows = Object.keys(this.rows).map(function (key) { return that.rows[key]; });
       //var rows = this.rows;
       length = this.rows.length;
-      console.log(rows);
-      console.log(rows[0]["description"]);
       return(
         <Table
           rowHeight={50}

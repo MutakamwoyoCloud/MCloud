@@ -11,7 +11,8 @@ var $ = require('jquery');
 class NameForm extends Component {
   constructor(props) {
     super(props);
-
+    this.props = props
+    //this.handleChange.bind(this, props.Change);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -43,7 +44,7 @@ class NameForm extends Component {
        <form onSubmit={this.handleSubmit}>
         <Row className="search">
           <Column small={10} large={8}>
-             search: <input defaultValue='introduce la busqueda' ref="search" type="text"/>
+             search: <input defaultValue='introduce la busqueda' onChange={this.props.Change} ref="search" type="text"/>
           </Column>
         </Row>
         <Row className="search">
