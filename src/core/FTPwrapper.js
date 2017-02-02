@@ -2,13 +2,26 @@ var Client = require('ftp');
 var c = new Client();
 
 
+var action = {
+    idle : 0,
+    push : 1,
+    pull : 2,
+    fetch : 3
+}
+
+var status = action.idle;
+
+function init() {
+  var status = action.idle;
+}
+
 /*
 * This function is related to code execution
 * once we already stablished the connection
 */
 function make_operations(list){
-  console.log("estoy dentro del directorio");
-  console.dir(list);
+
+
 }
 
 /*
@@ -17,22 +30,48 @@ function make_operations(list){
 * ftp.
 */
 c.on('ready', function() {
-  c.list(function(err, list) {
-    if (err) throw err;
-    make_operations(list);
-    c.end();
-  });
+
+  switch (Number(status)) {
+
+              case action.idle:
+                  console.log("pana");
+                  break;
+
+              case action.push:
+
+                c.put('foo.tar.gz', 'petition_example10.tar.gz', function(err) {
+                  if (err) throw err;
+                  c.end();
+                });
+
+                break;
+
+              case  action.pull:
+                  console.log("pini");
+                  break;
+
+              case action.fetch:
+                  c.list(function(err, list) {
+                    if (err) throw err;
+                    console.dir(list);
+                    c.end();
+                  });
+                  break;
+
+          }
 });
-// connect to localhost:21 as anonymous
 
+// connect to localhost:21 as mcloud
+function exec(action){
 
+  status = action;
 
-function send_info(){
   var options = {
-    user:"semedi",
-    password:"qazwsx123321"
+    user:"mcloud",
+    password:"mcloud"
   };
-  c.connect(options);
+
+  c.connect(options); //
 }
 
-send_info();
+exec(action.push);

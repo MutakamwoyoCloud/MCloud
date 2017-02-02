@@ -6,8 +6,9 @@ var tools = require('./utils');
 function create_package(petitions, id){
 
   // create a file to stream archive data to.
-  var output = fs.createWriteStream(__dirname + '/'+id+'.zip');
-  var archive = archiver('zip', {
+  var output = fs.createWriteStream(__dirname + '/'+id+'.tar.gz');
+  var archive = archiver('tar', {
+      gzip: true,
       store: true // Sets the compression method to STORE.
   });
 
@@ -77,7 +78,8 @@ PH.prototype.add_petition= function(data){
   this._i++;
 
   if (this._i == this._package_size){
-    var id = tools.generateTimeId();
+    //var id = tools.generateTimeId();
+    var id = "petition_example"+this._i;
     var petitions = this._petitions;
     create_package(petitions, id);
     this.enqueue(id);
@@ -91,7 +93,7 @@ PH.prototype.add_petition= function(data){
 };
 
 
-var petition_hander = new PH(2);
+var petition_hander = new PH(10);
 
 for (var i = 0, len = 10; i < len; i++){
   var prueba = "polla";
