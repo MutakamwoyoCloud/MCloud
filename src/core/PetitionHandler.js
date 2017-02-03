@@ -37,7 +37,7 @@ function create_package(petitions, id){
 
 
 
-function PH(package_size){
+var PH = module.exports = function(package_size){
   this._qoldidx =1;
   this._qnewidx =1;
   this._qstorage={};
@@ -45,7 +45,7 @@ function PH(package_size){
   this._i=0;
   this._package_size = package_size;
   this._petitions = [];
-}
+};
 
 PH.prototype.size = function(){
   return this._qnewidx - this._qoldidx;
@@ -92,7 +92,7 @@ PH.prototype.add_petition= function(data){
 
 };
 
-
+/*
 var petition_hander = new PH(10);
 
 for (var i = 0, len = 10; i < len; i++){
@@ -100,3 +100,4 @@ for (var i = 0, len = 10; i < len; i++){
   petition_hander.add_petition(prueba);
 
 }
+*/

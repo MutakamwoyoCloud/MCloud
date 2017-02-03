@@ -7,7 +7,7 @@ var action = {
     push : 1,
     pull : 2,
     fetch : 3
-}
+};
 
 var status = action.idle;
 
@@ -38,9 +38,11 @@ c.on('ready', function() {
                   break;
 
               case action.push:
-
-                c.put('foo.tar.gz', 'petition_example10.tar.gz', function(err) {
-                  if (err) throw err;
+                console.log("entrooo");
+                c.put('src/core/petition_example1.tar.gz', 'petition_example.tar.gz', function(err) {
+                  if (err)
+                    throw err;
+                  console.log("terminoo");
                   c.end();
                 });
 
@@ -61,6 +63,15 @@ c.on('ready', function() {
           }
 });
 
+
+c.on('error', function() {
+
+  comsole.log("ha habido un error");
+});
+
+
+
+// exec
 // connect to localhost:21 as mcloud
 function exec(action){
 
@@ -72,6 +83,12 @@ function exec(action){
   };
 
   c.connect(options); //
-}
 
-exec(action.push);
+};
+
+//module.exports = ftpw;
+
+module.exports = {
+  exec,
+  action
+};

@@ -9,6 +9,11 @@ const db = new sqlite.Database(filebuffer);
 
 const app = express();
 
+var ph = require('./PetitionHandler');
+var ftpw = require('./FTPwrapper');
+
+
+
 app.set('port', (process.env.PORT || 3001));
 app.use(bodyParser.json());
 
@@ -16,6 +21,7 @@ app.use(bodyParser.json());
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
+
 
 const COLUMNS = [
   'carbohydrate_g',
@@ -29,6 +35,7 @@ const COLUMNS = [
 
 app.get('/api/petition', (req, res) => {
 
+
 });
 
 app.post('/api/form', (req, res) => {
@@ -36,6 +43,8 @@ app.post('/api/form', (req, res) => {
     console.log("__________________________________")
     console.log(JSON.stringify(req.body));
 });
+
+
 
 app.get('/api/food', (req, res) => {
   const param = req.query.q;
@@ -78,6 +87,29 @@ app.get('/api/food', (req, res) => {
   }
 });
 
+
+
+
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+
+  var petition_hander = new ph(1);
+
+  for (var i = 0, len = 1; i < len; i++){
+    var prueba = "polla";
+    petition_hander.add_petition(prueba);
+
+  }
+
+  ftpw.exec(ftpw.action.push);
+
 });
+
+
+
+function test(){
+
+
+  ftpw.exec(ftpw.action.push);
+
+}
