@@ -3,6 +3,7 @@ import NameForm from './NameForm';
 import Table from './Table';
 var Row = require('react-foundation').Row;
 var $ = require('jquery');
+var CommonActions = require('./utils/CommonActions');
 
 require('react-foundation');
 
@@ -13,10 +14,30 @@ class Peticiones extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.table;
   }
+
+  error(response){
+    console.log(response);
+  }
+
+  success(response){
+    this.table = response;
+    this.render();
+    this.forceUpdate();
+  }
   handleChange(event){
-    console.log("enviado");
     var that = this;
-    $.getJSON({
+    var params = {};
+    params.success = function(request,response){
+      that.table = response;
+      that.render();
+      that.forceUpdate();
+    }
+    params.error = function(response){
+      console.log(response);
+    }
+    params.listData=["hash","browns"];
+    CommonActions.list(params, "food");
+    /*$.getJSON({
         url: "/api/food?"+ "q=hash+browns",
         type: "GET",
         datatype: "json",
@@ -29,7 +50,7 @@ class Peticiones extends Component {
         error: function(response) {
           //return null;
         }
-    });
+    });*/
   }
   render() {
     console.log(this.table);
