@@ -18,17 +18,18 @@ class NameForm extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    var urlpath = "/api/form/";
+    var urlpath = "/api/form";
     var data = {}
-    data.search = this.refs.search.value.trim();
-    data.date=  this.refs.date.value.trim();
-    data.number= this.refs.number.value.trim();
-    console.log(JSON.stringify(data));
+    data.search = this.refs.search.value;
+    data.date=  this.refs.date.value;
+    data.number= this.refs.number.value;
+    //commonActions.newPetition()
+    console.log(data);
     $.ajax({
         url: urlpath,
         type: "POST",
-        data: data,
-        datatype: "application/json",
+        data: JSON.stringify(data),
+        contentType: "application/json",
         success: function(response) {
           console.log("already ok");
         },

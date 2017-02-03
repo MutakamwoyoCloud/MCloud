@@ -1,26 +1,24 @@
-define(function(require) {
-
-
-  CommonActions.prototype.list = _list;
-  CommonActions.prototype.newPetition = _newPetition;
-
-  return CommonActions;
-  function _list(params, resource, path) {
+  module.exports = {
+   list,
+   newPetition
+  }
+  var $ = require('jquery');
+  function list(params, resource, path) {
     var callback = params.success;
     var callbackError = params.error;
     //var id = params.data.id;
-    var action, request;
+    var request;
     var reqPath = path ? path : resource.toLowerCase();
     var list = "";
-    if(Array.isArray(params.listParam)){
-      for(l in params.listParam){
-        list += params.listParam[l] +"+";
-      }
-      list.slice(0,-1);
+    if(Array.isArray(params.listData)){
+      $.each(params.listData, function(){
+        list += this +"+";
+      });
+      list = list.slice(0,-1);
       reqPath += "?data="+list;
     }
     else
-      reqPath += "?data="+params.listParam;
+      reqPath += "?data="+params.listData;
 
     $.ajax({
         url: "/api/"+reqPath,
@@ -35,17 +33,18 @@ define(function(require) {
     });
   }
   
-  function _newPetition(params, resource, path) {
+  function newPetition(params, resource, path) {
       var callback = params.success;
       var callbackError = params.error;
       var data = params.data;
+      var request;
       var reqPath = path ? path : resource.toLowerCase();
 
       $.ajax({
-        url: urlpath,
+        url: "/api/"+reqPath,
         type: "POST",
         data: data,
-        datatype: "application/json",
+        contentype: "application/json",
         success: function(response) {
           return callback ? callback(request, response) : null;
         },
@@ -53,5 +52,4 @@ define(function(require) {
           return callbackError ? callbackError(response) : null;
         }
     });
-    },
-});
+  }
