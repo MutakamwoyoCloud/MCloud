@@ -6,12 +6,13 @@ var Row = require('react-foundation').Row;
 var Column = require('react-foundation').Column;
 var Sizes = require('react-foundation').Sizes;
 var Button = require('react-foundation').Button;
-var $ = require('jquery');
 
 class NameForm extends Component {
   constructor(props) {
     super(props);
     this.props = props
+    this.solicitaDatos = props.solicitaDatos;
+    this.thisPrincipal = props.that;
     //this.handleChange.bind(this, props.Change);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -23,20 +24,7 @@ class NameForm extends Component {
     data.search = this.refs.search.value;
     data.date=  this.refs.date.value;
     data.number= this.refs.number.value;
-    //commonActions.newPetition()
-    console.log(data);
-    $.ajax({
-        url: urlpath,
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        success: function(response) {
-          console.log("already ok");
-        },
-        error: function(response) {
-          console.log("error");
-        }
-    });
+    this.solicitaDatos(data, "", urlpath, this.thisPrincipal);
   }
 
   render() {

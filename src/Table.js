@@ -6,14 +6,6 @@ var Column = require('fixed-data-table').Column;
 var Cell = require('fixed-data-table').Cell;
 var Button = require('react-foundation').Button;
 //var partitionHandler = require('./core/PetitionHandler');
-var $ = require('jquery');
-
-const rows = [
-  ['a1', 'b1', 'c1'],
-  ['a2', 'b2', 'c2'],
-  ['a3', 'b3', 'c3'],
-  // .... and more
-];
 const TextCell = ({rowIndex, data, col, ...props}) => (
   <Cell {...props}>
     {data[rowIndex][col].toString()}
