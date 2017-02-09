@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import NameForm from './NameForm';
 import Table from './Table';
 var Row = require('react-foundation').Row;
-var $ = require('jquery');
 var CommonActions = require('./utils/CommonActions');
 
 require('react-foundation');
@@ -10,9 +9,11 @@ require('react-foundation');
 class Peticiones extends Component {
   constructor(props){
     super(props);
+    this.solicitaDatos = props.solicitaDatos;
     this.name = props.name;
     this.handleChange = this.handleChange.bind(this);
     this.table;
+    this.thisPrincipal = props.that
   }
 
   error(response){
@@ -63,7 +64,7 @@ class Peticiones extends Component {
           <div className="search">
             <fieldset>
               <legend>Nueva Peticion</legend>
-              <NameForm Change={this.handleChange}/>
+              <NameForm Change={this.handleChange} solicitaDatos={this.solicitaDatos} that={this.thisPrincipal}/>
             </fieldset>
           </div>
           <div className="search">

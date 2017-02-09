@@ -42,12 +42,19 @@ app.post('/api/form', (req, res) => {
     console.log(req);
     console.log("__________________________________")
     console.log(req.body);
+
+    data = {
+      "name" : "prueba",
+      "content" : "<h1> Prueba </h1>",
+      "links" : ["link1", "link2"]
+    }
+    res = data;
 });
 
 
 
 app.get('/api/food', (req, res) => {
-  const param = req.query.q;
+  const param = req.query.data;
 
   if (!param) {
     res.json({
