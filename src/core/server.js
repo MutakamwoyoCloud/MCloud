@@ -55,7 +55,7 @@ app.post('/api/form', (req, res) => {
 
     data = {
       "name" : "prueba",
-      "content" : <h1> Prueba </h1>,
+      "content" : "<h1> Prueba </h1>",
       "links" : ["link1", "link2"]
     }
     res = data;
