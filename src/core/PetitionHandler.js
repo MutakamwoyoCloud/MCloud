@@ -3,39 +3,6 @@ var fs = require('fs');
 var archiver = require('archiver');
 var tools = require('./utils');
 
-function create_package(petitions, id){
-
-  // create a file to stream archive data to.
-  var output = fs.createWriteStream(__dirname + '/'+id+'.tar.gz');
-  var archive = archiver('tar', {
-      gzip: true,
-      store: true // Sets the compression method to STORE.
-  });
-
-  // listen for all archive data to be written
-  output.on('close', function() {
-    console.log(archive.pointer() + ' total bytes');
-    console.log('archiver has been finalized and the output file descriptor has closed.');
-  });
-
-  // good practice to catch this error explicitly
-  archive.on('error', function(err) {
-    throw err;
-  });
-
-  // pipe archive data to the file
-  archive.pipe(output);
-  for (var i = 0, len = petitions.length; i < len; i++){
-    archive.append(petitions[i], {name: i+'.json'});
-  }
-
-
-  // finalize the archive (ie we are done appending files but streams have to finish yet)
-  archive.finalize();
-
-}
-
-
 
 var PH = module.exports = function(package_size){
   this._qoldidx =1;
@@ -78,8 +45,8 @@ PH.prototype.add_petition= function(data){
   this._i++;
 
   if (this._i == this._package_size){
-    //var id = tools.generateTimeId();
-    var id = "petition_example"+this._i;
+    var id = tools.generateTimeId();
+    //var id = "petition_example"+this._i;
     var petitions = this._petitions;
     create_package(petitions, id);
     this.enqueue(id);
@@ -92,7 +59,44 @@ PH.prototype.add_petition= function(data){
 
 };
 
-/*
+
+// private functions
+/**************************************************************************/ 
+function create_package(petitions, id){
+
+  // create a file to stream archive data to.
+
+
+  var output = fs.createWriteStream(__dirname + '/push/'+id+'.tar.gz');
+  var archive = archiver('tar', {
+      gzip: true,
+      store: true // Sets the compression method to STORE.
+  });
+
+  // listen for all archive data to be written
+  output.on('close', function() {
+    console.log(archive.pointer() + ' total bytes');
+    console.log('archiver has been finalized and the output file descriptor has closed.');
+  });
+
+  // good practice to catch this error explicitly
+  archive.on('error', function(err) {
+    throw err;
+  });
+
+  // pipe archive data to the file
+  archive.pipe(output);
+  for (var i = 0, len = petitions.length; i < len; i++){
+    archive.append(petitions[i], {name: i+'.json'});
+  }
+
+
+  // finalize the archive (ie we are done appending files but streams have to finish yet)
+  archive.finalize();
+
+}
+
+
 var petition_hander = new PH(10);
 
 for (var i = 0, len = 10; i < len; i++){
@@ -100,4 +104,4 @@ for (var i = 0, len = 10; i < len; i++){
   petition_hander.add_petition(prueba);
 
 }
-*/
+
