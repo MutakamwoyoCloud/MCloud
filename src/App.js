@@ -16,28 +16,21 @@ class App extends Component {
 
   solicitaDatos(data, resource, path, myThis){
       var urlpath = path;
-      myThis.datos = {
-      "name" : "prueba",
-      "content" : "<h1> Prueba </h1>",
-      "links" : ["link1", "link2"]
-    };
-    myThis.render();
-    myThis.forceUpdate();
-     /*$.ajax({
+     $.ajax({
         url: urlpath,
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function(response) {
-          that.datos = response;
-          that.render();
+          myThis.datos = response;
+          myThis.render();
           //return response;
-          that.forceUpdate();
+          myThis.forceUpdate();
         },
         error: function(response) {
           console.log("error");
         }
-    });*/
+    });
   }
   render() {
     console.log(this);

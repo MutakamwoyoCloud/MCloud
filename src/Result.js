@@ -1,39 +1,40 @@
 import React, { Component } from 'react';
 var Row = require('react-foundation').Row;
+//require('xmldom').DOMParser;
 
 require('react-foundation');
 
 class Result extends Component {
   constructor(props){
     super(props);
-    this.name = props.name;
+    this.datos = props.datos;
     //this.handleChange = this.handleChange.bind(this);
     this.table = undefined;
+    //var parser=new DOMParser();
+    //this.datos.content=parser.parseFromString(this.datos.content, "text/html");
   }
 
   render() {
-    if(this.links){
-      var links_html = []
-      for (var l in this.links) {
-          links_html.push(<a>l</a>);
-      }
-    }
     return (
       <div>
         <Row isColumn>
-         <label className="texto_principal_peticiones">{this.name}</label>
+         <label className="texto_principal_peticiones">{this.datos.name}</label>
         </Row>
         <Row isColumn>
           <div className="search">
             <fieldset>
               <legend>Contenido</legend>
-              {this.contenido}
+              {this.datos.content}
             </fieldset>
           </div>
           <div className="search">
             <fieldset>
               <legend>Links</legend>
-              {links_html}
+              {
+                this.datos.links.map(function(link) {
+                    return <li key={link}><a href="#">{link}</a></li>
+                })
+              }
             </fieldset>
           </div>
         </Row>
