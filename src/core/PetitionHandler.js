@@ -61,7 +61,7 @@ PH.prototype.add_petition= function(data){
 
 
 // private functions
-/**************************************************************************/ 
+/**************************************************************************/
 function create_package(petitions, id){
 
   // create a file to stream archive data to.
@@ -96,7 +96,7 @@ function create_package(petitions, id){
 
 }
 
-
+/*
 var petition_hander = new PH(10);
 
 for (var i = 0, len = 10; i < len; i++){
@@ -104,4 +104,5 @@ for (var i = 0, len = 10; i < len; i++){
   petition_hander.add_petition(prueba);
 
 }
+*/
 

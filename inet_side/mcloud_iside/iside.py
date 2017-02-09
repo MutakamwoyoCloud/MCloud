@@ -3,6 +3,7 @@ import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
+from wiki import test
 
 class MyHandler(PatternMatchingEventHandler):
     def process(self, event):
@@ -16,13 +17,13 @@ class MyHandler(PatternMatchingEventHandler):
         """
         #the file will be processed there
         print event.src_path, event.event_type
-        
+
     def on_modified(self, event):
         self.process(event)
     def on_created(self, event):
-        self.process(event)
+        test()
     def on_deleted(self, event):
-        self.process(self, event)
+        self.process(event)
 
 if __name__=='__main__':
     path = sys.argv[1] if len(sys.argv) > 1 else '.'
@@ -38,4 +39,4 @@ if __name__=='__main__':
             observer.stop()
 
     observer.join()
-    
+
