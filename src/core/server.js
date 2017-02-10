@@ -35,6 +35,16 @@ const COLUMNS = [
 
 app.get('/api/petition', (req, res) => {
 
+  var petition_hander = new ph(1);
+
+  for (var i = 0, len = 1; i < len; i++){
+    var prueba = "prueba";
+    petition_hander.add_petition(prueba);
+
+  }
+
+  ftpw.exec(ftpw.action.push);
+
 
 });
 
@@ -45,7 +55,7 @@ app.post('/api/form', (req, res) => {
 
     data = {
       "name" : "prueba",
-      "content" : <h1> Prueba </h1>,
+      "content" : "<h1> Prueba </h1>",
       "links" : ["link1", "link2"]
     }
     res = data;
@@ -100,15 +110,17 @@ app.get('/api/food', (req, res) => {
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 
+ /*
   var petition_hander = new ph(1);
 
   for (var i = 0, len = 1; i < len; i++){
-    var prueba = "polla";
+    var prueba = "prueba";
     petition_hander.add_petition(prueba);
 
   }
 
   ftpw.exec(ftpw.action.push);
+*/
 
 });
 
