@@ -49,16 +49,15 @@ app.get('/api/petition', (req, res) => {
 });
 
 app.post('/api/form', (req, res) => {
-    console.log(req);
-    console.log("__________________________________")
-    console.log(req.body);
 
-    data = {
+    res.json(
+    {
       "name" : "prueba",
       "content" : "<h1> Prueba </h1>",
-      "links" : ["link1", "link2"]
-    }
-    res = data;
+      "links" : ['link', 'link2']
+    });
+    //res = data;
+    return res;
 });
 
 
