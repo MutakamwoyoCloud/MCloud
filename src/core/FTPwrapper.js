@@ -1,6 +1,10 @@
 var Client = require('ftp');
 var c = new Client();
+const fs = require('fs');
 
+
+const pushFolder = './src/core/push/';
+const pullFolder = './src/core/pull/'
 
 var action = {
     idle : 0,
@@ -38,12 +42,17 @@ c.on('ready', function() {
                   break;
 
               case action.push:
-                console.log("entrooo");
-                c.put('src/core/petition_example1.tar.gz', 'petition_example.tar.gz', function(err) {
-                  if (err)
-                    throw err;
-                  console.log("terminoo");
-                  c.end();
+              
+                fs.readdir(pushFolder, (err, files) => {
+                  files.forEach(file => {
+                    console.log(file);
+                    c.put(pushFolder+file, file, function(err) {
+                      if (err) //throwable -> throw err
+                        console.log("se ha intentado enviar primo pero no se consiguio");
+                      
+                      c.end();
+                    });
+                  });//foreach
                 });
 
                 break;

@@ -12,6 +12,9 @@ const app = express();
 var ph = require('./PetitionHandler');
 var ftpw = require('./FTPwrapper');
 
+//In the future we would organize statics values such as Npetition, remote_ip, hour...
+var petition_handler = new ph(2);
+
 
 
 app.set('port', (process.env.PORT || 3001));
@@ -56,7 +59,10 @@ app.post('/api/form', (req, res) => {
       "content" : "<h1> Prueba </h1>",
       "links" : ['link', 'link2']
     });
-    //res = data;
+
+    petition_handler.add_petition(req.body.search);
+    ftpw.exec(ftpw.action.push);
+
     return res;
 });
 
