@@ -38,7 +38,7 @@ class App extends Component {
     if(this.datos)
       show = <Resultdatos datos={this.datos}/>;
     else
-      show = <Peticiones name={this.props.name} solicitaDatos={this.solicitaDatos} that={this} />;
+      show = <Peticiones name={this.props.name} solicitaDatos={this.solicitaDatos} AppThat={this} />;
     return (
       <div className="App">
         {show}
