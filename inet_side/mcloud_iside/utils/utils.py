@@ -8,7 +8,7 @@ def decompress(name, tar):
 	t = tarfile.open(tar)
 	t.extractall(folderOut+name)
 	t.close()
-	return os.listdir(folderOut+name)
+	return {"listDir":os.listdir(folderOut+name), "dir":folderOut+name}
 
 
 def compress(files, nameOut):

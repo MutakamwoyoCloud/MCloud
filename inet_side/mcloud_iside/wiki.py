@@ -7,7 +7,7 @@ import tarfile
 class Wiki:
     def __init__(self):
         self = self
-    def search(self, name, dir):
+    def search(self, name, dir, dirOut):
         archivo = open("../out/"+dir+"/"+name)
         archivo = archivo.read()
         links = json.loads(archivo)
@@ -25,8 +25,8 @@ class Wiki:
             params['content'] = data.content
             params['url'] = data.url
             params['links'] = data.links
-            nombres[i].append("wiki_"+links['search']+(i+1))
-            archivo = open(nombres[i], "w")
-            archivo.write(json.dump(params))
+            nombres.append("wiki_"+links['search']+str(i+1)+".json")
+            archivo = open(dirOut+nombres[i], "w")
+            archivo.write(json.dumps(params))
         return nombres
 
