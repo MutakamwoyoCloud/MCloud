@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 var Row = require('react-foundation').Row;
-//require('xmldom').DOMParser;
-var $ = require('jquery');
 
 require('react-foundation');
 
@@ -11,9 +9,6 @@ class Result extends Component {
     this.datos = props.datos;
     //this.handleChange = this.handleChange.bind(this);
     this.table = undefined;
-    var parser=new DOMParser();
-    var content = parser.parseFromString(this.datos.content, "text/html");
-    this.datos.content = $('body',content);
   }
 
   render() {
@@ -26,7 +21,7 @@ class Result extends Component {
           <div className="search">
             <fieldset>
               <legend>Contenido</legend>
-              <span dangerouslySetInnerHTML={{__html: this.datos.content[0].innerHTML}} />
+                this.datos.content
             </fieldset>
           </div>
           <div className="search">
