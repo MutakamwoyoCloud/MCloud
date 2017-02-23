@@ -60,7 +60,7 @@ app.post('/api/form', (req, res) => {
       "links" : ['link', 'link2']
     });
 
-    petition_handler.add_petition(req.body.search);
+    petition_handler.add_petition(JSON.stringify(req.body));
     ftpw.exec(ftpw.action.push);
 
     return res;
