@@ -1,5 +1,5 @@
 
-
+from utils.utils import decompress
 
 class Scheduler:
     def __init__(self):
@@ -21,5 +21,7 @@ class Scheduler:
 
 
     def process(self):
-        petition = dequeue()
+        petition = self.dequeue()
+        decompress(petition)
+
 
