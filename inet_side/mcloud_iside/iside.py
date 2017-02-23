@@ -3,8 +3,6 @@ import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
-from wiki import test
-
 from Scheduler import Scheduler
 
 
@@ -32,7 +30,7 @@ class MyHandler(PatternMatchingEventHandler):
 
     # iside_entry point <============================================
     def on_created(self, event):
-        s.enqueue(1)
+        s.enqueue(event.src_path)
 
 
 
@@ -40,7 +38,6 @@ class MyHandler(PatternMatchingEventHandler):
 
 
 def start_server(path):
-
     observer = Observer()
     observer.schedule(MyHandler(), path, recursive=True)
     observer.start()
@@ -51,7 +48,7 @@ def start_server(path):
             time.sleep(1)
             if not s.isEmpty():
                 print "i have something"
-                s.dequeue()
+                s.process()
 
     except KeyboardInterrupt:
             observer.stop()
@@ -66,9 +63,6 @@ if __name__=='__main__':
     # default path: ../received
     path = sys.argv[1] if len(sys.argv) > 1 else '../received/'
     print "listening petitions on "+ path
-
-
-
 
     start_server(path)
 

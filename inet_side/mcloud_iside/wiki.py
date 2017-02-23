@@ -1,8 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-import wikipedia, argparse, json
-import argparse, tarfile
+import wikipedia, json
+import tarfile
 
 def wiki(name):
     archivo = open(name)
@@ -16,26 +16,3 @@ def wiki(name):
         params.data[i]=wikipedia.page(options[i]).content
     return params
 
-
-
-def decompress():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-n","--name",dest="name")
-    argumento = parser.parse_args()
-    t = tarfile.open(argumento.name)
-    t.extractall()#!/usr/bin/env python2
-
-
-def compress():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-n","--name",dest="name")
-    parser.add_argument("-o", "--output", dest="out")
-    argumento = parser.parse_args()
-    files = argumento.name.split(" ")
-    out = tarfile.open(argumento.out, "w")
-    for i in files:
-        out.add(i)
-    out.close()
-
-def test():
-    print "calling wiki..."
