@@ -46,9 +46,9 @@ c.on('ready', function() {
                 fs.readdir(pushFolder, (err, files) => {
                   files.forEach(file => {
                     console.log(file);
-                    c.put(pushFolder+file, file, function(err) {
+                    c.put(pushFolder+file, "MCloud/inet_side/received/"+file, function(err) {
                       if (err) //throwable -> throw err
-                        console.log("se ha intentado enviar primo pero no se consiguio");
+                        throw err;
                       
                       c.end();
                     });

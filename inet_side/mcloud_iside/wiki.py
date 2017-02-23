@@ -16,6 +16,7 @@ class Wiki:
         options = wikipedia.search(links['search'])
         print options
         params = {}
+        nombres = []
         for i in range(int(links['num'])):
             print i
             print options[i]
@@ -24,5 +25,8 @@ class Wiki:
             params['content'] = data.content
             params['url'] = data.url
             params['links'] = data.links
-        return params
+            nombres[i].append("wiki_"+links['search']+(i+1))
+            archivo = open(nombres[i], "w")
+            archivo.write(json.dump(params))
+        return nombres
 
