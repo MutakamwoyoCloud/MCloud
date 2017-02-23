@@ -4,15 +4,25 @@
 import wikipedia, json
 import tarfile
 
-def wiki(name):
-    archivo = open(name)
-    archivo = archivo.read()
-    links = json.loads(archivo)
-    wikipedia.set_lang("fr")
-    options = wikipedia.search(links[0])
-    params = {}
-    params.options = options
-    for i in range(int(links[1])):
-        params.data[i]=wikipedia.page(options[i]).content
-    return params
+class Wiki:
+    def __init__(self):
+        self = self
+    def search(self, name, dir):
+        archivo = open("../out/"+dir+"/"+name)
+        archivo = archivo.read()
+        links = json.loads(archivo)
+        wikipedia.set_lang("fr")
+        print links
+        options = wikipedia.search(links['search'])
+        print options
+        params = {}
+        for i in range(int(links['num'])):
+            print i
+            print options[i]
+            data = wikipedia.page(options[i])
+            params['name'] = options[i]
+            params['content'] = data.content
+            params['url'] = data.url
+            params['links'] = data.links
+        return params
 
