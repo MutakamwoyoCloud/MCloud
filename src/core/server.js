@@ -124,17 +124,7 @@ app.get('/api/food', (req, res) => {
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 
- /*
-  var petition_hander = new ph(1);
 
-  for (var i = 0, len = 1; i < len; i++){
-    var prueba = "prueba";
-    petition_hander.add_petition(prueba);
-
-  }
-
-  ftpw.exec(ftpw.action.push);
-*/
 
 });
 
