@@ -96,13 +96,3 @@ function create_package(petitions, id){
 
 }
 
-/*
-var petition_hander = new PH(10);
-
-for (var i = 0, len = 10; i < len; i++){
-  var prueba = "polla";
-  petition_hander.add_petition(prueba);
-
-}
-*/
-

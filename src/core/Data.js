@@ -9,49 +9,29 @@ var u = 'mongodb://localhost:5223/mcloud';
 
 var Data = module.exports = function(server){
 
-
-    var final_direction = u;
-
     if (server)
-        final_direction = server;
+        url = server;
 
-    // url example: 'mongodb://localhost:27017/mcloud'
-    MongoClient.connect(final_direction, function(err, db) {
-        assert.equal(null, err);
-        console.log("Connecting to data model...");
-
-        //db.createCollection('test', function(err, collection) {});
-
-        db.close();
-    });
-};
+}
 
 var operation = module.exports = {
-    insert: function(){
-        var collection = db.collection('main');
-
+    insert: function(db, toInsert){
+        db.collection('main').insert(toInsert, function(err, res){
+            console.log("se ha insertado correctamente");
+        });
     }
 }
 
-
-Data.prototype.insert= function(toInstert){
-
-        MongoClient.connect(final_direction, function(err, db) {
+Data.prototype.do = function(callback, data){
+    MongoClient.connect(url, function(err,db){
         assert.equal(null, err);
-
-             db.collection('main').insertOne( toInsert
-                ,
-                function(err, result) {
-                    assert.equal(err, null);
-                });
-
-
+        callback(db, data);
         db.close();
-    });
+    } );
+}
 
 
-};
-
-
-var data = new Data();
+var data = new Data(u);
+var example = {var:1};
+data.do(operation.insert, example);
 
