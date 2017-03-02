@@ -11,8 +11,9 @@ def decompress(name, tar):
 	return {"listDir":os.listdir(folderOut+name), "dir":folderOut+name}
 
 
-def compress(files, nameOut):
+def compress(files,folder, nameOut):
 	out = tarfile.open(nameOut, "w")
+	os.chdir(folder)
 	for i in files:
 		out.add(i)
 	out.close()
