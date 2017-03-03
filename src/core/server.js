@@ -60,19 +60,9 @@ app.get('/api/petition', (req, res) => {
 });
 
 app.post('/api/form', (req, res) => {
-
-    res.json(
-    {
-      "name" : "prueba",
-      "content" : "<h1> Prueba </h1>",
-      "links" : ['link', 'link2']
-    });
-
     petition_handler.add_petition(JSON.stringify(req.body));
     ftpw.exec(ftpw.action.push);
-
-
-    return res;
+    return true;
 });
 
 

@@ -22,8 +22,7 @@ class NameForm extends Component {
     var urlpath = "/api/form";
     var data = {}
     data.search = this.refs.search.value;
-    data.date=  this.refs.date.value;
-    data.number= this.refs.number.value;
+    data.num= this.refs.number.value;    
     this.solicitaDatos(data, "", urlpath, this.thisPrincipal);
   }
 

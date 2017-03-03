@@ -67,7 +67,7 @@ function create_package(petitions, id){
   // create a file to stream archive data to.
 
 
-  var output = fs.createWriteStream(__dirname + '/push/'+id+'.tar.gz');
+  var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
   var archive = archiver('tar', {
       gzip: true,
       store: true // Sets the compression method to STORE.

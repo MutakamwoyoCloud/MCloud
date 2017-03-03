@@ -22,10 +22,11 @@ class App extends Component {
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function(response) {
-          myThis.datos = response;
+          console.log(response);
+          /*myThis.datos = response;
           myThis.render();
           //return response;
-          myThis.forceUpdate();
+          myThis.forceUpdate();*/
         },
         error: function(response) {
           console.log("error");
