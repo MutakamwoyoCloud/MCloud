@@ -7,14 +7,14 @@ var u = 'mongodb://localhost:5223/mcloud';
 
 
 
-var Data = module.exports = function(server){
+var _Data = function(server){
 
     if (server)
         url = server;
 
 }
 
-var operation = module.exports = {
+var operation = {
     insert: function(db, toInsert){
         db.collection('main').insert(toInsert, function(err, res){
             console.log("se ha insertado correctamente");
@@ -22,7 +22,7 @@ var operation = module.exports = {
     }
 }
 
-Data.prototype.do = function(callback, data){
+_Data.prototype.do = function(callback, data){
     MongoClient.connect(url, function(err,db){
         assert.equal(null, err);
         callback(db, data);
@@ -30,8 +30,15 @@ Data.prototype.do = function(callback, data){
     } );
 }
 
-
-var data = new Data(u);
-var example = {var:1};
+module.exports = {
+    Data : _Data,
+    op : operation 
+};
+/*
+var data = new Data();
+var example = 
+            {
+                var:1
+            };
 data.do(operation.insert, example);
-
+*/

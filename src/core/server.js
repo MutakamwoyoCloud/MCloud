@@ -12,6 +12,8 @@ const app = express();
 var ph = require('./PetitionHandler');
 var ftpw = require('./FTPwrapper');
 
+var tools = require('./utils');
+
 //In the future we would organize statics values such as Npetition, remote_ip, hour...
 var petition_handler = new ph(2);
 

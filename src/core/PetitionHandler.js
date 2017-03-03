@@ -4,7 +4,24 @@ var archiver = require('archiver');
 var tools = require('./utils');
 
 
+var _sys = require('./utils').module;
+var _model = require('./Data');
+
+
+
+
+
 var PH = module.exports = function(package_size){
+
+  this.data = new _model.Data();
+
+  var example = 
+            {
+                nombre: "hijo de puta"
+            };
+
+  this.data.do(_model.op.insert, example);
+  //console.log(_model);
   this._qoldidx =1;
   this._qnewidx =1;
   this._qstorage={};
@@ -96,3 +113,5 @@ function create_package(petitions, id){
 
 }
 
+//var p = new PH(2);
+//console.log(_sys.get(_sys.type.wikipedia));
