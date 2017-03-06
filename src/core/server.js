@@ -62,7 +62,7 @@ app.get('/api/petition', (req, res) => {
 });
 
 app.post('/api/form', (req, res) => {
-    petition_handler.add_petition(JSON.stringify(req.body));
+    petition_handler.add_petition((req.body));
     ftpw.exec(ftpw.action.push);
     return true;
 });

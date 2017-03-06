@@ -15,12 +15,7 @@ var PH = module.exports = function(package_size){
 
   this.data = new _model.Data();
 
-  var example = 
-            {
-                nombre: "hijo de puta"
-            };
 
-  this.data.do(_model.op.insert, example);
   //console.log(_model);
   this._qoldidx =1;
   this._qnewidx =1;
@@ -29,6 +24,10 @@ var PH = module.exports = function(package_size){
   this._i=0;
   this._package_size = package_size;
   this._petitions = [];
+
+
+
+  
 };
 
 PH.prototype.size = function(){
@@ -61,11 +60,15 @@ PH.prototype.add_petition= function(data){
   this._petitions[this._i] = data;
   this._i++;
 
+ 
+  
+
+
   if (this._i == this._package_size){
     var id = tools.generateTimeId();
     //var id = "petition_example"+this._i;
     var petitions = this._petitions;
-    create_package(petitions, id);
+    create_package(this, petitions, id);
     this.enqueue(id);
     this._i = 0;
   }
@@ -79,7 +82,7 @@ PH.prototype.add_petition= function(data){
 
 // private functions
 /**************************************************************************/
-function create_package(petitions, id){
+function create_package(self, petitions, id){
 
   // create a file to stream archive data to.
 
@@ -103,8 +106,17 @@ function create_package(petitions, id){
 
   // pipe archive data to the file
   archive.pipe(output);
-  for (var i = 0, len = petitions.length; i < len; i++){
-    archive.append(petitions[i], {name: i+'.json'});
+
+
+  //we create the first data entry
+  archive.append(JSON.stringify(petitions[0]), {name: i+'.json'});
+  self.data.do(_model.op.insert, petitions[0]);
+  
+
+  for (var i = 1, len = petitions.length; i < len; i++){
+    
+    archive.append(JSON.stringify(petitions[i]), {name: i+'.json'});
+    
   }
 
 
@@ -113,5 +125,11 @@ function create_package(petitions, id){
 
 }
 
-//var p = new PH(2);
+var p = new PH(2);
+p.add_petition({
+  nombre: "prueba"
+});
+p.add_petition({
+  nombre: "prueba2"
+});
 //console.log(_sys.get(_sys.type.wikipedia));
