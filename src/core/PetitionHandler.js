@@ -4,7 +4,7 @@ var archiver = require('archiver');
 var tools = require('./utils');
 
 
-var _sys = require('./utils').module;
+var _sys = tools.module;
 var _model = require('./Data');
 
 
@@ -13,7 +13,7 @@ var _model = require('./Data');
 
 var PH = module.exports = function(package_size){
 
-  this.data = new _model.Data();
+  this.data = new _model.Data('mongodb://localhost:5223/mcloud');
 
 
   //console.log(_model);
@@ -27,7 +27,7 @@ var PH = module.exports = function(package_size){
 
 
 
-  
+
 };
 
 PH.prototype.size = function(){
@@ -60,8 +60,8 @@ PH.prototype.add_petition= function(data){
   this._petitions[this._i] = data;
   this._i++;
 
- 
-  
+
+
 
 
   if (this._i == this._package_size){
@@ -110,13 +110,14 @@ function create_package(self, petitions, id){
 
   //we create the first data entry
   archive.append(JSON.stringify(petitions[0]), {name: i+'.json'});
-  self.data.do(_model.op.insert, petitions[0]);
-  
+  self.data.do(_model.op.insert, {ready: false});
+
+  self.data.do(_model.content.get, {});
 
   for (var i = 1, len = petitions.length; i < len; i++){
-    
+
     archive.append(JSON.stringify(petitions[i]), {name: i+'.json'});
-    
+
   }
 
 
@@ -132,4 +133,4 @@ p.add_petition({
 p.add_petition({
   nombre: "prueba2"
 });
-//console.log(_sys.get(_sys.type.wikipedia));
+
