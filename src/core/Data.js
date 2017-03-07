@@ -16,39 +16,57 @@ var _Data = function(server){
 }
 
 var operation = {
-    insert: function(db, toInsert, type){
+    insert: function(db, toInsert, type, emitter){
 
         db.collection(type).insert(toInsert, function(err, res){
-            console.log("se ha insertado correctamente");
+            console.log("se ha insertado correctamente "+res.ops[0]._id);
+            
+            
         });
     }
 }
 
 var content = {
 
-    get : function(db, query, type){
-
-          db.collection(type).find.toArray(query, function(err, res){
-            if (err)
-                throw err;
-
-            console.log(res);
-          });
-
-      }
+    getAll : function(db, query, type, emitter){
+            return db.collection(type).find();
+    },
+    get : function(db, query, type, emitter){
+        db.collection(type).findOne(query, function(err, doc){
+            console.log(doc);
+            emitter.emit('newPetition', doc._id);
+        });        
+    }
 
 
 }
 
-_Data.prototype.do = function(callback, data, type){
+
+
+
+ 
+
+_Data.prototype.do = function(callback, data, emitter, type){
 
     var col = 'main';
     if (type)
-        col =_sys.get(type)
+        col =_sys.get(type);
 
     MongoClient.connect(url, function(err,db){
         assert.equal(null, err);
-        callback(db, data, col);
+
+        var cursor = callback(db, data, col, emitter);
+        
+        if (cursor){
+            if (cursor.constructor.name == "Cursor"){
+                cursor.forEach(function(item, err) {
+                    console.log(item);
+                });
+            }
+ 
+        }
+
+
         db.close();
     } );
 }

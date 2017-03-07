@@ -2,10 +2,10 @@
 var fs = require('fs');
 var archiver = require('archiver');
 var tools = require('./utils');
-
+var events = require('events');
+var _model = require('./Data');
 
 var _sys = tools.module;
-var _model = require('./Data');
 
 
 
@@ -13,8 +13,8 @@ var _model = require('./Data');
 
 var PH = module.exports = function(package_size){
 
-  this.data = new _model.Data('mongodb://localhost:5223/mcloud');
-
+  this.data = new _model.Data();
+  this.emitter = new events.EventEmitter();
 
   //console.log(_model);
   this._qoldidx =1;
@@ -86,6 +86,11 @@ function create_package(self, petitions, id){
 
   // create a file to stream archive data to.
 
+  self.emitter.on('newPackage', function(id){
+    console.log("funciona esto "+id);
+  });
+
+  self.data.do(_model.op.insert, {ready: false}, self.emitter);
 
   var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
   var archive = archiver('tar', {
@@ -110,9 +115,9 @@ function create_package(self, petitions, id){
 
   //we create the first data entry
   archive.append(JSON.stringify(petitions[0]), {name: i+'.json'});
-  self.data.do(_model.op.insert, {ready: false});
-
-  self.data.do(_model.content.get, {});
+  
+  //
+  self.data.do(_model.content.get, {ready: false}, self.emitter);
 
   for (var i = 1, len = petitions.length; i < len; i++){
 
