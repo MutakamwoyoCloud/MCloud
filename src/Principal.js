@@ -24,6 +24,7 @@ class Principal extends Component {
 
   handleClick(event) {
     var name = event.target.id;
+    alert(event.target.id);
     ReactDOM.render(<App name={name}/>, document.getElementById('root'));
   }
 
@@ -32,18 +33,18 @@ class Principal extends Component {
       <div className="display">
         <Row>
         	<Column large={4} small={12}>
-        		<Button onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><WikipediaIcon id="Wikipedia" size={Sizes.LARGE}/></Button>
+        		<Button id="Wikipedia" onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><WikipediaIcon id="Wikipedia" size={Sizes.LARGE}/></Button>
         	</Column>
         	<Column large={4} small={12}>
-        		<Button onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><HospitalIcon id="Vademecum" size={Sizes.LARGE}/></Button>
+        		<Button id="Vademecum" onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><HospitalIcon id="Vademecum" size={Sizes.LARGE}/></Button>
         	</Column>
         	<Column large={4} small={12}>
-        		<Button onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><YouTubeIcon id="YouTube" size={Sizes.LARGE}/></Button>
+        		<Button id="YouTube" onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><YouTubeIcon id="YouTube" size={Sizes.LARGE}/></Button>
         	</Column>
         </Row>
         <Row>
         	<Column large={6} small={12}>
-        		<Button onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><EmailIcon id="Correo" size={Sizes.LARGE}/></Button>
+        		<Button id="Correo" onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><EmailIcon id="Correo" size={Sizes.LARGE}/></Button>
         	</Column>
         	<Column large={6} small={12}>
         		<Button onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><EmailIcon id="" size={Sizes.LARGE}/></Button>
