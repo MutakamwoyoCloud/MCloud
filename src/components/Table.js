@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 //import {Table, Column, Cell} from 'fixed-data-table';
-import Read from '../node_modules/react-icons/lib/md/chrome-reader-mode';
+import Read from '../../node_modules/react-icons/lib/md/chrome-reader-mode';
 var Table = require('fixed-data-table').Table;
 var Column = require('fixed-data-table').Column;
 var Cell = require('fixed-data-table').Cell;

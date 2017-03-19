@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Send from '../node_modules/react-icons/lib/md/send';
+import Send from '../../node_modules/react-icons/lib/md/send';
 
 //var Button = require('react-foundation').Button;
 var Row = require('react-foundation').Row;

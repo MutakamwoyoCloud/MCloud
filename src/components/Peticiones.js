@@ -10,7 +10,7 @@ var $ = require('jquery');
 
 require('react-foundation');
 
-class Peticiones extends Component {
+export default class Peticiones extends Component {
   constructor(props){
     super(props);
     this.name = props.name;
@@ -102,5 +102,3 @@ class Peticiones extends Component {
     );
   }
 }
-
-export default Peticiones;

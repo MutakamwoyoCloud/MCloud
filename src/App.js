@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Peticiones from './Peticiones';
-import Resultdatos from './Result';
+import Peticiones from './components/Peticiones';
+import Result from './components/Result';
 //import './App.css';
 import '../node_modules/foundation-sites/dist/css/foundation.min.css'
 import '../node_modules/fixed-data-table/dist/fixed-data-table.min.css'

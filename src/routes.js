@@ -5,9 +5,9 @@ import { Router, Route } from 'react-router';
 
 import About from './components/About';
 import NotFound from './components/NotFound';
-import Peticiones from './Peticiones';
 import home from './HomeAux';
 
+import Peticiones from './components/Peticiones';
 
 
 const Routes = (props) => (
