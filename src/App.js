@@ -7,7 +7,7 @@ import '../node_modules/fixed-data-table/dist/fixed-data-table.min.css'
 
 require('react-foundation');
 var $ = require('jquery');
-var Correo = require('./Correo');
+//var Correo = require('./Correo');
 
 var  exampleEmails = [
   

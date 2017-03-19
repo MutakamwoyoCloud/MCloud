@@ -148,4 +148,4 @@ var exampleEmails = [
       }
 ];
 
-module.export = Correo;
+export default Correo;

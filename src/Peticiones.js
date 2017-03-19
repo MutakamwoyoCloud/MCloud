@@ -6,17 +6,38 @@ var Column = require('react-foundation').Column;
 var Button = require('react-foundation').Button;
 var CommonActions = require('./utils/CommonActions');
 
+var $ = require('jquery');
+
 require('react-foundation');
 
 class Peticiones extends Component {
   constructor(props){
     super(props);
-    this.solicitaDatos = props.solicitaDatos;
     this.name = props.name;
     this.handleChange = this.handleChange.bind(this);
     this.table = undefined;
     this.thisPrincipal = props.AppThat;
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  solicitaDatos(data, resource, path, myThis){
+      var urlpath = path;
+     $.ajax({
+        url: urlpath,
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function(response) {
+          console.log(response);
+          /*myThis.datos = response;
+          myThis.render();
+          //return response;
+          myThis.forceUpdate();*/
+        },
+        error: function(response) {
+          console.log("error");
+        }
+    });
   }
 
   handleSubmit(event) {
