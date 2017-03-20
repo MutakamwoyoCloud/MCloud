@@ -1,18 +1,15 @@
-var React = require('react');
-
+import React, { Component } from 'react';
 require('react-foundation');
 
-/*class Correo extends Component{
+class Email extends Component {
 	construct(props){
-	this.name = props.name;
-	this.handleChange = this.handleChange.bind(this);
-	 this.thisPrincipal = props.AppThat;
-
-	}
-}*/
-
-var Email = React.createClass({
-  render: function() {
+    /*this.name = props.name;
+    this.from = props.from;
+    this.to = props.to;
+    this.subject = props.subject;
+    this.emailContent = props.emailContent;*/
+  }
+  render() {
     return (
       <div className="email">
         <dl className="meta dl-horizontal">
@@ -26,16 +23,18 @@ var Email = React.createClass({
           <dd>{this.props.subject}</dd>
         </dl>
         <div className="emailBody">
-        	{this.props.body}
+        	{this.props.emailContent}
         </div>
       </div>
     );
   }
-});
+}
 
 
-var EmailListItem = React.createClass({
-  render: function() {
+class EmailListItem extends Component{
+  construct(props){
+  }
+  render() {
     return (
       <tr onClick={this.props.on_click.bind(null)}>
         <td>{this.props.subject}</td>
@@ -44,10 +43,17 @@ var EmailListItem = React.createClass({
       </tr>
     );
   }
-});
+}
 
-var EmailList = React.createClass({
-  render: function() {
+class EmailList extends Component{
+  construct(props){
+  	this.mail_id = null;
+  	this.key = null;
+  }
+ /* onSelectedEmail = {
+
+  }*/
+  render() {
     var email_list = this.props.emails.map(function(mail) {
       return (
         <EmailListItem key={mail.id}
@@ -73,7 +79,7 @@ var EmailList = React.createClass({
       </table>
     );
   }
-});
+}
 
 var NoneSelected = React.createClass({
   render: function() {
@@ -85,17 +91,22 @@ var NoneSelected = React.createClass({
   }
 });
 
-var Correo = React.createClass({
-  getInitialState: function(){
-    return { email_id: null };
-  },
+class Correo extends Component{
+  construct(props){
+  	this.emails = this.props.emails;
+  	this.email_id = null;
+  	this.handleSelectEmail = this.handleSelectEmail.bind(this);
+  }
+  
 
-  handleSelectEmail: function(id) {
-    this.setState({ email_id: id });
-  },
+  handleSelectEmail(event) {
+  	var id= event.target.key;
+  	alert("He seleccionado un correo con id = " + id);
+   // this.email_id = id; 
+  }
 
-  render: function() {
-    var email_id = this.state.email_id;
+  render() {
+    var email_id = this.email_id;
     var selected_email;
     if (email_id) {
       var mail = this.props.emails.filter(function(mail) {
@@ -119,7 +130,7 @@ var Correo = React.createClass({
       </div>
     );
   }
-});
+}
 
 var exampleEmails = [
   
@@ -148,4 +159,4 @@ var exampleEmails = [
       }
 ];
 
-module.export = Correo;
+export default Correo;
