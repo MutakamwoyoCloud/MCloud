@@ -3,7 +3,7 @@ var Row = require('react-foundation').Row;
 
 require('react-foundation');
 
-class Result extends Component {
+export default class Result extends Component {
   constructor(props){
     super(props);
     this.datos = props.datos;
@@ -40,4 +40,3 @@ class Result extends Component {
   }
 }
 
-export default Result;
