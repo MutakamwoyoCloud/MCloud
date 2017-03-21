@@ -10,7 +10,7 @@ var _sys = tools.module;
 
 
 
-
+/* CLASS CONSTRUCTOR*/ 
 var PH = module.exports = function(package_size){
 
   this.data = new _model.Data();
@@ -24,11 +24,8 @@ var PH = module.exports = function(package_size){
   this._i=0;
   this._package_size = package_size;
   this._petitions = [];
-
-
-
-
 };
+
 
 PH.prototype.size = function(){
   return this._qnewidx - this._qoldidx;
@@ -53,55 +50,33 @@ PH.prototype.dequeue = function(){
   }
 };
 
+PH.prototype.reset = function(){
+  this._i = 0;
+};
 
+    //tools.generateTimeId();
+    //var id = "petition_example"+this._i;
 PH.prototype.add_petition= function(data){
 
 
   this._petitions[this._i] = data;
   this._i++;
 
-
-
-
-
-  if (this._i == this._package_size){
-    var id = tools.generateTimeId();
-    //var id = "petition_example"+this._i;
-    var petitions = this._petitions;
-    create_package(this, petitions, id);
-    this.enqueue(id);
-    this._i = 0;
-  }
-
-
-
-
+  if (this._i == this._package_size)
+    create_package(this);
+  
 
 };
 
 
 // private functions
 /**************************************************************************/
-function create_package(self, petitions, id){
+function create_package(self){
 
-  // create a file to stream archive data to.
 
-  self.emitter.on('newPackage', function(id){
-    console.log("funciona esto "+id);
-  });
-
-  self.data.do(_model.op.insert, {ready: false}, self.emitter);
-
-  var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
   var archive = archiver('tar', {
-      gzip: true,
-      store: true // Sets the compression method to STORE.
-  });
-
-  // listen for all archive data to be written
-  output.on('close', function() {
-    console.log(archive.pointer() + ' total bytes');
-    console.log('archiver has been finalized and the output file descriptor has closed.');
+    gzip: true,
+    store: true // Sets the compression method to STORE.
   });
 
   // good practice to catch this error explicitly
@@ -109,25 +84,36 @@ function create_package(self, petitions, id){
     throw err;
   });
 
-  // pipe archive data to the file
-  archive.pipe(output);
+  self.emitter.on('newPackage', function(id){
 
+      // create a file to stream archive data to.
+      var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
 
-  //we create the first data entry
-  archive.append(JSON.stringify(petitions[0]), {name: i+'.json'});
+      // listen for all archive data to be written
+      output.on('close', function() {
+
+          console.log(archive.pointer() + ' total bytes');
+          console.log('archiver has been finalized and the output file descriptor has closed.');
+          self.reset();
+      });
   
-  //
-  self.data.do(_model.content.get, {ready: false}, self.emitter);
+      self.enqueue(id);
+      // pipe archive data to the file
+      archive.pipe(output);
 
-  for (var i = 1, len = petitions.length; i < len; i++){
+      //we create the first data entry
+      archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
+   
+      //self.data.do(_model.content.get, {ready: false}, self.emitter);
 
-    archive.append(JSON.stringify(petitions[i]), {name: i+'.json'});
+      for (var i = 0, len = self._petitions.length; i < len; i++)
+        archive.append(JSON.stringify(self._petitions[i]), {name: i+'.json'});
+      
+      // finalize the archive (ie we are done appending files but streams have to finish yet)
+      archive.finalize();
+  });
 
-  }
-
-
-  // finalize the archive (ie we are done appending files but streams have to finish yet)
-  archive.finalize();
+  self.data.do(_model.op.insert, {ready: false}, self.emitter);
 
 }
 

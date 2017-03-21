@@ -20,7 +20,7 @@ var operation = {
 
         db.collection(type).insert(toInsert, function(err, res){
             console.log("se ha insertado correctamente "+res.ops[0]._id);
-            
+            emitter.emit('newPackage', res.ops[0]._id);
             
         });
     }
@@ -34,7 +34,7 @@ var content = {
     get : function(db, query, type, emitter){
         db.collection(type).findOne(query, function(err, doc){
             console.log(doc);
-            emitter.emit('newPetition', doc._id);
+            emitter.emit('newPackage', doc._id);
         });        
     }
 
@@ -49,6 +49,7 @@ var content = {
 _Data.prototype.do = function(callback, data, emitter, type){
 
     var col = 'main';
+    
     if (type)
         col =_sys.get(type);
 
