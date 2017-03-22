@@ -32,6 +32,7 @@ PH.prototype.size = function(){
 };
 
 PH.prototype.enqueue = function(data) {
+  console.log(data+" added to the queue!");
   this._qstorage[this._qnewidx] = data;
   this._qnewidx++;
 };
@@ -62,8 +63,10 @@ PH.prototype.add_petition= function(data){
   this._petitions[this._i] = data;
   this._i++;
 
-  if (this._i == this._package_size)
+  if (this._i == this._package_size){
     create_package(this);
+    this.reset();
+  }
   
 
 };
@@ -86,6 +89,7 @@ function create_package(self){
 
   self.emitter.on('newPackage', function(id){
 
+      self.enqueue(id);
       // create a file to stream archive data to.
       var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
 
@@ -94,15 +98,14 @@ function create_package(self){
 
           console.log(archive.pointer() + ' total bytes');
           console.log('archiver has been finalized and the output file descriptor has closed.');
-          self.reset();
       });
   
-      self.enqueue(id);
+      
       // pipe archive data to the file
       archive.pipe(output);
 
       //we create the first data entry
-      archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
+      //archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
    
       //self.data.do(_model.content.get, {ready: false}, self.emitter);
 
@@ -117,11 +120,20 @@ function create_package(self){
 
 }
 
-var p = new PH(2);
-p.add_petition({
-  nombre: "prueba"
-});
-p.add_petition({
-  nombre: "prueba2"
-});
 
+
+/* Usage example: */
+/*
+var ph = new PH(8);
+
+var sleep = require('sleep');
+for (var i = 0, len = 24; i < len; i++){
+    sleep.sleep(1);
+    var object = {
+      "nombre": "hijouta"+i       
+    };
+    console.log("procesando peticion \n");
+    ph.add_petition(object);
+
+  }
+  */

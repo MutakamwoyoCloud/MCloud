@@ -63,7 +63,9 @@ app.get('/api/petition', (req, res) => {
 
 app.post('/api/form', (req, res) => {
     petition_handler.add_petition((req.body));
-    ftpw.exec(ftpw.action.push);
+    
+    console.log("generando peticion...");
+    //ftpw.exec(ftpw.action.push);
     return true;
 });
 
@@ -122,9 +124,3 @@ app.listen(app.get('port'), () => {
 
 
 
-function test(){
-
-
-  ftpw.exec(ftpw.action.push);
-
-}

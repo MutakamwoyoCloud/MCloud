@@ -42,31 +42,31 @@ var content = {
 }
 
 
+/* accesing Cursor ObjectI
+   Not mandatory!
 
-
- 
-
-_Data.prototype.do = function(callback, data, emitter, type){
-
-    var col = 'main';
-    
-    if (type)
-        col =_sys.get(type);
-
-    MongoClient.connect(url, function(err,db){
-        assert.equal(null, err);
-
-        var cursor = callback(db, data, col, emitter);
-        
         if (cursor){
             if (cursor.constructor.name == "Cursor"){
                 cursor.forEach(function(item, err) {
                     console.log(item);
                 });
             }
+        }  we iterate over the cursos printing all documents
+*/
  
-        }
 
+_Data.prototype.do = function(callback, data, emitter, type){
+
+    var default_col = 'fetch';
+    
+    if (type)
+        default_col =_sys.get(type);
+
+    MongoClient.connect(url, function(err,db){
+        assert.equal(null, err);
+
+        // see cursor example above 
+        var cursor = callback(db, data, default_col, emitter);
 
         db.close();
     } );
@@ -77,3 +77,4 @@ module.exports = {
     op : operation,
     content: content
 };
+
