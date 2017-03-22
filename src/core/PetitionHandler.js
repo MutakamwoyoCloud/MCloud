@@ -24,6 +24,13 @@ var PH = module.exports = function(package_size){
   this._i=0;
   this._package_size = package_size;
   this._petitions = [];
+
+  this.options = {
+    gzip: true,
+    store: true // Sets the compression method to STORE.
+  };
+
+
 };
 
 
@@ -52,6 +59,7 @@ PH.prototype.dequeue = function(){
 };
 
 PH.prototype.reset = function(){
+ 
   this._i = 0;
 };
 
@@ -65,7 +73,6 @@ PH.prototype.add_petition= function(data){
 
   if (this._i == this._package_size){
     create_package(this);
-    this.reset();
   }
   
 
@@ -77,46 +84,53 @@ PH.prototype.add_petition= function(data){
 function create_package(self){
 
 
-  var archive = archiver('tar', {
-    gzip: true,
-    store: true // Sets the compression method to STORE.
-  });
-
-  // good practice to catch this error explicitly
-  archive.on('error', function(err) {
-    throw err;
-  });
-
+  
   self.emitter.on('newPackage', function(id){
 
-      self.enqueue(id);
-      // create a file to stream archive data to.
-      var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
+    var archive = archiver('tar', {
+      gzip: true,
+      store: true // Sets the compression method to STORE.
+    });
 
-      // listen for all archive data to be written
-      output.on('close', function() {
+    // good practice to catch this error explicitly
+    archive.on('error', function(err) {
+      throw err;
+    });
 
-          console.log(archive.pointer() + ' total bytes');
-          console.log('archiver has been finalized and the output file descriptor has closed.');
-      });
-  
-      
+    var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
+
+    // listen for all archive data to be written
+    output.on('close', function() {
+
+      console.log(archive.pointer() + ' total bytes');
+      console.log('archiver has been finalized and the output file descriptor has closed.');
+    });
+
       // pipe archive data to the file
-      archive.pipe(output);
+    archive.pipe(output);
 
-      //we create the first data entry
-      //archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
-   
-      //self.data.do(_model.content.get, {ready: false}, self.emitter);
+    self.enqueue(id);
+    // create a file to stream archive data to.
 
-      for (var i = 0, len = self._petitions.length; i < len; i++)
-        archive.append(JSON.stringify(self._petitions[i]), {name: i+'.json'});
       
-      // finalize the archive (ie we are done appending files but streams have to finish yet)
-      archive.finalize();
+      
+      
+
+    //we create the first data entry
+    //archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
+
+    //self.data.do(_model.content.get, {ready: false}, self.emitter);
+
+    for (var i = 0, len = self._petitions.length; i < len; i++){
+      archive.append(JSON.stringify(self._petitions[i]), {name: i+'.json'});
+    }
+    
+    
+    archive.finalize();
+    self.reset();
   });
 
-  self.data.do(_model.op.insert, {ready: false}, self.emitter);
+self.data.do(_model.op.insert, {ready: false}, self.emitter);
 
 }
 
