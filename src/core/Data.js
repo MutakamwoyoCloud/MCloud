@@ -16,22 +16,38 @@ var _Data = function(server){
 }
 
 var operation = {
-    insert: function(db, toInsert, type, emitter){
+    insert: function(db,query, toInsert, type, emitter){
 
         db.collection(type).insert(toInsert, function(err, res){
             console.log("se ha insertado correctamente "+res.ops[0]._id);
             emitter.emit('newPackage', res.ops[0]._id);
             
         });
+    },
+
+    update: function(db, query, toModify, type, emmiter){
+        db.collection(type).findAndModify(
+            query, // query
+            [['_id','asc']],  // sort order
+            {$set: toModify}, // replacement, replaces only the field "hi"
+            {}, // options
+            function(err, object) {
+
+                if (err){
+                    console.warn(err.message);  // returns error if no matching object found
+                }else{
+                    console.dir(object);
+                }
+        });
     }
 }
 
 var content = {
 
-    getAll : function(db, query, type, emitter){
+    getAll : function(db, query, data, type, emitter){
             return db.collection(type).find();
     },
-    get : function(db, query, type, emitter){
+    get : function(db, query, data, type, emitter){
         db.collection(type).findOne(query, function(err, doc){
             console.log(doc);
             emitter.emit('newPackage', doc._id);
@@ -55,7 +71,7 @@ var content = {
 */
  
 
-_Data.prototype.do = function(callback, data, emitter, type){
+_Data.prototype.do = function(callback, query, data, emitter, type){
 
     var default_col = 'fetch';
     
@@ -66,7 +82,7 @@ _Data.prototype.do = function(callback, data, emitter, type){
         assert.equal(null, err);
 
         // see cursor example above 
-        var cursor = callback(db, data, default_col, emitter);
+        var cursor = callback(db, query, data, default_col, emitter);
 
         db.close();
     } );

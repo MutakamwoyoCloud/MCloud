@@ -130,7 +130,7 @@ function create_package(self){
     self.reset();
   });
 
-self.data.do(_model.op.insert, {ready: false}, self.emitter);
+self.data.do(_model.op.insert,{}, {ready: false}, self.emitter);
 
 }
 

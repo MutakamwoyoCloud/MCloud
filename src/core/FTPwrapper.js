@@ -1,10 +1,16 @@
 var Client = require('ftp');
 var c = new Client();
 const fs = require('fs');
+var Id = require('mongodb').ObjectID;
+var _model = require('./Data');
+
+var ops = _model.op;
 
 
 const pushFolder = './src/core/push/';
 const pullFolder = './src/core/pull/'
+
+const fetchFolder = 'MCloud/inet_side/out'
 
 var action = {
     idle : 0,
@@ -13,9 +19,12 @@ var action = {
     fetch : 3
 };
 
+var model = undefined;
 var status = action.idle;
 
-function init() {
+
+function init(dataManager) {
+  model = dataManager;
   var status = action.idle;
 }
 
@@ -62,9 +71,12 @@ c.on('ready', function() {
                   break;
 
               case action.fetch:
-                  c.list(function(err, list) {
+                  c.list(fetchFolder, function(err, list) {
                     if (err) throw err;
-                    console.dir(list);
+                      list.forEach(function(elem){
+                        if (model)
+                          model.do(ops.update, {_id: Id(elem.name.split("_")[0])}, {ready:true}, model.emitter);
+                      });
                     c.end();
                   });
                   break;
@@ -75,7 +87,7 @@ c.on('ready', function() {
 
 c.on('error', function() {
 
-  comsole.log("ha habido un error");
+  console.log("ha habido un error");
 });
 
 
@@ -101,3 +113,7 @@ module.exports = {
   exec,
   action
 };
+
+init(new _model.Data());
+
+exec(action.fetch);
