@@ -45,7 +45,9 @@ var operation = {
 var content = {
 
     getAll : function(db, query, data, type, emitter){
-            return db.collection(type).find();
+        db.collection(type).find().forEach(function(item, err) {
+                    emitter.emit('pull', item);
+                });
     },
     get : function(db, query, data, type, emitter){
         db.collection(type).findOne(query, function(err, doc){

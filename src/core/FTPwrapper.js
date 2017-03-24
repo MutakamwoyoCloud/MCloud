@@ -2,15 +2,17 @@ var Client = require('ftp');
 var c = new Client();
 const fs = require('fs');
 var Id = require('mongodb').ObjectID;
-var _model = require('./Data');
 
+var _p = require('./PetitionHandler');
+
+var _model = require('./Data');
 var ops = _model.op;
+var content = _model.content;
 
 
 const pushFolder = './src/core/push/';
 const pullFolder = './src/core/pull/'
-
-const fetchFolder = 'MCloud/inet_side/out'
+const fetchFolder = 'MCloud/inet_side/out/'
 
 var action = {
     idle : 0,
@@ -19,12 +21,12 @@ var action = {
     fetch : 3
 };
 
-var model = undefined;
+var handler = undefined;
 var status = action.idle;
 
 
-function init(dataManager) {
-  model = dataManager;
+function init(handler_ref) {
+  handler = handler_ref;
   var status = action.idle;
 }
 
@@ -67,15 +69,40 @@ c.on('ready', function() {
                 break;
 
               case  action.pull:
-                  console.log("pini");
+
+                  if (handler){
+                    
+                      var type ="wiki";
+
+                
+                      handler.emitter.on('pull', function(item){
+
+                        if (item.ready){
+                          var name = item._id+"_"+type+"_out.tar.gz";
+                          
+
+                          c.get(fetchFolder+name , function(err, stream) {
+                            if (err) throw err;
+                            stream.once('close', function() { c.end(); });
+                            stream.pipe(fs.createWriteStream(pullFolder+name));
+                          });
+                        }
+                        
+                      });
+           
+                      handler.data.do(content.getAll, {}, {}, handler.emitter);
+
+                    }
+                    
                   break;
 
               case action.fetch:
+
                   c.list(fetchFolder, function(err, list) {
                     if (err) throw err;
                       list.forEach(function(elem){
-                        if (model)
-                          model.do(ops.update, {_id: Id(elem.name.split("_")[0])}, {ready:true}, model.emitter);
+                        if (handler)
+                          handler.data.do(ops.update, {_id: Id(elem.name.split("_")[0])}, {ready:true}, handler.emitter);
                       });
                     c.end();
                   });
@@ -107,13 +134,10 @@ function exec(action){
 
 };
 
-//module.exports = ftpw;
+
 
 module.exports = {
   exec,
   action
 };
 
-init(new _model.Data());
-
-exec(action.fetch);
