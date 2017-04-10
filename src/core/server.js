@@ -12,6 +12,8 @@ const app = express();
 var ph = require('./PetitionHandler');
 var ftpw = require('./FTPwrapper');
 
+var tools = require('./utils');
+
 //In the future we would organize statics values such as Npetition, remote_ip, hour...
 var petition_handler = new ph(2);
 
@@ -60,8 +62,10 @@ app.get('/api/petition', (req, res) => {
 });
 
 app.post('/api/form', (req, res) => {
-    petition_handler.add_petition(JSON.stringify(req.body));
-    ftpw.exec(ftpw.action.push);
+    petition_handler.add_petition((req.body));
+    
+    console.log("generando peticion...");
+    //ftpw.exec(ftpw.action.push);
     return true;
 });
 
@@ -114,25 +118,9 @@ app.get('/api/food', (req, res) => {
 app.listen(app.get('port'), () => {
   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
 
- /*
-  var petition_hander = new ph(1);
 
-  for (var i = 0, len = 1; i < len; i++){
-    var prueba = "prueba";
-    petition_hander.add_petition(prueba);
-
-  }
-
-  ftpw.exec(ftpw.action.push);
-*/
 
 });
 
 
 
-function test(){
-
-
-  ftpw.exec(ftpw.action.push);
-
-}
