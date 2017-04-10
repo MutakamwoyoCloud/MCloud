@@ -2,7 +2,7 @@
 from utils.utils import decompress
 from utils.utils import compress
 from wiki import Wiki
-import os
+import os, shutil
 priority = {
     "wiki":0,
     "vademecum":1,
@@ -40,15 +40,19 @@ class Scheduler:
         petition = self.dequeue()
         names = self.splitPath(petition)
         list = decompress(names[0], petition)
-        listOut = [];
-        os.mkdir(list['dir']+"/result/");
+        listOut = []
+        os.mkdir(list['dir']+"/result/")
         for l in list['listDir']:
             params = self.wiki.search(l, names[0], list['dir']+"/result/")
             for d in params:
                 listOut.append(d)
         print listOut
-        compress(listOut,list['dir']+"/result/", list['dir']+"/"+names[0]+"_out.tar.gz")
+
+        compress_file = names[0]+"_out.tar.gz"
+        compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
         os.chdir(self.path)
+        shutil.rmtree(list['dir'])
+        
 
     def insertOrderListPetition(self, num, petition):
         i = 0
