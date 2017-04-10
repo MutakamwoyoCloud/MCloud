@@ -10,7 +10,17 @@ var _sys = tools.module;
 
 
 
-/* CLASS CONSTRUCTOR*/ 
+/* Constructor
+* Create a new handler object
+* package_size references to the size 4 every packet
+*
+* example: 
+* 	we set packake_size to 6
+* 	we add 13 petitions
+* 	13 % 6 = 1 Petition left, <======================================= we need to check
+* 	13 / 6 = 2 packages are being created and ready to upload 
+*/
+
 var PH = module.exports = function(package_size){
 
   this.data = new _model.Data();
@@ -33,10 +43,11 @@ var PH = module.exports = function(package_size){
 
 };
 
-
+//return the size of the queue
 PH.prototype.size = function(){
   return this._qnewidx - this._qoldidx;
 };
+
 
 PH.prototype.enqueue = function(data) {
   console.log(data+" added to the queue!");

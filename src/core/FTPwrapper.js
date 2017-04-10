@@ -14,6 +14,17 @@ const pushFolder = './src/core/push/';
 const pullFolder = './src/core/pull/'
 const fetchFolder = 'MCloud/inet_side/out/'
 
+
+
+/*
+* Action describe us the all ftp states
+*
+* idle: do nothing
+* push: upload packages to the main server (located in Madrid)
+* pull: download processed packages
+* fetch: Check if the packages are ready
+*
+* */
 var action = {
     idle : 0,
     push : 1,
@@ -21,10 +32,16 @@ var action = {
     fetch : 3
 };
 
+//we need a reference 4 the handler of the core (petition_handler)
 var handler = undefined;
+
+//initial status
 var status = action.idle;
 
-
+/*
+ * we need to call this function before we start to use ftpWrapper
+ * sets the current handler
+* */
 function init(handler_ref) {
   handler = handler_ref;
   var status = action.idle;
@@ -43,6 +60,8 @@ function make_operations(list){
 * We attach an event handler function for the event 'ready'
 * this event will be triggered when we are connected to
 * ftp.
+*
+* It will perform any of the actions defined earlier ( idle, push, fetch, pull )
 */
 c.on('ready', function() {
 
@@ -119,8 +138,12 @@ c.on('error', function() {
 
 
 
-// exec
-// connect to localhost:21 as mcloud
+/*
+*
+* ftp main functions
+*
+* execs an action passed by parameter
+*/ 
 function exec(action){
 
   status = action;
