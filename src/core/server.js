@@ -28,14 +28,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-var schedule = require('node-schedule');
-var time = {};
-time.hour = 22;
-time.minute = 0;
-schedule.scheduleJob(time, function(){
-  console.log("son las "+ time.hour+":"+time.minute);
-});
-
 const COLUMNS = [
   'carbohydrate_g',
   'protein_g',
@@ -65,7 +57,7 @@ app.post('/api/form', (req, res) => {
     petition_handler.add_petition((req.body));
     
     console.log("generando peticion...");
-    //ftpw.exec(ftpw.action.push);
+    ftpw.exec(ftpw.action.push);
     return true;
 });
 

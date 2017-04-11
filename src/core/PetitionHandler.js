@@ -4,11 +4,18 @@ var archiver = require('archiver');
 var tools = require('./utils');
 var events = require('events');
 var _model = require('./Data');
+const decompress = require('decompress');
 
 var _sys = tools.module;
 
 
-
+var schedule = require('node-schedule');
+var time = {};
+time.hour = 22;
+time.minute = 0;
+schedule.scheduleJob(time, function(){
+  console.log("son las "+ time.hour+":"+time.minute);
+});
 
 /* Constructor
 * Create a new handler object
@@ -74,6 +81,7 @@ PH.prototype.reset = function(){
   this._i = 0;
 };
 
+
     //tools.generateTimeId();
     //var id = "petition_example"+this._i;
 PH.prototype.add_petition= function(data){
@@ -92,6 +100,7 @@ PH.prototype.add_petition= function(data){
 
 // private functions
 /**************************************************************************/
+//this function create a package and enqueue
 function create_package(self){
 
 
@@ -145,15 +154,41 @@ self.data.do(_model.op.insert,{}, {ready: false}, self.emitter);
 
 }
 
+//receive and decompress a package 
+function receive_package(self){
+  console.log("ncnsldibclisad");
+  var pull_folder = './pull/';
+  fs.readdir(pull_folder, (err, files) => {
+    files.forEach(file => {
+      decompress(pull_folder+file, pull_folder+'dist_'+file.split("_")[0]).then(files_decompress => {
+        files_decompress.forEach(file_decompress => {
+          console.log(file_decompress.path);
+          var type = file_decompress.path.split("_")[0];
+          console.log(type);
+          var name_search = file_decompress.path.split("_")[1].split(".")[0];
+          var json = require(pull_folder+'dist_'+file.split("_")[0]+"/"+file_decompress.path);
+          var json_insert = {};
+          json_insert["name"] = name_search;
+          json_insert["data"] = json;
+          self.data.do(_model.op.insert,{}, json_insert, self.emitter, 1);
+        });
+      });
+      //console.log(file);
+    });
+  });
+  
+}
+
 
 
 /* Usage example: */
-/*
-var ph = new PH(8);
 
+//var ph = new PH(8);
+
+/*
 var sleep = require('sleep');
 for (var i = 0, len = 24; i < len; i++){
-    sleep.sleep(1);
+    
     var object = {
       "nombre": "hijouta"+i       
     };
@@ -162,3 +197,4 @@ for (var i = 0, len = 24; i < len; i++){
 
   }
   */
+
