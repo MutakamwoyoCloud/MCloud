@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.parse import urlencode
 import builtins
-
+import goslate
 ABECEDARIO='abcdefghijkmnopqrstuvwxyz'
 class Post(Item):
     url = Field()
@@ -20,6 +20,8 @@ class Post(Item):
         soup = BeautifulSoup(urlopen(url))
         div = soup.findAll("div", { "class" : "left" })
         title = str(self['url'][0]).split('/')
+        gs = goslate.Goslate()
+        div = gs.translate(str(div), 'fr')
         f = open(title[1] +".html", 'w')
         f.write("<!DOCTYPE html>\
             <html>\
@@ -27,7 +29,7 @@ class Post(Item):
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\
             </head>\
             <body>")
-        f.write(str(div))
+        f.write(div)
         f.write("</body>\
             </html>")
         f.close()
