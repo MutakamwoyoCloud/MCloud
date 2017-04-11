@@ -8,7 +8,6 @@ const decompress = require('decompress');
 
 var _sys = tools.module;
 
-
 var schedule = require('node-schedule');
 var time = {};
 time.hour = 22;
@@ -93,8 +92,14 @@ PH.prototype.add_petition= function(data){
   if (this._i == this._package_size){
     create_package(this);
   }
-  
+};
 
+PH.prototype.search= function(callback, data, type){
+  this.emitter.on('findSomeone', function(dataFind){
+    callback(dataFind);
+  });
+  if(type == "wiki")
+    this.data.do(_model.content.getSome,{}, data, this.emitter, 1);
 };
 
 
@@ -156,7 +161,6 @@ self.data.do(_model.op.insert,{}, {ready: false}, self.emitter);
 
 //receive and decompress a package 
 function receive_package(self){
-  console.log("ncnsldibclisad");
   var pull_folder = './pull/';
   fs.readdir(pull_folder, (err, files) => {
     files.forEach(file => {
@@ -168,7 +172,7 @@ function receive_package(self){
           var name_search = file_decompress.path.split("_")[1].split(".")[0];
           var json = require(pull_folder+'dist_'+file.split("_")[0]+"/"+file_decompress.path);
           var json_insert = {};
-          json_insert["name"] = name_search;
+          json_insert["name"] = json["name"];
           json_insert["data"] = json;
           self.data.do(_model.op.insert,{}, json_insert, self.emitter, 1);
         });

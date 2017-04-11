@@ -10,15 +10,7 @@
     var request;
     var reqPath = path ? path : resource.toLowerCase();
     var list = "";
-    if(Array.isArray(params.listData)){
-      $.each(params.listData, function(){
-        list += this +"+";
-      });
-      list = list.slice(0,-1);
-      reqPath += "?data="+list;
-    }
-    else
-      reqPath += "?data="+params.listData;
+    reqPath += "?data="+params.data+"&type="+params.type;
 
     $.ajax({
         url: "/api/"+reqPath,

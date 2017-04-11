@@ -58,15 +58,17 @@ export default class Peticiones extends Component {
     var that = this;
     var params = {};
     params.success = function(request,response){
-      that.table = response;
+      console.log(response);
+      /*that.table = response;
       that.render();
-      that.forceUpdate();
+      that.forceUpdate();*/
     }
     params.error = function(response){
       console.log(response);
     }
-    params.listData=["hash","browns"];
-    CommonActions.list(params, "food");
+    params.data = "ingles";
+    params.type = "wiki",
+    CommonActions.list(params, "search");
   }
 
 

@@ -27,32 +27,6 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 }
 
-
-const COLUMNS = [
-  'carbohydrate_g',
-  'protein_g',
-  'fa_sat_g',
-  'fa_mono_g',
-  'fa_poly_g',
-  'kcal',
-  'description',
-];
-
-app.get('/api/petition', (req, res) => {
-
-  var petition_hander = new ph(1);
-
-  for (var i = 0, len = 1; i < len; i++){
-    var prueba = "prueba";
-    petition_hander.add_petition(prueba);
-
-  }
-
-  ftpw.exec(ftpw.action.push);
-
-
-});
-
 app.post('/api/form', (req, res) => {
     petition_handler.add_petition((req.body));
     
@@ -61,27 +35,21 @@ app.post('/api/form', (req, res) => {
     return true;
 });
 
-
-
-app.get('/api/food', (req, res) => {
+app.get('/api/search', (req, res) => {
   const param = req.query.data;
+  const type = req.query.type;
 
   if (!param) {
     res.json({
-      error: 'Missing required parameter `q`',
+      error: 'Missing required parameter `data`',
     });
     return;
   }
-
-  // WARNING: Not for production use! The following statement
-  // is not protected against SQL injections.
-  const r = db.exec(`
-    select ${COLUMNS.join(', ')} from entries
-    where description like '%${param}%'
-    limit 100
-  `);
-
-  if (r[0]) {
+  var json = petition_handler.search(function(dataRes){
+    console.log(dataRes);
+    return res.json(dataRes);
+  },param, type);
+  /*if (r[0]) {
     res.json(
       r[0].values.map((entry) => {
         const e = {};
@@ -101,7 +69,7 @@ app.get('/api/food', (req, res) => {
     );
   } else {
     res.json([]);
-  }
+  }*/
 });
 
 
