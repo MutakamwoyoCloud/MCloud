@@ -68,15 +68,10 @@ var content = {
                 });
     },
     getSome : function(db, query, data, type, emitter){
-        var dataList = [];
         var data_reg = new RegExp(".*"+data+".*");
-        console.log(data_reg);
-        db.collection(type).find({ name : /.*ingles.*/}).forEach(function(item, err) {
-            console.log(item);
-            dataList.push(item);
+        db.collection(type).find({ name : /.*ingles.*/}).toArray(function(err, results) {
+            emitter.emit('findSomeone', results);
         });
-        //ES ASINCRONO
-        emitter.emit('findSomeone', dataList);
     },
     get : function(db, query, data, type, emitter){
         db.collection(type).findOne(query, function(err, doc){
