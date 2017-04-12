@@ -7,11 +7,14 @@ Este es un archivo temporal
 import goslate
 import requests
 from bs4 import BeautifulSoup
+ABECEDARIO='abcdefghijkmnopqrstuvwxyz'
 url = "http://www.vademecum.es"
 entrada = "/enfermedades-"
 def enfermedades():
-    
-    req = requests.get(url+entrada+"a_1")
+    f = open("config.txt", 'r')
+    num = int(f.read())
+    f.close()        
+    req = requests.get(url+entrada+ABECEDARIO[num]+"_1")
     html = BeautifulSoup(req.text, "html.parser")
     ref = html.find('ul', {'class': 'no-bullet'})
     entradas = ref.find_all('a')
@@ -22,3 +25,4 @@ def enfermedades():
         f = open(i +".html", 'w')
         f.write(pagina)
         f.close()
+enfermedades()
