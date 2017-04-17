@@ -29,9 +29,9 @@ class TableResult extends Component {
   
   render(){
     this.rows = this.props.rows;
-    var numCols = 4;
+    var numCols = 2;
     var length = 10;
-    var width = screen.width - 100;
+    var width = screen.width - 400;
     var that = this;
     if(this.rows){
       var rows = Object.keys(this.rows).map(function (key) { return that.rows[key]; });
@@ -46,17 +46,7 @@ class TableResult extends Component {
           headerHeight={50}>
           <Column
             header={<Cell>Description</Cell>}
-            cell={<TextCell data={rows} col="description" />}
-            width={width/numCols}
-          />
-          <Column
-            header={<Cell>G</Cell>}
-            cell={<TextCell data={rows} col="fat_g" />} 
-            width={width/numCols}
-          />
-          <Column
-            header={<Cell>Kcal</Cell>}
-            cell={<TextCell data={rows} col="kcal" />}
+            cell={<TextCell data={rows} col="name" />}
             width={width/numCols}
           />
           <Column

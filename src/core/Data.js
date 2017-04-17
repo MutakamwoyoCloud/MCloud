@@ -69,13 +69,12 @@ var content = {
     },
     getSome : function(db, query, data, type, emitter){
         var data_reg = new RegExp(".*"+data+".*");
-        db.collection(type).find({ name : /.*ingles.*/}).toArray(function(err, results) {
+        db.collection(type).find({ name : data_reg}).toArray(function(err, results) {
             emitter.emit('findSomeone', results);
         });
     },
     get : function(db, query, data, type, emitter){
         db.collection(type).findOne(query, function(err, doc){
-            console.log(doc);
             emitter.emit('newPackage', doc._id);
         });        
     }

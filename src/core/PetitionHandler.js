@@ -95,8 +95,11 @@ PH.prototype.add_petition= function(data){
 };
 
 PH.prototype.search= function(callback, data, type){
-  this.emitter.on('findSomeone', function(dataFind){
-    callback(dataFind);
+  this.emitter.once('findSomeone', function(dataFind){
+    if(dataFind)
+      callback(dataFind);
+    else
+      callback({});
   });
   if(type == "wiki")
     this.data.do(_model.content.getSome,{}, data, this.emitter, 1);
@@ -166,9 +169,7 @@ function receive_package(self){
     files.forEach(file => {
       decompress(pull_folder+file, pull_folder+'dist_'+file.split("_")[0]).then(files_decompress => {
         files_decompress.forEach(file_decompress => {
-          console.log(file_decompress.path);
           var type = file_decompress.path.split("_")[0];
-          console.log(type);
           var name_search = file_decompress.path.split("_")[1].split(".")[0];
           var json = require(pull_folder+'dist_'+file.split("_")[0]+"/"+file_decompress.path);
           var json_insert = {};
