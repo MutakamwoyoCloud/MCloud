@@ -3,10 +3,6 @@ const fs = require('fs');
 const sqlite = require('sql.js');
 const bodyParser = require("body-parser");
 
-const filebuffer = fs.readFileSync('db/usda-nnd.sqlite3');
-
-const db = new sqlite.Database(filebuffer);
-
 const app = express();
 
 var ph = require('./PetitionHandler');

@@ -5,6 +5,7 @@ var Row = require('react-foundation').Row;
 var Column = require('react-foundation').Column;
 var Button = require('react-foundation').Button;
 var CommonActions = require('./utils/CommonActions');
+var tr = require('../../translate.js');
 
 var $ = require('jquery');
 
@@ -82,14 +83,14 @@ export default class Peticiones extends Component {
             <label className="texto_principal_peticiones">{this.name}</label>
           </Column>
           <Column small={2} large={4}>
-            <Button type="submit">Atras</Button>
+            <Button type="submit">{tr.translated("fr","Atras")}</Button>
           </Column>
         </Row>
         </form>
         <Row isColumn>
           <div className="search">
             <fieldset>
-              <legend>Nueva Peticion</legend>
+              <legend>{tr.translated("fr","Nueva Peticion")}</legend>
               <NameForm Change={this.handleChange} solicitaDatos={this.solicitaDatos} that={this.thisPrincipal}/>
             </fieldset>
           </div>

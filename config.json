@@ -1,0 +1,22 @@
+{
+	//PETITION HANDLER
+	"startTime" : {
+		"hour" : 20,
+		"minute" : 00
+	},
+	"endTime" : {
+		"hour" : 4,
+		"minute" : 00
+	},
+	"numberPetitions" : 10,
+	//FTP
+	"user" : "mcloud",
+	"password" : "mcloud",
+	"ipMcloud" : "localhost",
+	"portMcloud" : 21,
+	//FOLDERS
+	"folderSend" : "received/",
+	"fetchFolder" : "MCloud/inet_side/out/",
+	"pullFolder" : "./src/core/pull/",
+	"pushFolder" : "./src/core/push/"
+}

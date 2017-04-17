@@ -6,6 +6,7 @@ var Row = require('react-foundation').Row;
 var Column = require('react-foundation').Column;
 var Sizes = require('react-foundation').Sizes;
 var Button = require('react-foundation').Button;
+var tr = require('../../translate.js');
 
 class NameForm extends Component {
   constructor(props) {
@@ -32,17 +33,13 @@ class NameForm extends Component {
        <form onSubmit={this.handleSubmit}>
         <Row className="search">
           <Column small={10} large={8}>
-             search: <input defaultValue='introduce la busqueda' onChange={this.props.Change} ref="search" type="text"/>
+             search: <input placeholder= {tr.translated("fr","introduce la busqueda")} onChange={this.props.Change} ref="search" type="text"/>
           </Column>
         </Row>
         <Row className="search">
-          <Column small={5} large={6}>
-            <label>Escoger un dia determinado (por defecto: esta noche)</label>
-              <input ref="date" type="Date"/>
-          </Column>
           <Column small={5} large={3}>
-              <label>Numero de coincidencias</label>
-              <input defaultValue='3' ref="number" type="number"/>
+              <label>{tr.translated("fr","Numero de coincidencias")}</label>
+              <input placeholder='3' ref="number" type="number"/>
           </Column>
           <Column small={2} large={3}>
              <Button type="submit"><Send size={Sizes.small} /></Button>
