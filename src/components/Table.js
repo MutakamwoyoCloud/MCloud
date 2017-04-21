@@ -46,12 +46,12 @@ class TableResult extends Component {
           height={50*(length+1)}
           headerHeight={50}>
           <Column
-            header={<Cell>{tr.translated("fr","Description")}</Cell>}
+            header={<Cell>{"Description"}</Cell>}
             cell={<TextCell data={rows} col="name" />}
             width={width/numCols}
           />
           <Column
-            header={<Cell>{tr.translated("fr","leer")}</Cell>}
+            header={<Cell>{"leer"}</Cell>}
             cell={({rowIndex, ...props}) => (
               <Cell {...props}>
                 <form id={rowIndex} onSubmit={this.handleSubmit}>

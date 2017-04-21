@@ -33,12 +33,12 @@ class NameForm extends Component {
        <form onSubmit={this.handleSubmit}>
         <Row className="search">
           <Column small={10} large={8}>
-             search: <input placeholder= {tr.translated("fr","introduce la busqueda")} onChange={this.props.Change} ref="search" type="text"/>
+             search: <input placeholder= {"introduce la busqueda"} onChange={this.props.Change} ref="search" type="text"/>
           </Column>
         </Row>
         <Row className="search">
           <Column small={5} large={3}>
-              <label>{tr.translated("fr","Numero de coincidencias")}</label>
+              <label>{"Numero de coincidencias"}</label>
               <input placeholder='3' ref="number" type="number"/>
           </Column>
           <Column small={2} large={3}>

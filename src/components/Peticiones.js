@@ -83,14 +83,14 @@ export default class Peticiones extends Component {
             <label className="texto_principal_peticiones">{this.name}</label>
           </Column>
           <Column small={2} large={4}>
-            <Button type="submit">{tr.translated("fr","Atras")}</Button>
+            <Button type="submit">{"Atras"}</Button>
           </Column>
         </Row>
         </form>
         <Row isColumn>
           <div className="search">
             <fieldset>
-              <legend>{tr.translated("fr","Nueva Peticion")}</legend>
+              <legend>{"Nueva Peticion"}</legend>
               <NameForm Change={this.handleChange} solicitaDatos={this.solicitaDatos} that={this.thisPrincipal}/>
             </fieldset>
           </div>
