@@ -6,15 +6,10 @@ var events = require('events');
 var _model = require('./Data');
 const decompress = require('decompress');
 
+var schedule = require('node-schedule');
 var _sys = tools.module;
 
-var schedule = require('node-schedule');
-var time = {};
-time.hour = 22;
-time.minute = 0;
-schedule.scheduleJob(time, function(){
-  console.log("son las "+ time.hour+":"+time.minute);
-});
+var ftpw = require('./FTPwrapper');
 
 /* Constructor
 * Create a new handler object
@@ -106,13 +101,24 @@ PH.prototype.search= function(callback, data, type){
 };
 
 
-// private functions
+// private
 /**************************************************************************/
+
+var time = {};
+
+
+time.hour = 11;
+time.minute = 57;
+
+schedule.scheduleJob(time, function(){
+  console.log("son las "+ time.hour+":"+time.minute);
+  ftpw.exec(ftpw.action.push);
+});
+
 //this function create a package and enqueue
 function create_package(self){
 
 
-  
   self.emitter.on('newPackage', function(id){
 
     var archive = archiver('tar', {
@@ -140,9 +146,6 @@ function create_package(self){
     self.enqueue(id);
     // create a file to stream archive data to.
 
-      
-      
-      
 
     //we create the first data entry
     //archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
@@ -152,8 +155,6 @@ function create_package(self){
     for (var i = 0, len = self._petitions.length; i < len; i++){
       archive.append(JSON.stringify(self._petitions[i]), {name: i+'.json'});
     }
-    
-    
     archive.finalize();
     self.reset();
   });
@@ -181,7 +182,6 @@ function receive_package(self){
       //console.log(file);
     });
   });
-  
 }
 
 
@@ -193,7 +193,6 @@ function receive_package(self){
 /*
 var sleep = require('sleep');
 for (var i = 0, len = 24; i < len; i++){
-    
     var object = {
       "nombre": "hijouta"+i       
     };

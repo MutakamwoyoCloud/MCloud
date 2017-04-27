@@ -72,14 +72,12 @@ c.on('ready', function() {
                   break;
 
               case action.push:
-              
                 fs.readdir(pushFolder, (err, files) => {
                   files.forEach(file => {
                     console.log(file);
                     c.put(pushFolder+file, "MCloud/inet_side/received/"+file, function(err) {
                       if (err) //throwable -> throw err
                         throw err;
-                      
                       c.end();
                     });
                   });//foreach
@@ -90,15 +88,12 @@ c.on('ready', function() {
               case  action.pull:
 
                   if (handler){
-                    
                       var type ="wiki";
 
-                
                       handler.emitter.on('pull', function(item){
 
                         if (item.ready){
                           var name = item._id+"_"+type+"_out.tar.gz";
-                          
 
                           c.get(fetchFolder+name , function(err, stream) {
                             if (err) throw err;
@@ -106,13 +101,10 @@ c.on('ready', function() {
                             stream.pipe(fs.createWriteStream(pullFolder+name));
                           });
                         }
-                        
                       });
-           
                       handler.data.do(content.getAll, {}, {}, handler.emitter);
 
                     }
-                    
                   break;
 
               case action.fetch:
