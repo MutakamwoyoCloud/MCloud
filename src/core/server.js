@@ -1,6 +1,5 @@
 const express = require('express');
 const fs = require('fs');
-const sqlite = require('sql.js');
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -25,7 +24,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.post('/api/form', (req, res) => {
     petition_handler.add_petition((req.body));
-    
     console.log("generando peticion...");
     ftpw.exec(ftpw.action.push);
     return true;
