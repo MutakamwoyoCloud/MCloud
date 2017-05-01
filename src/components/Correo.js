@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 require('react-foundation');
 import Email from './Email';
 import EmailList from './EmailList';
+import NewEmail from './NewEmail';
 import '../App.css';
 
 var Button = require('react-foundation').Button;
@@ -64,9 +65,7 @@ export default class Correo extends Component{
     var new_email = this.state.new_email;
     var selected_email;
     if(new_email){
-      selected_email = <div>
-                          <h1>soy un email nuevo</h1>
-                        </div>
+      selected_email = <NewEmail/>
     }
     else{
       if (email_id) {

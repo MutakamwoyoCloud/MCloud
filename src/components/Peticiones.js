@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import NameForm from './NameForm';
 import Table from './Table';
-var Row = require('react-foundation').Row;
+import { Row, Col } from 'react-bootstrap';
+
+//var Row = require('react-foundation').Row;
 var Column = require('react-foundation').Column;
 var Button = require('react-foundation').Button;
 var CommonActions = require('./utils/CommonActions');
@@ -76,12 +78,12 @@ export default class Peticiones extends Component {
       <div>
         <form onSubmit={this.handleSubmit}>
         <Row>
-          <Column small={10} large={8}>
+          <Col sm={10} large={8}>
             <label className="texto_principal_peticiones">{this.name}</label>
-          </Column>
-          <Column small={2} large={4}>
+          </Col>
+          <Col sm={2} large={4}>
             <Button type="submit">Atras</Button>
-          </Column>
+          </Col>
         </Row>
         </form>
         <Row isColumn>
