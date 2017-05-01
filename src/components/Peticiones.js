@@ -7,6 +7,7 @@ import { Row, Col } from 'react-bootstrap';
 var Column = require('react-foundation').Column;
 var Button = require('react-foundation').Button;
 var CommonActions = require('./utils/CommonActions');
+var tr = require('../../translate.js');
 
 var $ = require('jquery');
 
@@ -60,6 +61,7 @@ export default class Peticiones extends Component {
     var that = this;
     var params = {};
     params.success = function(request,response){
+      //console.log(response);
       that.table = response;
       that.render();
       that.forceUpdate();
@@ -67,19 +69,21 @@ export default class Peticiones extends Component {
     params.error = function(response){
       console.log(response);
     }
-    params.listData=["hash","browns"];
-    CommonActions.list(params, "food");
+    params.data = event.target.value;
+    params.type = "wiki";
+    if(params.data != "")
+      CommonActions.list(params, "search");
   }
 
 
   render() {
-    console.log(this.table);
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
         <Row>
           <Col sm={10} large={8}>
             <label className="texto_principal_peticiones">{this.name}</label>
+
           </Col>
           <Col sm={2} large={4}>
             <Button type="submit">Atras</Button>
@@ -89,7 +93,7 @@ export default class Peticiones extends Component {
         <Row isColumn>
           <div className="search">
             <fieldset>
-              <legend>Nueva Peticion</legend>
+              <legend>{"Nueva Peticion"}</legend>
               <NameForm Change={this.handleChange} solicitaDatos={this.solicitaDatos} that={this.thisPrincipal}/>
             </fieldset>
           </div>

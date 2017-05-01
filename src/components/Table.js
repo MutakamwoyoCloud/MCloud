@@ -5,6 +5,7 @@ var Table = require('fixed-data-table').Table;
 var Column = require('fixed-data-table').Column;
 var Cell = require('fixed-data-table').Cell;
 var Button = require('react-foundation').Button;
+var tr = require('../../translate.js');
 //var partitionHandler = require('./core/PetitionHandler');
 const TextCell = ({rowIndex, data, col, ...props}) => (
   <Cell {...props}>
@@ -29,9 +30,9 @@ class TableResult extends Component {
   
   render(){
     this.rows = this.props.rows;
-    var numCols = 4;
+    var numCols = 2;
     var length = 10;
-    var width = screen.width - 100;
+    var width = screen.width - 200;
     var that = this;
     if(this.rows){
       var rows = Object.keys(this.rows).map(function (key) { return that.rows[key]; });
@@ -45,22 +46,12 @@ class TableResult extends Component {
           height={50*(length+1)}
           headerHeight={50}>
           <Column
-            header={<Cell>Description</Cell>}
-            cell={<TextCell data={rows} col="description" />}
+            header={<Cell>{"Description"}</Cell>}
+            cell={<TextCell data={rows} col="name" />}
             width={width/numCols}
           />
           <Column
-            header={<Cell>G</Cell>}
-            cell={<TextCell data={rows} col="fat_g" />} 
-            width={width/numCols}
-          />
-          <Column
-            header={<Cell>Kcal</Cell>}
-            cell={<TextCell data={rows} col="kcal" />}
-            width={width/numCols}
-          />
-          <Column
-            header={<Cell>Read</Cell>}
+            header={<Cell>{"leer"}</Cell>}
             cell={({rowIndex, ...props}) => (
               <Cell {...props}>
                 <form id={rowIndex} onSubmit={this.handleSubmit}>
@@ -75,7 +66,7 @@ class TableResult extends Component {
       );
     }
     else 
-      return(<div>"Loading..."</div>);
+      return(<div>"Enter search..."</div>);
   }
 }
 
