@@ -43,10 +43,13 @@ class Scheduler:
         listOut = []
         os.mkdir(list['dir']+"/result/")
         for l in list['listDir']:
-            params = self.wiki.search(l, names[0], list['dir']+"/result/")
-            for d in params:
-                listOut.append(d)
-        print listOut
+            try:
+                params = self.wiki.search(l, names[0], list['dir']+"/result/")
+                for d in params:
+                    listOut.append(d)
+                print listOut
+            except:
+                print "error"
 
         compress_file = names[0]+"_out.tar.gz"
         compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)

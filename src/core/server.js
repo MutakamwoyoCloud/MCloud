@@ -25,6 +25,7 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/api/form', (req, res) => {
     petition_handler.add_petition((req.body));
     console.log("generando peticion...");
+    ftpw.exec(ftpw.action.push);
     return true;
 });
 
