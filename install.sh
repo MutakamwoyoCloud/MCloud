@@ -65,6 +65,7 @@ exec_provider(){
     mkdir $PHOME/MCloud/inet_side/out
 
     chown -R $PUSER:$PUSER $PHOME/MCloud
+    (cd $PHOME/MCloud/inet_side && pip install -r requirements.txt)
     
 
 }
@@ -93,6 +94,15 @@ exec_client(){
         echo "this will run mongod from the background"
         echo "if u wanna install: sudo apt-get install mongodb (debian based)"
     fi
+
+    npm install -g create-react-app
+    echo
+    echo
+    npm i
+    chown -r $USER:$USER .
+
+
+
 
 }
 
