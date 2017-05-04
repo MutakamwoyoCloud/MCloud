@@ -99,6 +99,17 @@ PH.prototype.search= function(callback, data, type){
     this.data.do(_model.content.getSome,{}, data, this.emitter, 1);
 };
 
+PH.prototype.searchOne= function(callback, data, type){
+  this.emitter.once('findSomeone', function(dataFind){
+    if(dataFind)
+      callback(dataFind);
+    else
+      callback({});
+  });
+  if(type == "wiki")
+    this.data.do(_model.content.get,{}, data, this.emitter, 1);
+};
+
 
 // private
 /**************************************************************************/

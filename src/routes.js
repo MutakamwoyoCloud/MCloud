@@ -11,6 +11,7 @@ import Peticiones from './components/Peticiones';
 import Correo from './components/Correo';
 import Vademecum from './components/Vademecum';
 import Youtube from './components/Youtube';
+import Result from './components/Result';
 //import PrincipalAux from './PrincipalAux';
 //import {Correo} from './components/Correo';
 
@@ -19,10 +20,11 @@ const Routes = (props) => (
   //const Routes = () =>(
 	  <Router history={browserHistory}>
 	    <Route path="/" component={Principal} />
-	    <Route path="/peticiones" component={Peticiones} />
-	    <Route path="/vademecum" component={Vademecum} />
-	    <Route path="/youtube" component={Youtube} />
-	    <Route path="/correo" component={Correo} />
+	    <Route path="/peticiones" name='Wikipedia' component={Peticiones} />
+	    <Route path="/vademecum" name='Vademecum' component={Vademecum} />
+	    <Route path="/youtube" name='Youtube' component={Youtube} />
+	    <Route path="/correo" name='Correo' component={Correo} />
+	    <Route path="/result" name='Resultado' component={Result} />
 	    <Route path="*" component={NotFound} />
   	  </Router>
   

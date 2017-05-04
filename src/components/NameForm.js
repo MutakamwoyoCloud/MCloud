@@ -33,7 +33,7 @@ class NameForm extends Component {
        <form onSubmit={this.handleSubmit}>
         <Row className="search">
           <Column small={10} large={8}>
-             search: <input placeholder= {"introduce la busqueda"} onChange={this.props.Change} ref="search" type="text"/>
+            <label>search:</label> <input placeholder= {"introduce la busqueda"} onChange={this.props.Change} ref="search" type="text"/>
           </Column>
         </Row>
         <Row className="search">

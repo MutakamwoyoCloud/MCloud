@@ -45,6 +45,22 @@ app.post('/api/form', (req, res) => {
     return true;
 });
 
+app.get('/api/getData', (req, res, next) => {
+  const name = req.query.data;
+  const type= req.query.type;
+
+  if (!name) {
+    res.json({
+      error: 'Missing required parameter `data`',
+    });
+    return;
+  }
+  petition_handler.search(function(dataRes){
+    console.log(dataRes);
+    res.send(dataRes);
+  },name, type);
+});
+
 app.get('/api/search', (req, res, next) => {
   const param = req.query.data;
   const type = req.query.type;

@@ -16,7 +16,8 @@ require('react-foundation');
 export default class Peticiones extends Component {
   constructor(props){
     super(props);
-    this.name = props.name;
+    console.log(props);
+    this.name = props.route.name;
     this.handleChange = this.handleChange.bind(this);
     this.table = undefined;
     this.thisPrincipal = props.AppThat;
@@ -82,18 +83,14 @@ export default class Peticiones extends Component {
         <form onSubmit={this.handleSubmit}>
         <Row>
           <Col sm={10} large={8}>
-            <label className="texto_principal_peticiones">{this.name}</label>
-
-          </Col>
-          <Col sm={2} large={4}>
-            <Button type="submit">Atras</Button>
+            <h1 className="texto_principal_peticiones">{this.name}</h1>
           </Col>
         </Row>
         </form>
-        <Row isColumn>
+        <Row>
           <div className="search">
             <fieldset>
-              <legend>{"Nueva Peticion"}</legend>
+              <legend><h3>{"Nueva Peticion"}</h3></legend>
               <NameForm Change={this.handleChange} solicitaDatos={this.solicitaDatos} that={this.thisPrincipal}/>
             </fieldset>
           </div>

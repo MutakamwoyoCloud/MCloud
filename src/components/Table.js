@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
+import { browserHistory } from 'react-router';
 //import {Table, Column, Cell} from 'fixed-data-table';
-import Read from '../../node_modules/react-icons/lib/md/chrome-reader-mode';
 var Table = require('fixed-data-table').Table;
 var Column = require('fixed-data-table').Column;
 var Cell = require('fixed-data-table').Cell;
 var Button = require('react-foundation').Button;
 var tr = require('../../translate.js');
+
+var CommonActions = require('./utils/CommonActions');
 //var partitionHandler = require('./core/PetitionHandler');
 const TextCell = ({rowIndex, data, col, ...props}) => (
   <Cell {...props}>
@@ -18,13 +20,25 @@ class TableResult extends Component {
 // Render your table
   constructor(props) {
     super(props);
-    console.log("entro");
     this.rows = this.props.rows;
-   
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
-    alert("Pulsada fila: "+event.target["id"]);
+    var params = {};
+    params.success = function(request,response){
+      //console.log(response);
+      browserHistory.push({
+        pathname: '/result',
+        state: { data: response }
+      });
+    }
+    params.error = function(response){
+      console.log(response);
+    }
+    params.data = event.target['id'];
+    params.type = "wiki";
+    if(params.data != "")
+      CommonActions.list(params, "getData");
     event.preventDefault();
   }
   
@@ -53,11 +67,7 @@ class TableResult extends Component {
           <Column
             header={<Cell>{"leer"}</Cell>}
             cell={({rowIndex, ...props}) => (
-              <Cell {...props}>
-                <form id={rowIndex} onSubmit={this.handleSubmit}>
-                  <Button><Read /></Button>
-                </form>
-              </Cell>
+              <Button id={rows[rowIndex]['name']} onClick={this.handleSubmit}>Read</Button>
             )}
             width={width/numCols}
             align={'center'}

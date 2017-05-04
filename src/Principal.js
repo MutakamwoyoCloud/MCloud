@@ -44,7 +44,7 @@ class Principal extends Component {
       <div className="display">
         <Row>
         	<Column large={4} small={12}>
-        		<Link to="/peticiones"><Button> <WikipediaIcon id="Wikipedia" size={Sizes.LARGE} height = "large" width="large"/></Button></Link>
+        		<Link to="/peticiones"><Button> <WikipediaIcon id="Wikipedia" size={Sizes.LARGE} height="large" width="large"/></Button></Link>
         	</Column>
         	<Column large={4} small={12}>
         		<Link to="/vademecum"><Button id="Vademecum" color={Colors.SECONDARY} isExpanded><HospitalIcon id="Vademecum" size={Sizes.LARGE}/></Button></Link>
