@@ -9,10 +9,26 @@ var ftpw = require('./FTPwrapper');
 
 var tools = require('./utils');
 
-//In the future we would organize statics values such as Npetition, remote_ip, hour...
 var petition_handler = new ph(2);
 
-
+var schedule = require('node-schedule');
+var executeJobTime = undefined;
+var time = {};
+  time.hour = 22;
+  time.minute = 0;
+var timeFinish = {};
+  timeFinish.hour = 7;
+  timeFinish.minute = 0;
+schedule.scheduleJob(time, function(){
+  ftpw.exec(ftpw.action.push);
+  executeJobTime = setTimeout(function(){ 
+    ftpw.exec(ftpw.action.pull);
+  }, 1000*60*60);
+});
+schedule.scheduleJob(timeFinish, function(){
+  if(executeJobTime)
+    clearTimeout(executeJobTime);
+});
 
 app.set('port', (process.env.PORT || 3001));
 app.use(bodyParser.json());
@@ -25,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/api/form', (req, res) => {
     petition_handler.add_petition((req.body));
     console.log("generando peticion...");
-    ftpw.exec(ftpw.action.push);
+    //ftpw.exec(ftpw.action.push);
     return true;
 });
 

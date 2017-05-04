@@ -8,7 +8,6 @@ const decompress = require('decompress');
 
 var schedule = require('node-schedule');
 var _sys = tools.module;
-
 var ftpw = require('./FTPwrapper');
 
 /* Constructor
@@ -118,7 +117,6 @@ schedule.scheduleJob(time, function(){
 //this function create a package and enqueue
 function create_package(self){
 
-
   self.emitter.on('newPackage', function(id){
 
     var archive = archiver('tar', {
@@ -144,8 +142,6 @@ function create_package(self){
     archive.pipe(output);
 
     self.enqueue(id);
-    // create a file to stream archive data to.
-
 
     //we create the first data entry
     //archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
@@ -177,9 +173,10 @@ function receive_package(self){
           json_insert["name"] = json["name"];
           json_insert["data"] = json;
           self.data.do(_model.op.insert,{}, json_insert, self.emitter, 1);
+          fs.unlinkSync(pull_folder+'dist_'+file.split("_")[0]+"/"+file_decompress.path);
         });
+        fs.unlinkSync(pull_folder+file);
       });
-      //console.log(file);
     });
   });
 }

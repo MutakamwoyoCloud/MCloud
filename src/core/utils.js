@@ -4,7 +4,6 @@ var uuid = require('node-uuid');
 
 // enum used 4 module names
 
-
 module.exports={
     generateTimeId : function (){
         return uuid.v1();
