@@ -19,25 +19,27 @@ _Check [Wiki documentation](https://github.com/MutakamwoyoCloud/MCloud/wiki) if 
 
 ## Use (debian/ubuntu style)
 1. clone this repository
+```
     $ git clone https://github.com/MutakamwoyoCloud/MCloud.git
     $ cd Mcloud
-    $ sudo chmod +x install.sh
-    
-
+    $ sudo chmod +x install.sh    
+```
 ### Provider side (with internet)
 2. install the packages using provider option
 3. Make sure that you have ftp server installed and running (proftpd for example)
 3. execute watchdog daemon
+```
     $ sudo ./install.sh provider
     $ (sudo service proftpd start)
     $ su mcloud 
     $ (cd ~/MCloud/inet_side/mcloud_iside && python iside.py)
- 
+```
 ### Client side 
 2. install the packages using client option
 3. Make sure that you have mongod server installed with a storage location (whatever you prefer) and running
 4. execute the server
+```
     $ sudo ./install.sh client
     $ sudo nohup mongod &
     & npm start
-   
+```  
