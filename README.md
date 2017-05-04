@@ -5,6 +5,9 @@ Mutokamwoyo Cloud  volunteer project, Universidad Complutense de Madrid
     Node v7.0.0 (with npm)
     Python v3.0 (with pip)
     
+    Proftpd or other ftp server
+    Mongod (nosql database)
+    
 
 ## Contribute && manual installation
 1. fork this repository
@@ -14,7 +17,7 @@ Mutokamwoyo Cloud  volunteer project, Universidad Complutense de Madrid
 5. Go into folder: `cd MCloud`
 6. Install dependencies: `npm install`
 
-_Check [Wiki documentation](https://github.com/MutakamwoyoCloud/MCloud/wiki) if you want to know details about developmend and architecture._
+_Check [Spanish wiki documentation](https://github.com/MutakamwoyoCloud/MCloud/wiki) if you want to know details about developmend and architecture._
 
 
 ## Use (debian/ubuntu style)
