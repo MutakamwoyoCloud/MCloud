@@ -1,13 +1,17 @@
 import React, {Component} from 'react'
+import Peticiones from './Peticiones'
 
-class Youtube extends Component {
+export default class Youtube extends Component {
+  constructor(props){
+    super(props);
+    this.name = "Youtube";
+  }
   render() {
     return (
       <div>
-        <h1>Youtube</h1>    
+        <Peticiones name= {this.name}></Peticiones>    
       </div>
     )
   }
 }
 
-export default Youtube;

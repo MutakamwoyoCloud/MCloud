@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import Peticiones from './Peticiones'
 
-export default class Vademecum extends Component {
+
+export default class Wikipedia extends Component {
   constructor(props){
     super(props);
-    this.name = "Vademecum";
+    this.name = "Wikipedia";
   }
   render() {
     return (

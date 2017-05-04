@@ -19,46 +19,24 @@ class Principal extends Component {
 
 	constructor(){
     super();
-		this.handleClick = this.handleClick.bind(this);
-    this.state = {redirect: false, redirectPath: ' '};
   }
-
-
-  handleClick(event) {
-   /* var name = event.target.id;
-    alert(event.target.id);
-    ReactDOM.render(<App name={name}/>, document.getElementById('root'));*/
-    if(event.target.id == "Correo"){
-      this.setState({redirect: true});
-      this.setState({redirectPath:'/Correo'});
-    //  <Link to="/Peticiones" activeStyle={{ color: 'red' }}></Link>
-    //this.browserHistory.push("/Peticiones");
-   }
-  }
-
   render() {
-    if(this.state.redirect){
-      <Route exact path="/" render={() => <Link to= "/correo"></Link>} />
-    }
     return (
       <div className="display">
         <Row>
         	<Column large={4} small={12}>
-        		<Link to="/peticiones"><Button> <WikipediaIcon id="Wikipedia" size={Sizes.LARGE} height = "large" width="large"/></Button></Link>
+        		<Link to="/wikipedia"><Button id="Wikipedia" color={Colors.PRIMARY} isExpanded> <WikipediaIcon id="Wikipedia" size={Sizes.LARGE}/></Button></Link>
         	</Column>
         	<Column large={4} small={12}>
-        		<Link to="/vademecum"><Button id="Vademecum" color={Colors.SECONDARY} isExpanded><HospitalIcon id="Vademecum" size={Sizes.LARGE}/></Button></Link>
-        	</Column>
-        	<Column large={4} small={12}>
-        		<Link to="/youtube"><Button id="YouTube" color={Colors.SECONDARY} isExpanded><YouTubeIcon id="YouTube" size={Sizes.LARGE}/></Button></Link>
+        		<Link to="/vademecum"><Button id="Vademecum" color={Colors.SUCCESS} isExpanded><HospitalIcon id="Vademecum" size={Sizes.LARGE}/></Button></Link>
         	</Column>
         </Row>
         <Row>
-        	<Column large={6} small={12}>
+          <Column large={4} small={12}>
+            <Link to="/youtube"><Button id="YouTube" color={Colors.ALERT} isExpanded><YouTubeIcon id="YouTube" size={Sizes.LARGE}/></Button></Link>
+          </Column>
+        	<Column large={4} small={12}>
         		<Link to="/correo"><Button id="Correo" color={Colors.SECONDARY} isExpanded><EmailIcon id="Correo" size={Sizes.LARGE}/></Button></Link>
-        	</Column>
-        	<Column large={6} small={12}>
-        		<Button onClick={this.handleClick} color={Colors.SECONDARY} isExpanded><EmailIcon id="" size={Sizes.LARGE}/></Button>
         	</Column>
         </Row>
       </div>

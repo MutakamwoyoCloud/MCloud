@@ -11,6 +11,7 @@ import Peticiones from './components/Peticiones';
 import Correo from './components/Correo';
 import Vademecum from './components/Vademecum';
 import Youtube from './components/Youtube';
+import Wikipedia from './components/Wikipedia';
 //import PrincipalAux from './PrincipalAux';
 //import {Correo} from './components/Correo';
 
@@ -19,7 +20,7 @@ const Routes = (props) => (
   //const Routes = () =>(
 	  <Router history={browserHistory}>
 	    <Route path="/" component={Principal} />
-	    <Route path="/peticiones" component={Peticiones} />
+	    <Route path="/wikipedia" component={Wikipedia} />
 	    <Route path="/vademecum" component={Vademecum} />
 	    <Route path="/youtube" component={Youtube} />
 	    <Route path="/correo" component={Correo} />
