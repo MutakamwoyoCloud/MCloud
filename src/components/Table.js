@@ -9,11 +9,12 @@ var tr = require('../../translate.js');
 
 var CommonActions = require('./utils/CommonActions');
 //var partitionHandler = require('./core/PetitionHandler');
-const TextCell = ({rowIndex, data, col, ...props}) => (
+const TextCellName = ({rowIndex, data, col, col2, ...props}) => (
   <Cell {...props}>
-    {data[rowIndex][col].toString()}
+    {data[rowIndex][col][col2].toString()}
   </Cell>
 );
+
 
 // Table data as a list of array./
 class TableResult extends Component {
@@ -24,9 +25,9 @@ class TableResult extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
+    console.log(event.target['id']);
     var params = {};
     params.success = function(request,response){
-      //console.log(response);
       browserHistory.push({
         pathname: '/result',
         state: { data: response }
@@ -56,20 +57,23 @@ class TableResult extends Component {
         <Table
           rowHeight={50}
           rowsCount={length}
-          width={width}
+          width={1200}
           height={50*(length+1)}
           headerHeight={50}>
           <Column
             header={<Cell>{"Description"}</Cell>}
-            cell={<TextCell data={rows} col="name" />}
-            width={width/numCols}
+            cell={<TextCellName data={rows} col="data" col2="name"/>}
+            width={600}
+            fixed={true}
+            align={'center'}
           />
           <Column
             header={<Cell>{"leer"}</Cell>}
             cell={({rowIndex, ...props}) => (
-              <Button id={rows[rowIndex]['name']} onClick={this.handleSubmit}>Read</Button>
+              <Button id={rows[rowIndex]["name"]} onClick={this.handleSubmit}>Read</Button>
             )}
-            width={width/numCols}
+            width={600}
+            fixed={true}
             align={'center'}
           />
         </Table>

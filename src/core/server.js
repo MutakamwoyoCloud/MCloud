@@ -11,25 +11,6 @@ var tools = require('./utils');
 
 var petition_handler = new ph(2);
 
-var schedule = require('node-schedule');
-var executeJobTime = undefined;
-var time = {};
-  time.hour = 22;
-  time.minute = 0;
-var timeFinish = {};
-  timeFinish.hour = 7;
-  timeFinish.minute = 0;
-schedule.scheduleJob(time, function(){
-  ftpw.exec(ftpw.action.push);
-  executeJobTime = setTimeout(function(){ 
-    ftpw.exec(ftpw.action.pull);
-  }, 1000*60*60);
-});
-schedule.scheduleJob(timeFinish, function(){
-  if(executeJobTime)
-    clearTimeout(executeJobTime);
-});
-
 app.set('port', (process.env.PORT || 3001));
 app.use(bodyParser.json());
 
@@ -48,14 +29,14 @@ app.post('/api/form', (req, res) => {
 app.get('/api/getData', (req, res, next) => {
   const name = req.query.data;
   const type= req.query.type;
-
+  console.log(name);
   if (!name) {
     res.json({
       error: 'Missing required parameter `data`',
     });
     return;
   }
-  petition_handler.search(function(dataRes){
+  petition_handler.searchOne(function(dataRes){
     console.log(dataRes);
     res.send(dataRes);
   },name, type);

@@ -9,6 +9,7 @@ const decompress = require('decompress');
 var schedule = require('node-schedule');
 var _sys = tools.module;
 var ftpw = require('./FTPwrapper');
+var schedule = require('node-schedule');
 
 /* Constructor
 * Create a new handler object
@@ -20,6 +21,23 @@ var ftpw = require('./FTPwrapper');
 * 	13 % 6 = 1 Petition left, <======================================= we need to check
 * 	13 / 6 = 2 packages are being created and ready to upload 
 */
+var executeJobTime = undefined;
+var time = {};
+  time.hour = 22;
+  time.minute = 0;
+var timeFinish = {};
+  timeFinish.hour = 7;
+  timeFinish.minute = 0;
+schedule.scheduleJob(time, function(){
+  ftpw.exec(ftpw.action.push);
+  executeJobTime = setTimeout(function(){ 
+    ftpw.exec(ftpw.action.pull);
+  }, 1000*60*60);
+});
+schedule.scheduleJob(timeFinish, function(){
+  if(executeJobTime)
+    clearTimeout(executeJobTime);
+});
 
 var PH = module.exports = function(package_size){
 
@@ -100,7 +118,8 @@ PH.prototype.search= function(callback, data, type){
 };
 
 PH.prototype.searchOne= function(callback, data, type){
-  this.emitter.once('findSomeone', function(dataFind){
+  this.emitter.once('findOne', function(dataFind){
+    console.log(dataFind);
     if(dataFind)
       callback(dataFind);
     else
