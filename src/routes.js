@@ -12,6 +12,7 @@ import Correo from './components/Correo';
 import Vademecum from './components/Vademecum';
 import Youtube from './components/Youtube';
 import Result from './components/Result';
+import Test from './components/Test';
 //import PrincipalAux from './PrincipalAux';
 //import {Correo} from './components/Correo';
 
@@ -25,6 +26,7 @@ const Routes = (props) => (
 	    <Route path="/youtube" name='Youtube' component={Youtube} />
 	    <Route path="/correo" name='Correo' component={Correo} />
 	    <Route path="/result" name='Resultado' component={Result} />
+        <Route path="/test" name='test' component={Test}/>
 	    <Route path="*" component={NotFound} />
   	  </Router>
   
