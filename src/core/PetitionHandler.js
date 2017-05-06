@@ -168,15 +168,9 @@ function create_package(self){
       console.log('archiver has been finalized and the output file descriptor has closed.');
     });
 
-      // pipe archive data to the file
     archive.pipe(output);
 
-    self.enqueue(id);
-
-    //we create the first data entry
-    //archive.append(JSON.stringify(self._petitions[0]), {name: i+'.json'});
-
-    //self.data.do(_model.content.get, {ready: false}, self.emitter);
+    self.enqueue(id)
 
     for (var i = 0, len = self._petitions.length; i < len; i++){
       archive.append(JSON.stringify(self._petitions[i]), {name: i+'.json'});
@@ -210,22 +204,3 @@ function receive_package(self){
     });
   });
 }
-
-
-
-/* Usage example: */
-
-//var ph = new PH(8);
-
-/*
-var sleep = require('sleep');
-for (var i = 0, len = 24; i < len; i++){
-    var object = {
-      "nombre": "hijouta"+i       
-    };
-    console.log("procesando peticion \n");
-    ph.add_petition(object);
-
-  }
-  */
-

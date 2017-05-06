@@ -68,7 +68,6 @@ c.on('ready', function() {
   switch (Number(status)) {
 
               case action.idle:
-                  console.log("pana");
                   break;
 
               case action.push:
@@ -78,6 +77,7 @@ c.on('ready', function() {
                     c.put(pushFolder+file, "MCloud/inet_side/received/"+file, function(err) {
                       if (err) //throwable -> throw err
                         throw err;
+                      fs.unlinkSync(pushFolder+file);
                       c.end();
                     });
                   });//foreach
