@@ -51,7 +51,6 @@ class TableResult extends Component {
     var that = this;
     if(this.rows){
       var rows = Object.keys(this.rows).map(function (key) { return that.rows[key]; });
-      //var rows = this.rows;
       length = this.rows.length;
       return(
         <Table
