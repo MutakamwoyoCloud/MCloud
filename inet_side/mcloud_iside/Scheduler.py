@@ -40,6 +40,8 @@ class Scheduler:
         petition = self.dequeue()
         names = self.splitPath(petition)
         list = decompress(names[0], petition)
+        print petition;
+        os.remove(petition);
         listOut = []
         os.mkdir(list['dir']+"/result/")
         for l in list['listDir']:
@@ -48,7 +50,6 @@ class Scheduler:
                 for d in params:
                     listOut.append(d)
         print listOut
-    
 
         compress_file = names[0]+"_out.tar.gz"
         compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
