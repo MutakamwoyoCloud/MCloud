@@ -2,7 +2,7 @@
 from utils.utils import decompress
 from utils.utils import compress
 from wiki import Wiki
-import os, shutil
+import os, shutil, json
 priority = {
     "wiki":0,
     "vademecum":1,
@@ -20,12 +20,23 @@ class Scheduler:
         names = names[len(names)-1].split(".")
         return names
 
+    def remove_files(self, petition):
+        print petition
+        with open(petition) as f:
+            elem = f.readlines()
+        for e in elem:
+            os.remove("../out/"+e.strip()+"_out.tar.gz");
+        os.remove(petition);
+
     def enqueue(self, x):
-        print x
         name = self.splitPath(x)[0]
-        splitPetition = name.split("_")
-        typePetition = splitPetition[len(splitPetition)-1]
-        self.insertOrderListPetition(priority[typePetition], x)
+        if(name == "remove"):
+            print name
+            self.remove_files(x)
+        else:
+            splitPetition = name.split("_")
+            typePetition = splitPetition[len(splitPetition)-1]
+            self.insertOrderListPetition(priority[typePetition], x)
 
     def dequeue(self):
         try:
@@ -40,7 +51,6 @@ class Scheduler:
         petition = self.dequeue()
         names = self.splitPath(petition)
         list = decompress(names[0], petition)
-        print petition;
         os.remove(petition);
         listOut = []
         os.mkdir(list['dir']+"/result/")
