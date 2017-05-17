@@ -1,4 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
+var mongodb = require('mongodb');
+var ObjectId = require('mongodb').ObjectId;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
 var _sys = require('./utils').module;
@@ -30,17 +32,21 @@ var _Data = function(server){
 
 var operation = {
     insert: function(db,query, toInsert, type, emitter){
-
         db.collection(type).insert(toInsert, function(err, res){
-            console.log("se ha insertado correctamente "+res.ops[0]._id);
             emitter.emit('newPackage', res.ops[0]._id);
             
         });
     },
 
+    insertData: function(db,query, toInsert, type, emitter){
+        db.collection(type).insert(toInsert, function(err, res){
+            emitter.emit('pulled');
+        });
+    },
+
     update: function(db, query, toModify, type, emmiter){
         db.collection(type).findAndModify(
-            query, // query
+            {query}, // query
             [['_id','asc']],  // sort order
             {$set: toModify}, // replacement, replaces only the field "hi"
             {}, // options
@@ -52,6 +58,11 @@ var operation = {
                     console.dir(object);
                 }
         });
+    },
+
+    remove: function(db, query, toModify,type, emmiter){
+        console.log("remove:'"+query+"'")
+        db.collection(type).deleteOne({ "_id" : new mongodb.ObjectID(query) });
     }
 }
 

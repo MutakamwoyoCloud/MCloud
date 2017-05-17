@@ -10,6 +10,9 @@ var schedule = require('node-schedule');
 var _sys = tools.module;
 var ftpw = require('./FTPwrapper');
 var schedule = require('node-schedule');
+var mongodb = require('mongodb');
+
+const pullFolder = './src/core/pull/'
 
 /* Constructor
 * Create a new handler object
@@ -117,6 +120,16 @@ PH.prototype.search= function(callback, data, type){
     this.data.do(_model.content.getSome,{}, data, this.emitter, 1);
 };
 
+PH.prototype.pull= function(callback){
+  receive_package(this);
+};
+
+PH.prototype.fetch= function(){
+  ftpw.exec(ftpw.action.fetch);
+};
+
+  
+
 PH.prototype.searchOne= function(callback, data, type){
   this.emitter.once('findOne', function(dataFind){
     console.log(dataFind);
@@ -185,22 +198,45 @@ self.data.do(_model.op.insert,{}, {ready: false}, self.emitter);
 
 //receive and decompress a package 
 function receive_package(self){
-  var pull_folder = './pull/';
+  var pull_folder = pullFolder;
   fs.readdir(pull_folder, (err, files) => {
     files.forEach(file => {
       decompress(pull_folder+file, pull_folder+'dist_'+file.split("_")[0]).then(files_decompress => {
         files_decompress.forEach(file_decompress => {
           var type = file_decompress.path.split("_")[0];
           var name_search = file_decompress.path.split("_")[1].split(".")[0];
-          var json = require(pull_folder+'dist_'+file.split("_")[0]+"/"+file_decompress.path);
+          console.log(__dirname+'/pull/dist_'+file.split("_")[0]+"/"+file_decompress.path);
+          var json = require(__dirname+'/pull/dist_'+file.split("_")[0]+"/"+file_decompress.path);
           var json_insert = {};
           json_insert["name"] = json["name"];
           json_insert["data"] = json;
-          self.data.do(_model.op.insert,{}, json_insert, self.emitter, 1);
-          fs.unlinkSync(pull_folder+'dist_'+file.split("_")[0]+"/"+file_decompress.path);
+          self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 1);
         });
-        fs.unlinkSync(pull_folder+file);
       });
+      self.emitter.on("pulled", function(){
+        console.log(file);
+        if( fs.existsSync(__dirname+'/pull/'+file) ) {
+          deleteFolderRecursive(__dirname+'/pull/dist_'+file.split("_")[0]);
+        }
+        if( fs.existsSync(__dirname+'/pull/'+file) ) {
+          self.data.do(_model.op.remove,file.split("_")[0], {}, self.emitter);
+          fs.unlinkSync(__dirname+'/pull/'+file);
+        }
+      })
     });
   });
+}
+
+function deleteFolderRecursive(path) {
+  if( fs.existsSync(path) ) {
+    fs.readdirSync(path).forEach(function(file,index){
+      var curPath = path + "/" + file;
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
 }

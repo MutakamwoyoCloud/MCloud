@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/api/form', (req, res) => {
     petition_handler.add_petition((req.body));
     console.log("generando peticion...");
-    //ftpw.exec(ftpw.action.push);
+    ftpw.exec(ftpw.action.push);
     return true;
 });
 
@@ -56,6 +56,18 @@ app.get('/api/search', (req, res, next) => {
     res.send(dataRes);
     next();
   },param, type);
+});
+
+app.get('/api/pull', (req, res, next) => {
+  ftpw.init(petition_handler);
+  ftpw.exec(ftpw.action.pull);
+  return;
+});
+
+app.get('/api/fetch', (req, res, next) => {
+  ftpw.init(petition_handler);
+  ftpw.exec(ftpw.action.fetch);
+  return;
 });
 
 app.listen(app.get('port'), () => {

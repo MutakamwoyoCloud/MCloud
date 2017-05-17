@@ -82,7 +82,7 @@ export default class Peticiones extends Component {
         <form onSubmit={this.handleSubmit}>
         <Row>
           <Col sm={10} large={8}>
-            <h1 className="texto_principal_peticiones">{this.name}</h1>
+            <h1 className="texto_principal_peticiones App-header">{this.name}</h1>
           </Col>
         </Row>
         </form>

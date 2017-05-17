@@ -86,19 +86,17 @@ c.on('ready', function() {
                 break;
 
               case  action.pull:
-
                   if (handler){
                       var type ="wiki";
 
                       handler.emitter.on('pull', function(item){
-
                         if (item.ready){
                           var name = item._id+"_"+type+"_out.tar.gz";
-
                           c.get(fetchFolder+name , function(err, stream) {
                             if (err) throw err;
                             stream.once('close', function() { c.end(); });
                             stream.pipe(fs.createWriteStream(pullFolder+name));
+                            handler.pull();
                           });
                         }
                       });
@@ -153,6 +151,7 @@ function exec(action){
 
 module.exports = {
   exec,
-  action
+  action,
+  init
 };
 

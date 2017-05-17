@@ -24,6 +24,7 @@
     "client": "babel-node start-client.js",
     "server": "babel-node src/core/server.js",
     "start": "concurrently \"npm run server\" \"react-scripts start\"",
+    "debug": "node --debug-brk src/App.js",
     "build": "react-scripts build",
     "eject": "react-scripts eject"
   },

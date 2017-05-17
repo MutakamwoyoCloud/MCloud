@@ -11,10 +11,13 @@ class Wiki:
         archivo = open("../out/"+dir+"/"+name)
         archivo = archivo.read()
         links = json.loads(archivo)
-        wikipedia.set_lang("fr")
-        print links
-        options = wikipedia.search(links['search'])
-        print options
+        wikipedia.set_lang("es")
+        try:
+            print links['num']
+            options = wikipedia.search(links['search'],  results=links['num'])
+        except wikipedia.exceptions.DisambiguationError as e:
+            print "EROOOOOORRRRR!!!!!"
+            print e.options
         params = {}
         nombres = []
         for i in range(int(links['num'])):

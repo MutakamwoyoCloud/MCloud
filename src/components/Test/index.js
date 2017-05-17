@@ -15,13 +15,13 @@ export default class About extends Component {
         <h1>
             test
         </h1>
-    <form action="/test?type='push'&name='hitler'&num=3">
+    <form action="http://localhost:3001/test?type='push'&name='hitler'&num=3">
       <input type="submit" value="push" />
     </form> 
-    <form action="/test?type='fetch'">
+    <form action="http://localhost:3001/api/fetch">
       <input type="submit" value="fetch" />
     </form> 
-    <form action="/test?type='pull'">
+    <form action="http://localhost:3001/api/pull">
       <input type="submit" value="pull" />
     </form> 
 
