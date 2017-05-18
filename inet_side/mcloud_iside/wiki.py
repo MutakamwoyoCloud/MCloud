@@ -12,9 +12,9 @@ class Wiki:
             archivo = open("../out/"+dir+"/"+name)
             archivo = archivo.read()
             links = json.loads(archivo)
-            wikipedia.set_lang("fr")
+            wikipedia.set_lang("es")
+            print links['search']
             options = wikipedia.search(links['search'],  results=links['num'], suggestion=True)
-            print options
             params = {}
             nombres = []
             for i in range(int(links['num'])):

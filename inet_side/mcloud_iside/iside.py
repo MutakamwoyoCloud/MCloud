@@ -31,6 +31,7 @@ class MyHandler(PatternMatchingEventHandler):
 
     # iside_entry point <============================================
     def on_created(self, event):
+        print event.src_path
         s.enqueue(event.src_path)
 
 

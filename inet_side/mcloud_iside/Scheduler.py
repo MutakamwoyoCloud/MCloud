@@ -2,7 +2,9 @@
 from utils.utils import decompress
 from utils.utils import compress
 from wiki import Wiki
-import os, shutil
+from youtube import Youtube
+import os, shutil, json
+
 priority = {
     "wiki":0,
     "vademecum":1,
@@ -13,6 +15,7 @@ class Scheduler:
     def __init__(self):
         self.items=[]
         self.wiki = Wiki()
+        self.youtube = Youtube()
         self.path = os.getcwd()
 
     def splitPath(self,petition):
@@ -21,17 +24,18 @@ class Scheduler:
         return names
 
     def remove_files(self, petition):
-        print petition
         with open(petition) as f:
             elem = f.readlines()
         for e in elem:
-            os.remove("../out/"+e.strip()+"_out.tar.gz");
+            if os.path.isfile("../out/"+e.strip()):
+                os.remove("../out/"+e.strip());
         os.remove(petition);
 
     def enqueue(self, x):
         name = self.splitPath(x)[0]
         if(name == "remove"):
-            print name
+            print "remove"
+            print x
             self.remove_files(x)
         else:
             splitPetition = name.split("_")
@@ -55,12 +59,16 @@ class Scheduler:
         listOut = []
         os.mkdir(list['dir']+"/result/")
         for l in list['listDir']:
-            params = self.wiki.search(l, names[0], list['dir']+"/result/")
-            if params and len(params) > 0:
-                for d in params:
-                    listOut.append(d)
-        print listOut
-
+            if names[0].split("_")[1] == "wiki":
+                print names[0].split("_")[1]
+                print names[0]
+                params = self.wiki.search(l, names[0], list['dir']+"/result/")
+                if params and len(params) > 0:
+                    for d in params:
+                        listOut.append(d)
+            elif names[0].split("_")[1] == "youtube":
+                print "youtube";
+                self.youtube.search(l, names[0], list['dir']+"/result/")
         compress_file = names[0]+"_out.tar.gz"
         compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
         os.chdir(self.path)
