@@ -25,6 +25,10 @@ export default class Peticiones extends Component {
   }
 
   solicitaDatos(data, resource, path, myThis){
+    if (this.name == "Wikipedia")
+      data.type = "wiki";
+    if (this.name == "Youtube")
+      data.type = "youtube";
       var urlpath = path;
      $.ajax({
         url: urlpath,
@@ -69,8 +73,12 @@ export default class Peticiones extends Component {
     params.error = function(response){
       console.log(response);
     }
+    console.log(this.name);
     params.data = event.target.value;
-    params.type = "wiki";
+    if (this.name == "Wikipedia")
+      params.type = "wiki";
+    if (this.name == "Youtube")
+      params.type = "youtube";
     if(params.data != "")
       CommonActions.list(params, "search");
   }

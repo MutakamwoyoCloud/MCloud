@@ -102,7 +102,7 @@ c.on('ready', function() {
                   });//foreach
                 });
 
-                break;
+              break;
 
               case  action.pull:
                   if (handler){
