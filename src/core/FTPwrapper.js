@@ -11,6 +11,7 @@ var content = _model.content;
 
 
 const pushFolder = './src/core/push/';
+const flushFolder = './src/core/flush/';
 const pullFolder = './src/core/pull/'
 const fetchFolder = 'MCloud/inet_side/out/'
 
@@ -29,7 +30,8 @@ var action = {
     idle : 0,
     push : 1,
     pull : 2,
-    fetch : 3
+    fetch : 3,
+    flush : 4
 };
 
 //we need a reference 4 the handler of the core (petition_handler)
@@ -83,6 +85,23 @@ c.on('ready', function() {
                   });//foreach
                 });
 
+              break;
+
+              case action.flush:
+              console.log("flush");
+                fs.readdir(flushFolder, (err, files) => {
+                  console.log(files);
+                  files.forEach(file => {
+                    console.log(file);
+                    c.put(flushFolder+file, "MCloud/inet_side/received/"+file, function(err) {
+                      if (err) //throwable -> throw err
+                        throw err;
+                      fs.unlinkSync(flushFolder+file);
+                      c.end();
+                    });
+                  });//foreach
+                });
+
                 break;
 
               case  action.pull:
@@ -108,6 +127,7 @@ c.on('ready', function() {
               case action.fetch:
 
                   c.list(fetchFolder, function(err, list) {
+                    console.log(list);
                     if (err) throw err;
                       list.forEach(function(elem){
                         if (handler)

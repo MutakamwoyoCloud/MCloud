@@ -24,6 +24,9 @@ export default class About extends Component {
     <form action="http://localhost:3001/api/pull">
       <input type="submit" value="pull" />
     </form> 
+    <form action="http://localhost:3001/api/flush">
+      <input type="submit" value="flush" />
+    </form> 
 
 
       </div>

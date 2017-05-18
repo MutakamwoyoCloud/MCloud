@@ -205,21 +205,27 @@ function receive_package(self){
         files_decompress.forEach(file_decompress => {
           var type = file_decompress.path.split("_")[0];
           var name_search = file_decompress.path.split("_")[1].split(".")[0];
-          console.log(__dirname+'/pull/dist_'+file.split("_")[0]+"/"+file_decompress.path);
           var json = require(__dirname+'/pull/dist_'+file.split("_")[0]+"/"+file_decompress.path);
           var json_insert = {};
           json_insert["name"] = json["name"];
           json_insert["data"] = json;
+          console.log("insertData");
           self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 1);
         });
       });
       self.emitter.on("pulled", function(){
-        console.log(file);
+        console.log("PULLED");
+        fs.appendFile(__dirname+'/flush/remove.txt', file+'\n', function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            console.log("The file was saved!");
+        }); 
         if( fs.existsSync(__dirname+'/pull/'+file) ) {
           deleteFolderRecursive(__dirname+'/pull/dist_'+file.split("_")[0]);
         }
         if( fs.existsSync(__dirname+'/pull/'+file) ) {
-          self.data.do(_model.op.remove,file.split("_")[0], {}, self.emitter);
+          self.data.do(_model.op.remove,file.split("_")[0], {}, null);
           fs.unlinkSync(__dirname+'/pull/'+file);
         }
       })

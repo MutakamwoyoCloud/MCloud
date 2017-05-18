@@ -2,7 +2,7 @@
 from utils.utils import decompress
 from utils.utils import compress
 from wiki import Wiki
-import os, shutil, json
+import os, shutil
 priority = {
     "wiki":0,
     "vademecum":1,

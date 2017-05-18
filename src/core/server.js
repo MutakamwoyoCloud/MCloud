@@ -58,16 +58,22 @@ app.get('/api/search', (req, res, next) => {
   },param, type);
 });
 
+app.get('/api/flush', (req, res, next) => {
+  console.log("flush")
+  ftpw.exec(ftpw.action.flush);
+  return false;
+});
+
 app.get('/api/pull', (req, res, next) => {
   ftpw.init(petition_handler);
   ftpw.exec(ftpw.action.pull);
-  return;
+  return false;
 });
 
 app.get('/api/fetch', (req, res, next) => {
   ftpw.init(petition_handler);
   ftpw.exec(ftpw.action.fetch);
-  return;
+  return false;
 });
 
 app.listen(app.get('port'), () => {
