@@ -4,10 +4,10 @@ import Table from './Table';
 import { Row, Col } from 'react-bootstrap';
 
 //var Row = require('react-foundation').Row;
-var Column = require('react-foundation').Column;
-var Button = require('react-foundation').Button;
+//var Column = require('react-foundation').Column;
+//var Button = require('react-foundation').Button;
 var CommonActions = require('./utils/CommonActions');
-var tr = require('../../translate.js');
+//var tr = require('../../translate.js');
 
 var $ = require('jquery');
 
@@ -71,11 +71,11 @@ export default class Peticiones extends Component {
     }
     console.log(this.name);
     params.data = event.target.value;
-    if (this.name == "Wikipedia")
+    if (this.name === "Wikipedia")
       params.type = "wiki";
-    if (this.name == "Youtube")
+    if (this.name === "Youtube")
       params.type = "youtube";
-    if(params.data != "")
+    if(params.data !== "")
       CommonActions.list(params, "search");
   }
 

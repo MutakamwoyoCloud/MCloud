@@ -9,7 +9,6 @@
     //var id = params.data.id;
     var request;
     var reqPath = path ? path : resource.toLowerCase();
-    var list = "";
     reqPath += "?data="+params.data+"&type="+params.type;
 
     $.ajax({

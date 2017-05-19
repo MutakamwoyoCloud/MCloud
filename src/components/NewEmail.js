@@ -13,10 +13,10 @@ export default class NewEmail extends Component {
     this.state = {to: '', subject:'', content:' '};
   }
   handleChange(event){
-    if(event.target.type == "email"){
+    if(event.target.type === "email"){
     this.setState({to:event.target.value});
     }
-    else if(event.target.type == "text"){
+    else if(event.target.type === "text"){
         this.setState({subject:event.target.value});
     }
     else  this.setState({content:event.target.value});
@@ -32,7 +32,7 @@ export default class NewEmail extends Component {
             Para
           </Col>
           <Col sm={10}>
-            <FormControl type="email" value= {this.state.to} onChange={this.handleChange} placeholder="Introduce el email" />
+            <FormControl type="email" value={this.state.to} onChange={this.handleChange} placeholder="Introduce el email" />
           </Col>
         </FormGroup>
         <FormGroup controlId="formHorizontalText">
@@ -40,7 +40,7 @@ export default class NewEmail extends Component {
             Asunto
           </Col>
           <Col sm={10}>
-            <FormControl type="text" value= {this.state.subject} onChange={this.handleChange} placeholder="Asunto" />
+            <FormControl type="text" value={this.state.subject} onChange={this.handleChange} placeholder="Asunto" />
           </Col>
         </FormGroup>
         <FormGroup controlId="formControlsTextarea">

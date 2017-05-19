@@ -10,6 +10,8 @@ var ftpw = require('./FTPwrapper');
 var tools = require('./utils');
 
 var petition_handler = new ph(2);
+ftpw.init(petition_handler);
+
 
 app.set('port', (process.env.PORT || 3001));
 app.use(bodyParser.json());
@@ -65,13 +67,11 @@ app.get('/api/flush', (req, res, next) => {
 });
 
 app.get('/api/pull', (req, res, next) => {
-  ftpw.init(petition_handler);
   ftpw.exec(ftpw.action.pull);
   return false;
 });
 
 app.get('/api/fetch', (req, res, next) => {
-  ftpw.init(petition_handler);
   ftpw.exec(ftpw.action.fetch);
   return false;
 });

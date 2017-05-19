@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import { Route, Redirect, Link} from 'react-router';
-//import './App.css';
-import App from './App'
+import {Link} from 'react-router';
 import '../node_modules/foundation-sites/dist/css/foundation.min.css';
 import '../node_modules/fixed-data-table/dist/fixed-data-table.min.css';
 import WikipediaIcon from '../node_modules/react-icons/lib/fa/wikipedia-w';
@@ -17,9 +14,6 @@ var Colors = require('react-foundation').Colors;
 
 class Principal extends Component {
 
-	constructor(){
-    super();
-  }
   render() {
     return (
       <div className="display">

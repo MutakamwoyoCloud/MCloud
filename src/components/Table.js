@@ -5,7 +5,7 @@ var Table = require('fixed-data-table').Table;
 var Column = require('fixed-data-table').Column;
 var Cell = require('fixed-data-table').Cell;
 var Button = require('react-foundation').Button;
-var tr = require('../../translate.js');
+//var tr = require('../../translate.js');
 
 var CommonActions = require('./utils/CommonActions');
 //var partitionHandler = require('./core/PetitionHandler');
@@ -38,16 +38,15 @@ class TableResult extends Component {
     }
     params.data = event.target['id'];
     params.type = "wiki";
-    if(params.data != "")
+    if(params.data !== "")
       CommonActions.list(params, "getData");
     event.preventDefault();
   }
   
   render(){
     this.rows = this.props.rows;
-    var numCols = 2;
     var length = 10;
-    var width = screen.width - 200;
+    //var width = screen.width - 200;
     var that = this;
     if(this.rows){
       var rows = Object.keys(this.rows).map(function (key) { return that.rows[key]; });

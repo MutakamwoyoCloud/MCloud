@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Peticiones from './components/Peticiones';
-import Result from './components/Result';
+//import Result from './components/Result';
 //import './App.css';
 import '../node_modules/foundation-sites/dist/css/foundation.min.css'
 import '../node_modules/fixed-data-table/dist/fixed-data-table.min.css'
@@ -66,21 +66,16 @@ class App extends Component {
   render() {
     console.log(this);
     var show;
-    if(this.name == "" ){
-      show = <Correo emails={exampleEmails} />;
-    }else {
-    
     if(this.datos)
       show = <Resultdatos datos={this.datos}/>;
     else
       show = <Peticiones name={this.props.name} solicitaDatos={this.solicitaDatos} AppThat={this} />;
-  }
+  
     return (
       <div className="App">
         {show}
       </div>
     );
+    }
 }
-}
-
 export default App;

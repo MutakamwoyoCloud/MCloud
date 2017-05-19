@@ -9,7 +9,7 @@ PHOME=/home/mcloud
 
 pushfolder="src/core/push"
 pullfolder="src/core/pull"
-
+flushfolder="src/core/flush"
 
 usage(){
 
@@ -81,6 +81,9 @@ exec_client(){
     if [ ! -d "$pushfolder" ]; then
         mkdir $pushfolder
     fi
+    if [ ! -d "$flushfolder" ]; then
+        mkdir $flushfolder
+    fi
 
     chown -R $USER:$USER .
     if ps ax | grep -v grep | grep "mongodb" > /dev/null; then
@@ -96,10 +99,11 @@ exec_client(){
     fi
 
     npm install -g create-react-app
+    npm install -g concurrently
     echo
     echo
     npm i
-    chown -r $USER:$USER .
+    chown -R $USER:$USER .
 
 
 

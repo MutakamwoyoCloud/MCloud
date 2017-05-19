@@ -70,7 +70,7 @@ export default class Correo extends Component{
     else{
       if (email_id) {
         var mail = this.emails.filter(function(mail) {
-          return mail.id == email_id;
+          return mail.id === email_id;
         })[0];
         selected_email = <Email id={mail.id}
                                 from={mail.from}
@@ -88,7 +88,7 @@ export default class Correo extends Component{
       <div className="inbox">
       <div className="row">
         <div className="col-md-4">
-          <Button type="submit" onClick= {this.handleNewMail}>Nuevo correo</Button>
+          <Button type="submit" onClick={this.handleNewMail}>Nuevo correo</Button>
         </div>
         <div>
         <EmailList emails={this.emails}
