@@ -52,9 +52,9 @@ var PH = module.exports = function(package_size){
   this._qnewidx =1;
   this._qstorage={};
 
-  this._i=0;
   this._package_size = package_size;
-  this._petitions = [];
+  this._petitionsObj = {};
+  this._petitionsNum = {};
 
   this.options = {
     gzip: true,
@@ -90,9 +90,8 @@ PH.prototype.dequeue = function(){
   }
 };
 
-PH.prototype.reset = function(){
- 
-  this._i = 0;
+PH.prototype.reset = function(type){
+  this._petitionsNum[type] = 0; 
 };
 
 
@@ -100,12 +99,17 @@ PH.prototype.reset = function(){
     //var id = "petition_example"+this._i;
 PH.prototype.add_petition= function(data){
 
+  if (!this._petitionsObj[data.type]){
+    this._petitionsObj[data.type] = [];
+    this._petitionsNum[data.type] = 0;
+  }
 
-  this._petitions[this._i] = data;
-  this._i++;
-
-  if (this._i == this._package_size){
-    create_package(this);
+  this._petitionsObj[data.type][this._petitionsNum[data.type]] = data;
+  this._petitionsNum[data.type]++;
+  console.log(this._petitionsNum[data.type]);
+  console.log(this._package_size);
+  if (this._petitionsNum[data.type] == this._package_size){
+    create_package(this, data.type);
   }
 };
 
@@ -118,6 +122,8 @@ PH.prototype.search= function(callback, data, type){
   });
   if(type == "wiki")
     this.data.do(_model.content.getSome,{}, data, this.emitter, 1);
+  if(type == "youtube")
+    this.data.do(_model.content.getSome,{}, data, this.emitter, 2);
 };
 
 PH.prototype.pull= function(callback){
@@ -158,7 +164,7 @@ schedule.scheduleJob(time, function(){
 });
 
 //this function create a package and enqueue
-function create_package(self){
+function create_package(self, type){
 
   self.emitter.on('newPackage', function(id){
 
@@ -172,7 +178,7 @@ function create_package(self){
       throw err;
     });
 
-    var output = fs.createWriteStream(__dirname + '/push/'+id+'_wiki.tar.gz');
+    var output = fs.createWriteStream(__dirname + '/push/'+id+'_'+type+'.tar.gz');
 
     // listen for all archive data to be written
     output.on('close', function() {
@@ -185,11 +191,11 @@ function create_package(self){
 
     self.enqueue(id)
 
-    for (var i = 0, len = self._petitions.length; i < len; i++){
-      archive.append(JSON.stringify(self._petitions[i]), {name: i+'.json'});
+    for (var i = 0, len = self._petitionsObj[type].length; i < len; i++){
+      archive.append(JSON.stringify(self._petitionsObj[type][i]), {name: i+'.json'});
     }
     archive.finalize();
-    self.reset();
+    self.reset(type);
   });
 
 self.data.do(_model.op.insert,{}, {ready: false}, self.emitter);

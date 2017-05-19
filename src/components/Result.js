@@ -27,7 +27,7 @@ export default class Result extends Component {
                 {this.datos.content}
             </fieldset>
           </div>
-          <div className="search">
+          /*<div className="search">
             <fieldset>
               <legend><h5>Links</h5></legend>
               {
@@ -36,7 +36,7 @@ export default class Result extends Component {
                 })
               }
             </fieldset>
-          </div>
+          </div>*/
         </Row>
       </div>
     );

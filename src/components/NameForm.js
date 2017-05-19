@@ -14,6 +14,7 @@ class NameForm extends Component {
   constructor(props) {
     super(props);
     this.props = props
+    this.name = props.name;
     this.solicitaDatos = props.solicitaDatos;
     this.thisPrincipal = props.that;
     //this.handleChange.bind(this, props.Change);
@@ -25,6 +26,10 @@ class NameForm extends Component {
     event.preventDefault();
     var urlpath = "/api/form";
     var data = {}
+    if (this.name == "Wikipedia")
+      data.type = "wiki";
+    if (this.name == "Youtube")
+      data.type = "youtube";
     data.search = this.refs.search.value;
     data.num= (this.refs.number.value!="") ? this.refs.number.value : 1;
     if(data.search != ""){

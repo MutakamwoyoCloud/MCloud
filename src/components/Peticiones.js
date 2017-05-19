@@ -25,12 +25,8 @@ export default class Peticiones extends Component {
   }
 
   solicitaDatos(data, resource, path, myThis){
-    if (this.name == "Wikipedia")
-      data.type = "wiki";
-    if (this.name == "Youtube")
-      data.type = "youtube";
-      var urlpath = path;
-     $.ajax({
+    var urlpath = path;
+    $.ajax({
         url: urlpath,
         type: "POST",
         data: JSON.stringify(data),
@@ -98,7 +94,7 @@ export default class Peticiones extends Component {
           <div className="search">
             <fieldset>
               <legend><h3>{"Nueva Peticion"}</h3></legend>
-              <NameForm Change={this.handleChange} solicitaDatos={this.solicitaDatos} that={this.thisPrincipal}/>
+              <NameForm Change={this.handleChange} solicitaDatos={this.solicitaDatos} that={this.thisPrincipal} name={this.name}/>
             </fieldset>
           </div>
           <div className="search">
