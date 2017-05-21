@@ -1,7 +1,7 @@
-
 from utils.utils import decompress
 from utils.utils import compress
 from wiki import Wiki
+import time
 from youtube import Youtube
 import os, shutil, json
 
@@ -51,24 +51,33 @@ class Scheduler:
     def isEmpty(self):
         return self.items == []
 
-    def process(self):
-        petition = self.dequeue()
+    def process(self, p = None):
+
+        petition = self.dequeue() if p is None else p
         names = self.splitPath(petition)
         list = decompress(names[0], petition)
-        os.remove(petition);
         listOut = []
         os.mkdir(list['dir']+"/result/")
-        for l in list['listDir']:
-            if names[0].split("_")[1] == "wiki":
-                print names[0].split("_")[1]
-                print names[0]
-                params = self.wiki.search(l, names[0], list['dir']+"/result/")
-                if params and len(params) > 0:
-                    for d in params:
-                        listOut.append(d)
-            elif names[0].split("_")[1] == "youtube":
-                print "youtube";
-                self.youtube.search(l, names[0], list['dir']+"/result/")
+        try:
+            for l in list['listDir']:
+                if names[0].split("_")[1] == "wiki":
+                    print names[0].split("_")[1]
+                    print names[0]
+                    params = self.wiki.search(l, names[0], list['dir']+"/result/")
+                    if params and len(params) > 0:
+                        for d in params:
+                            listOut.append(d)
+                elif names[0].split("_")[1] == "youtube":
+                    print "youtube";
+                    self.youtube.search(l, names[0], list['dir']+"/result/")
+        except:
+            print "cannot get resources, check internet connection!"
+            os.chdir(self.path)
+            shutil.rmtree(list['dir'])
+            time.sleep(15)
+            self.process(petition)
+            
+        os.remove(petition);
         compress_file = names[0]+"_out.tar.gz"
         compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
         os.chdir(self.path)
@@ -77,6 +86,7 @@ class Scheduler:
 
     def insertOrderListPetition(self, num, petition):
         i = 0
+        #NO FUNCIONA:
         if(len(self.items)>0):
             name = self.splitPath(self.items[i])[0]
             splitPetition = name.split("_")
@@ -93,9 +103,8 @@ class Scheduler:
             lenA = len(self.items)
             for j, val in self.items:
                 self.items.insert(lenA-j, self.items[lenA-j-1])
-
+        
         self.items.insert(i, petition)
-
             
 
 

@@ -7,7 +7,7 @@ from Scheduler import Scheduler
 import os
 
 
-s=Scheduler()
+scheduler=Scheduler()
 
 class MyHandler(PatternMatchingEventHandler):
     def process(self, event):
@@ -32,7 +32,7 @@ class MyHandler(PatternMatchingEventHandler):
     # iside_entry point <============================================
     def on_created(self, event):
         print event.src_path
-        s.enqueue(event.src_path)
+        scheduler.enqueue(event.src_path)
 
 
 
@@ -48,14 +48,18 @@ def start_server(path):
     try:
         while True:
             time.sleep(1)
-            if not s.isEmpty():
-                print "i have something"
-                s.process()
+            if not scheduler.isEmpty():
+                scheduler.process()
 
     except KeyboardInterrupt:
             observer.stop()
 
     observer.join()
+
+def check_directory(path):
+    for filename in os.listdir(path):
+        scheduler.enqueue(path+filename)
+        scheduler.process()
 
 
 if __name__=='__main__':
@@ -66,5 +70,6 @@ if __name__=='__main__':
     path = sys.argv[1] if len(sys.argv) > 1 else '../received/'
     print "listening petitions on "+ path
 
+    check_directory(path)
     start_server(path)
 
