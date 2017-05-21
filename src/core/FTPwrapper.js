@@ -15,7 +15,7 @@ const flushFolder = './src/core/flush/';
 const pullFolder = './src/core/pull/'
 const fetchFolder = 'MCloud/inet_side/out/'
 
-
+var options = {}
 
 /*
 * Action describe us the all ftp states
@@ -44,9 +44,11 @@ var status = action.idle;
  * we need to call this function before we start to use ftpWrapper
  * sets the current handler
 * */
-function init(handler_ref) {
+function init(handler_ref, opts) {
   handler = handler_ref;
   var status = action.idle;
+
+  options = opts;
 }
 
 /*
@@ -74,6 +76,8 @@ c.on('ready', function() {
 
               case action.push:
                 fs.readdir(pushFolder, (err, files) => {
+                  if (err)
+                    console.log("provider not reached\n");
                   files.forEach(file => {
                     console.log(file);
                     c.put(pushFolder+file, "MCloud/inet_side/received/"+file, function(err) {
@@ -142,7 +146,6 @@ c.on('ready', function() {
 
 
 c.on('error', function() {
-
   console.log("ha habido un error");
 });
 
@@ -157,12 +160,6 @@ c.on('error', function() {
 function exec(action){
 
   status = action;
-
-  var options = {
-    user:"mcloud",
-    password:"mcloud"
-  };
-
   c.connect(options); //
 
 };
