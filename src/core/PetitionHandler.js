@@ -1,18 +1,17 @@
 // require modules
-var fs = require('fs');
-var archiver = require('archiver');
-var tools = require('./utils');
-var events = require('events');
-var _model = require('./Data');
-const decompress = require('decompress');
+var fs = require("fs");
+var archiver = require("archiver");
+var tools = require("./utils");
+var events = require("events");
+var _model = require("./Data");
+const decompress = require("decompress");
 
-var schedule = require('node-schedule');
+var schedule = require("node-schedule");
 var _sys = tools.module;
-var ftpw = require('./FTPwrapper');
-var schedule = require('node-schedule');
-var mongodb = require('mongodb');
+var ftpw = require("./FTPwrapper");
+var mongodb = require("mongodb");
 
-const pullFolder = './src/core/pull/'
+const pullFolder = "./src/core/pull/";
 
 /* Constructor
 * Create a new handler object
@@ -24,7 +23,7 @@ const pullFolder = './src/core/pull/'
 * 	13 % 6 = 1 Petition left, <======================================= we need to check
 * 	13 / 6 = 2 packages are being created and ready to upload 
 */
-var executeJobTime = undefined;
+var executeJobTime = "";
 var time = {};
   time.hour = 22;
   time.minute = 0;
@@ -38,8 +37,9 @@ schedule.scheduleJob(time, function(){
   }, 1000*60*60);
 });
 schedule.scheduleJob(timeFinish, function(){
-  if(executeJobTime)
+  if(executeJobTime != ""){
     clearTimeout(executeJobTime);
+  }
 });
 
 var PH = module.exports = function(package_size){
@@ -114,7 +114,7 @@ PH.prototype.add_petition= function(data){
 };
 
 PH.prototype.search= function(callback, data, type){
-  this.emitter.once('findSomeone', function(dataFind){
+  this.emitter.once("findSomeone", function(dataFind){
     if(dataFind)
       callback(dataFind);
     else
@@ -137,7 +137,7 @@ PH.prototype.fetch= function(){
   
 
 PH.prototype.searchOne= function(callback, data, type){
-  this.emitter.once('findOne', function(dataFind){
+  this.emitter.once("findOne", function(dataFind){
     console.log(dataFind);
     if(dataFind)
       callback(dataFind);
@@ -166,25 +166,25 @@ schedule.scheduleJob(time, function(){
 //this function create a package and enqueue
 function create_package(self, type){
 
-  self.emitter.on('newPackage', function(id){
+  self.emitter.on("newPackage", function(id){
 
-    var archive = archiver('tar', {
+    var archive = archiver("tar", {
       gzip: true,
       store: true // Sets the compression method to STORE.
     });
 
     // good practice to catch this error explicitly
-    archive.on('error', function(err) {
+    archive.on("error", function(err) {
       throw err;
     });
 
-    var output = fs.createWriteStream(__dirname + '/push/'+id+'_'+type+'.tar.gz');
+    var output = fs.createWriteStream(__dirname + "/push/"+id+"_"+type+".tar.gz");
 
     // listen for all archive data to be written
-    output.on('close', function() {
+    output.on("close", function() {
 
-      console.log(archive.pointer() + ' total bytes');
-      console.log('archiver has been finalized and the output file descriptor has closed.');
+      console.log(archive.pointer() + " total bytes");
+      console.log("archiver has been finalized and the output file descriptor has closed.");
     });
 
     archive.pipe(output);
@@ -192,7 +192,7 @@ function create_package(self, type){
     self.enqueue(id)
 
     for (var i = 0, len = self._petitionsObj[type].length; i < len; i++){
-      archive.append(JSON.stringify(self._petitionsObj[type][i]), {name: i+'.json'});
+      archive.append(JSON.stringify(self._petitionsObj[type][i]), {name: i+".json"});
     }
     archive.finalize();
     self.reset(type);
@@ -207,11 +207,11 @@ function receive_package(self){
   var pull_folder = pullFolder;
   fs.readdir(pull_folder, (err, files) => {
     files.forEach(file => {
-      decompress(pull_folder+file, pull_folder+'dist_'+file.split("_")[0]).then(files_decompress => {
+      decompress(pull_folder+file, pull_folder+"dist_"+file.split("_")[0]).then(files_decompress => {
         files_decompress.forEach(file_decompress => {
           var type = file_decompress.path.split("_")[0];
           var name_search = file_decompress.path.split("_")[1].split(".")[0];
-          var json = require(__dirname+'/pull/dist_'+file.split("_")[0]+"/"+file_decompress.path);
+          var json = require(__dirname+"/pull/dist_"+file.split("_")[0]+"/"+file_decompress.path);
           var json_insert = {};
           json_insert["name"] = json["name"];
           json_insert["data"] = json;
@@ -220,19 +220,18 @@ function receive_package(self){
         });
       });
       self.emitter.on("pulled", function(){
-        console.log("PULLED");
-        fs.appendFile(__dirname+'/flush/remove.txt', file+'\n', function(err) {
+        fs.appendFile(__dirname+"/flush/remove.txt", file+'\n', function(err) {
             if(err) {
                 return console.log(err);
             }
             console.log("The file was saved!");
         }); 
-        if( fs.existsSync(__dirname+'/pull/'+file) ) {
-          deleteFolderRecursive(__dirname+'/pull/dist_'+file.split("_")[0]);
+        if( fs.existsSync(__dirname+"/pull/"+file) ) {
+          deleteFolderRecursive(__dirname+"/pull/dist_"+file.split("_")[0]);
         }
-        if( fs.existsSync(__dirname+'/pull/'+file) ) {
+        if( fs.existsSync(__dirname+"/pull/"+file) ) {
           self.data.do(_model.op.remove,file.split("_")[0], {}, null);
-          fs.unlinkSync(__dirname+'/pull/'+file);
+          fs.unlinkSync(__dirname+"/pull/"+file);
         }
       })
     });
