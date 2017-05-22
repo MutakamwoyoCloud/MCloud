@@ -51,24 +51,29 @@ class NameForm extends Component {
     this._notificationSystem = this.refs.notificationSystem;
   }
   render() {
+    var numAndSearch = "";
+    if (this.name !== "Vademecum") {
+      numAndSearch =  <Row className="search">
+                        <Column small={5} large={3}>
+                          <label>{"Numero de coincidencias"}</label>
+                          <input placeholder="3" ref="number" type="number"/>
+                        </Column>
+                        <Column small={2} large={3}>
+                          <Button type="submit"><Send size={Sizes.small} /></Button>
+                          <NotificationSystem ref="notificationSystem" />
+                        </Column>
+                      </Row>;
+    }
+        
     return (
       <div className="grid_form_request">
        <form onSubmit={this.handleSubmit}>
         <Row className="search">
-          <Column small={10} large={8}>
+          <Column small={12} large={12}>
             <label>search:</label> <input placeholder={"introduce la busqueda"} onChange={this.props.Change} ref="search" type="text"/>
           </Column>
         </Row>
-        <Row className="search">
-          <Column small={5} large={3}>
-              <label>{"Numero de coincidencias"}</label>
-              <input placeholder='3' ref="number" type="number"/>
-          </Column>
-          <Column small={2} large={3}>
-             <Button type="submit"><Send size={Sizes.small} /></Button>
-             <NotificationSystem ref="notificationSystem" />
-          </Column>
-        </Row>
+        {numAndSearch}
        </form>
       </div>
     );
