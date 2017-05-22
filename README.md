@@ -51,3 +51,6 @@ _Check [Spanish wiki documentation](https://github.com/MutakamwoyoCloud/MCloud/w
     $ sudo nohup mongod &
     & npm start
 ```  
+
+### Codacy
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ef5f99323f6a4eda89fc6d768a993d71)](https://www.codacy.com/app/jjmontiel/MCloud?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=MutakamwoyoCloud/MCloud&amp;utm_campaign=Badge_Grade)
