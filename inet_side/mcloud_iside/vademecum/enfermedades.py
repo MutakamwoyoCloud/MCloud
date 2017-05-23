@@ -25,4 +25,4 @@ def enfermedades():
         f = open(i +".html", 'w')
         f.write(pagina)
         f.close()
-enfermedades()
+#enfermedades()

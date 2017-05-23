@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from scrapy import Field, Spider, Item, Selector 
-import urllib.request
 from lxml import html
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
-from urllib.parse import urlencode
+from urlparse import urlparse
+from urllib2 import urlopen
+from urllib import urlencode
 import builtins
 import goslate
 ABECEDARIO='abcdefghijkmnopqrstuvwxyz'
@@ -14,34 +14,36 @@ class Post(Item):
     title = Field()
 
     def download(self):
-        opener = urllib.request.FancyURLopener({})
         url = 'http://www.vademecum.es'+str(self['url'][0])
-        print ("URLLLLLLLLLL: ",url)
         soup = BeautifulSoup(urlopen(url))
         div = soup.findAll("div", { "class" : "left" })
         title = str(self['url'][0]).split('/')
-        gs = goslate.Goslate()
-        div = gs.translate(str(div), 'fr')
-        f = open(title[1] +".html", 'w')
-        f.write("<!DOCTYPE html>\
+        #gs = goslate.Goslate()
+        #div = gs.translate(str(div), 'fr')
+        f = open("./vademecum/resultsMedicamentos/"+title[1] +".html", 'w')
+        json = "{\
+            'name': "+title[1]+"\
+            'data': '<!DOCTYPE html>\
             <html>\
             <head>\
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\
             </head>\
-            <body>")
-        f.write(div)
-        f.write("</body>\
-            </html>")
+            <body>'\
+                "+str(div)+"\
+            </body>\
+            </html>"
+        f.write(json)
         f.close()
 
 class mySpider(Spider):
     exit = 1
     num = 0
     try:
+        print "mySpider ok"
         f = open("config.txt", 'r')
         num = int(f.read())
         f.close()
-    except FileNotFoundError:
+    except IOError:
         f = open("config.txt", 'w')
         exit = 0
     name, start_urls = 'mySpider', ["http://www.vademecum.es/medicamentos-"+ABECEDARIO[num]+"_1"]

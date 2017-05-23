@@ -12,6 +12,9 @@ def decompress(name, tar):
 
 
 def compress(files,folder, nameOut):
+	print files
+	print folder
+	print nameOut
 	out = tarfile.open(nameOut, "w")
 	os.chdir(folder)
 	for i in files:

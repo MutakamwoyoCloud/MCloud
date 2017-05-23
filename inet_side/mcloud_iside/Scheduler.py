@@ -4,6 +4,10 @@ from wiki import Wiki
 import time
 from youtube import Youtube
 import os, shutil, json
+import threading
+import subprocess
+import schedule
+import time
 
 priority = {
     "wiki":0,
@@ -12,11 +16,31 @@ priority = {
 }
 
 class Scheduler:
+    def callThread(self, onExit, popenArgs):
+        def runInThread(onExit, popenArgs):
+            proc = subprocess.call(popenArgs)
+            #proc.wait()
+            onExit()
+            return
+        thread = threading.Thread(target=runInThread,args=(onExit, popenArgs))
+        thread.start()
+        return thread
+
+    def job(self):
+        print "executing job"
+        def onExit():
+            compress_file = "medicamentos_vademecum_out.tar.gz"
+            listOut = os.listdir("./vademecum/resultsMedicamentos/")
+            compress(listOut,"./vademecum/resultsMedicamentos/", "../out/"+compress_file)
+            shutil.rmtree("./vademecum/resultsMedicamentos/")
+        self.callThread(onExit,["scrapy", "runspider", "vademecum/medicamentos.py"])
+
     def __init__(self):
         self.items=[]
         self.wiki = Wiki()
         self.youtube = Youtube()
         self.path = os.getcwd()
+        self.s = schedule.every().saturday.do(self.job)
 
     def splitPath(self,petition):
         names = petition.split("/")
@@ -32,6 +56,10 @@ class Scheduler:
         os.remove(petition);
 
     def enqueue(self, x):
+        print schedule.jobs
+        print "enqueue petition"
+        #schedule.run_all()
+
         name = self.splitPath(x)[0]
         if(name == "remove"):
             print "remove"
@@ -60,29 +88,23 @@ class Scheduler:
         os.mkdir(list['dir']+"/result/")
         try:
             for l in list['listDir']:
-                if names[0].split("_")[1] == "wiki":
-                    print names[0].split("_")[1]
-                    print names[0]
-                    params = self.wiki.search(l, names[0], list['dir']+"/result/")
-                    if params and len(params) > 0:
-                        for d in params:
-                            listOut.append(d)
-                elif names[0].split("_")[1] == "youtube":
-                    print "youtube";
-                    self.youtube.search(l, names[0], list['dir']+"/result/")
+            if names[0].split("_")[1] == "wiki":
+                params = self.wiki.search(l, names[0], list['dir']+"/result/")
+                if params and len(params) > 0:
+                    for d in params:
+                        listOut.append(d)
+                    compress_file = names[0]+"_out.tar.gz"
+                    compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
+            elif names[0].split("_")[1] == "youtube":
+                print l
+                self.youtube.search(l, names[0], list['dir']+"/result/", petition.split(".")[0])
         except:
             print "cannot get resources, check internet connection!"
-            os.chdir(self.path)
-            shutil.rmtree(list['dir'])
-            time.sleep(15)
-            self.process(petition)
-            
-        os.remove(petition);
-        compress_file = names[0]+"_out.tar.gz"
-        compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
         os.chdir(self.path)
         shutil.rmtree(list['dir'])
-        
+        time.sleep(15)
+        self.process(petition) 
+        os.remove(petition);
 
     def insertOrderListPetition(self, num, petition):
         i = 0
@@ -103,6 +125,7 @@ class Scheduler:
             lenA = len(self.items)
             for j, val in self.items:
                 self.items.insert(lenA-j, self.items[lenA-j-1])
+<<<<<<< 1963f3a82efd9b2c4d42b17fafcad9122e77069c
         
         self.items.insert(i, petition)
             
@@ -110,3 +133,7 @@ class Scheduler:
 
     
 
+=======
+
+        self.items.insert(i, petition)
+>>>>>>> trabajando con el modulo de youtube
