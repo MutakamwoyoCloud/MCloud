@@ -6,7 +6,9 @@ import NotFound from './components/NotFound';
 import Principal from './Principal';
 import Peticiones from './components/Peticiones';
 import Correo from './components/Correo';
-import Result from './components/Result';
+import ResultWiki from './components/ResultWiki';
+import ResultVademecum from './components/ResultVademecum';
+import ResultYoutube from './components/ResultYoutube';
 import Test from './components/Test';
 
 const Routes = (props) => (
@@ -17,7 +19,9 @@ const Routes = (props) => (
 	    <Route path="/vademecum" name='Vademecum' component={Peticiones} />
 	    <Route path="/youtube" name='Youtube' component={Peticiones} />
 	    <Route path="/correo" name='Correo' component={Correo} />
-	    <Route path="/result" name='Resultado' component={Result} />
+	    <Route path="/resultWiki" name='Resultado' component={ResultWiki} />
+	    <Route path="/resultVademecum" name='Resultado' component={ResultVademecum} />
+	    <Route path="/resultYoutube" name='Resultado' component={ResultYoutube} />
 	    <Route path="/test" name='test' component={Test}/>
 	   
 	    <Route path="*" component={NotFound} />

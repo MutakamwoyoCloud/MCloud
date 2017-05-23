@@ -77,7 +77,7 @@ function create_package(self, type){
     self.reset(type);
   });
 
-self.data.do(_model.op.insert,{}, {ready: false}, self.emitter);
+self.data.do(_model.op.insert,{}, {ready: false, typePetition: type}, self.emitter);
 
 }
 
@@ -86,16 +86,24 @@ function receive_package(self){
   var pull_folder = pullFolder;
   fs.readdir(pull_folder, (err, files) => {
     files.forEach(file => {
+      console.log(file);
       decompress(pull_folder+file, pull_folder+"dist_"+file.split("_")[0]).then(files_decompress => {
         files_decompress.forEach(file_decompress => {
-          var type = file_decompress.path.split("_")[0];
           var name_search = file_decompress.path.split("_")[1].split(".")[0];
+          var typePetition = file.split("_")[file.split("_").length-2];
+          
           var json = require(__dirname+"/pull/dist_"+file.split("_")[0]+"/"+file_decompress.path);
           var json_insert = {};
           json_insert["name"] = json["name"];
           json_insert["data"] = json;
-          console.log("insertData");
-          self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 1);
+          
+          if (typePetition === "wiki"){
+            self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 1);
+          } else if (typePetition === "youtube"){
+            self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 2);
+          } else if (typePetition === "vademecum"){
+            self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 0);
+          }
         });
       });
       self.emitter.on("pulled", function(){

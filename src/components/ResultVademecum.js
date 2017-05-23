@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import ReactHtmlParser from 'react-html-parser';
 var Row = require('react-foundation').Row;
 
 require('react-foundation');
 
-export default class Result extends Component {
+export default class ResultVademecum extends Component {
   constructor(props){
     super(props);
     if (Array.isArray(props.location.state.data))
@@ -11,7 +12,7 @@ export default class Result extends Component {
     else
       this.datos = props.location.state.data.data;
     //this.handleChange = this.handleChange.bind(this);
-    this.table = undefined;
+    this.datos.content = ReactHtmlParser(this.datos.content);
   }
 
   render() {

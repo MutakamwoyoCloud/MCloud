@@ -29,7 +29,7 @@ class TableResult extends Component {
     var params = {};
     params.success = function(request,response){
       browserHistory.push({
-        pathname: '/result',
+        pathname: '/resultWiki',
         state: { data: response }
       });
     }

@@ -110,13 +110,12 @@ c.on('ready', function() {
 
               case  action.pull:
                   if (handler){
-                      var type ="wiki";
-
                       handler.emitter.on('pull', function(item){
                         if (item.ready){
-                          var name = item._id+"_"+type+"_out.tar.gz";
+                          var name = item._id+"_"+item.typePetition+"_out.tar.gz";
                           c.get(fetchFolder+name , function(err, stream) {
                             if (err) throw err;
+                            console.log(name);
                             stream.once('close', function() { c.end(); });
                             stream.pipe(fs.createWriteStream(pullFolder+name));
                             handler.pull();
@@ -134,8 +133,13 @@ c.on('ready', function() {
                     console.log(list);
                     if (err) throw err;
                       list.forEach(function(elem){
-                        if (handler)
+                        console.log(elem.name.split("_")[0]);
+                        if (handler && elem.name.split("_")[0] !== "medicamentos") {
                           handler.data.do(ops.update, {_id: Id(elem.name.split("_")[0])}, {ready:true}, handler.emitter);
+                        }
+                        else if(handler && elem.name.split("_")[0] === "medicamentos") {
+                          handler.data.do(ops.insert,{}, {_id: elem.name.split("_")[0], ready: true, typePetition: "vademecum"}, handler.emitter);
+                        }
                       });
                     c.end();
                   });
