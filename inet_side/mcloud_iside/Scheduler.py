@@ -88,16 +88,16 @@ class Scheduler:
         os.mkdir(list['dir']+"/result/")
         try:
             for l in list['listDir']:
-            if names[0].split("_")[1] == "wiki":
-                params = self.wiki.search(l, names[0], list['dir']+"/result/")
-                if params and len(params) > 0:
-                    for d in params:
-                        listOut.append(d)
-                    compress_file = names[0]+"_out.tar.gz"
-                    compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
-            elif names[0].split("_")[1] == "youtube":
-                print l
-                self.youtube.search(l, names[0], list['dir']+"/result/", petition.split(".")[0])
+                if names[0].split("_")[1] == "wiki":
+                    params = self.wiki.search(l, names[0], list['dir']+"/result/")
+                    if params and len(params) > 0:
+                        for d in params:
+                            listOut.append(d)
+                        compress_file = names[0]+"_out.tar.gz"
+                        compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
+                elif names[0].split("_")[1] == "youtube":
+                    print l
+                    self.youtube.search(l, names[0], list['dir']+"/result/", petition.split(".")[0])
         except:
             print "cannot get resources, check internet connection!"
         os.chdir(self.path)
@@ -124,16 +124,5 @@ class Scheduler:
 
             lenA = len(self.items)
             for j, val in self.items:
-                self.items.insert(lenA-j, self.items[lenA-j-1])
-<<<<<<< 1963f3a82efd9b2c4d42b17fafcad9122e77069c
-        
-        self.items.insert(i, petition)
-            
-
-
-    
-
-=======
-
-        self.items.insert(i, petition)
->>>>>>> trabajando con el modulo de youtube
+                self.items.insert(lenA-j, self.items[lenA-j-1])        
+            self.items.insert(i, petition)
