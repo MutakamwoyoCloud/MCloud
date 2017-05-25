@@ -8,6 +8,7 @@ import threading
 import subprocess
 import schedule
 import time
+import requests
 
 priority = {
     "wiki":0,
@@ -58,8 +59,7 @@ class Scheduler:
     def enqueue(self, x):
         print schedule.jobs
         print "enqueue petition"
-        #schedule.run_all()
-
+        #schedule.run_pending()
         name = self.splitPath(x)[0]
         if(name == "remove"):
             print "remove"
@@ -80,10 +80,15 @@ class Scheduler:
         return self.items == []
 
     def process(self, p = None):
-
         petition = self.dequeue() if p is None else p
         names = self.splitPath(petition)
-        list = decompress(names[0], petition)
+        try:
+            list = decompress(names[0], petition)
+        except OSError as osE:
+            print "error with a file"
+            os.chdir(self.path)
+            shutil.rmtree("../out/"+names[0])
+            self.process(petition)
         listOut = []
         os.mkdir(list['dir']+"/result/")
         try:
@@ -96,15 +101,30 @@ class Scheduler:
                         compress_file = names[0]+"_out.tar.gz"
                         compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
                 elif names[0].split("_")[1] == "youtube":
-                    print l
-                    self.youtube.search(l, names[0], list['dir']+"/result/", petition.split(".")[0])
-        except:
+                    self.youtube.search(l, names[0], list['dir']+"/result/", names[0])
+        except OSError as osE:
+            print "error with a file"
+            os.chdir(self.path)
+            shutil.rmtree(list['dir'])
+        except Exception as eEx:
+            print eEx
+            os.chdir(self.path)
+            shutil.rmtree(list['dir'])
+            time.sleep(15)
+            self.process(petition)
+        except e: 
+            print e
             print "cannot get resources, check internet connection!"
-        os.chdir(self.path)
-        shutil.rmtree(list['dir'])
-        time.sleep(15)
-        self.process(petition) 
+            os.chdir(self.path)
+            shutil.rmtree(list['dir'])
+            time.sleep(15)
+            self.process(petition)
+        print "remove"
+        print petition
+        print os.getcwd()
         os.remove(petition);
+        os.chdir(self.path)
+        
 
     def insertOrderListPetition(self, num, petition):
         i = 0
@@ -125,4 +145,4 @@ class Scheduler:
             lenA = len(self.items)
             for j, val in self.items:
                 self.items.insert(lenA-j, self.items[lenA-j-1])        
-            self.items.insert(i, petition)
+        self.items.insert(i, petition)

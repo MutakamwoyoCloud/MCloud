@@ -57,6 +57,9 @@ def start_server(path):
     observer.join()
 
 def check_directory(path):
+    print "check_directory"
+    print path
+    print os.getcwd()
     for filename in os.listdir(path):
         scheduler.enqueue(path+filename)
         scheduler.process()

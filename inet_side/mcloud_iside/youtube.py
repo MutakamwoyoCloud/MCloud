@@ -14,11 +14,13 @@ class Youtube:
         self = self
         self.path = os.getcwd()
         self.i = 0
+        self.lastProgress = 0
 
     def finish(self, path):
         print "compress"
         compress_file = self.hash+"_out.tar.gz"
-        compress([self.name],self.dirOut, self.dirFinish+compress_file);
+        compress([self.name],self.dirOut, self.dirFinish+compress_file)
+        os.chdir(self.path)
         os.remove(self.dirOut+self.name)
         print "finish"
 
@@ -46,7 +48,7 @@ class Youtube:
                     yt.set_filename(links["search"]+"_youtube"+str(self.i+1))
                     self.i += 1
                     video = -1
-                    ext = "";
+                    ext = ""
                     if len(yt.filter(resolution="240p")) > 0 and len(yt.filter("3gp")) > 0:
                         video = yt.get("3gp", "240p")
                         ext = ".3gp"
@@ -58,5 +60,6 @@ class Youtube:
                         self.dirOut = "./youtube/"
                         self.name = links["search"]+"_youtube"+str(self.i+1)+ext
                         self.dirFinish = "../out/"
-                        video.download("./youtube/", on_finish=self.finish)
+                        if not os.path.exists("./youtube/"+links["search"]+"_youtube"+str(self.i+1)+ext):
+                            video.download("./youtube/", on_finish=self.finish)
 
