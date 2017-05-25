@@ -223,6 +223,9 @@ PH.prototype.search= function(callback, data, type){
   if(type === "youtube"){
     this.data.do(_model.content.getSome,{}, data, this.emitter, 2);
   }
+  if(type === "vademecum"){
+    this.data.do(_model.content.getSome,{}, data, this.emitter, 0);
+  }
 };
 
 PH.prototype.pull= function(callback){
