@@ -15,8 +15,14 @@ def compress(files,folder, nameOut):
 	print files
 	print folder
 	print nameOut
+	if os.path.exists(nameOut):
+		os.remove(nameOut)
 	out = tarfile.open(nameOut, "w")
 	os.chdir(folder)
-	for i in files:
-		out.add(i)
+	if isinstance(files, list):
+		for i in files:
+			out.add(i)
+	else:
+		out.add(files)
+	print "close"
 	out.close()

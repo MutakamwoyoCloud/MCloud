@@ -19,7 +19,7 @@ class Youtube:
     def finish(self, path):
         print "compress"
         compress_file = self.hash+"_out.tar.gz"
-        compress([self.name],self.dirOut, self.dirFinish+compress_file)
+        compress(self.name,self.dirOut, self.dirFinish+compress_file)
         os.chdir(self.path)
         os.remove(self.dirOut+self.name)
         print "finish"
@@ -58,8 +58,8 @@ class Youtube:
                     if video != -1:
                         print 
                         self.dirOut = "./youtube/"
-                        self.name = links["search"]+"_youtube"+str(self.i+1)+ext
+                        self.name = links["search"]+"_youtube"+str(self.i)+ext
                         self.dirFinish = "../out/"
-                        if not os.path.exists("./youtube/"+links["search"]+"_youtube"+str(self.i+1)+ext):
+                        if not os.path.exists("./youtube/"+links["search"]+"_youtube"+str(self.i)+ext):
                             video.download("./youtube/", on_finish=self.finish)
 

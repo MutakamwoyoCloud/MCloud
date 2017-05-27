@@ -103,6 +103,7 @@ class Scheduler:
                 elif names[0].split("_")[1] == "youtube":
                     self.youtube.search(l, names[0], list['dir']+"/result/", names[0])
         except OSError as osE:
+            print osE
             print "error with a file"
             os.chdir(self.path)
             shutil.rmtree(list['dir'])
