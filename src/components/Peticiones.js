@@ -100,7 +100,7 @@ export default class Peticiones extends Component {
           <div className="search">
             <fieldset>
               <legend>Resultados</legend>
-              <Table rows={this.table}/>
+              <Table rows={this.table} type={this.name}/>
             </fieldset>
           </div>
         </Row>

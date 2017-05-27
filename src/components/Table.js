@@ -21,23 +21,37 @@ class TableResult extends Component {
 // Render your table
   constructor(props) {
     super(props);
+    this.type = props.type;
     this.rows = this.props.rows;
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleSubmit(event) {
     console.log(event.target['id']);
     var params = {};
+    var that = this;
     params.success = function(request,response){
-      browserHistory.push({
-        pathname: '/resultWiki',
-        state: { data: response }
-      });
+      if(that.type === "Wikipedia"){
+        browserHistory.push({
+          pathname: '/resultWiki',
+          state: { data: response }
+        });
+      } else if(that.type === "Youtube"){
+        browserHistory.push({
+          pathname: '/resultYoutube',
+          state: { data: response }
+        });
+      } else if(that.type === "Vademecum"){
+        browserHistory.push({
+          pathname: '/resultVademecum',
+          state: { data: response }
+        });
+      }
     }
     params.error = function(response){
       console.log(response);
     }
     params.data = event.target['id'];
-    params.type = "wiki";
+    params.type = this.type;
     if(params.data !== "")
       CommonActions.list(params, "getData");
     event.preventDefault();
