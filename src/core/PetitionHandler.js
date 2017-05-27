@@ -4,6 +4,7 @@ var archiver = require("archiver");
 var tools = require("./utils");
 var events = require("events");
 var _model = require("./Data");
+var tar = require('tar')
 const decompress = require("decompress");
 
 var schedule = require("node-schedule");
@@ -12,6 +13,7 @@ var ftpw = require("./FTPwrapper");
 var mongodb = require("mongodb");
 
 const pullFolder = "./src/core/pull/";
+const videoDestination = "./videos/";
 
 /* Constructor
 * Create a new handler object
@@ -81,26 +83,41 @@ self.data.do(_model.op.insert,{}, {ready: false, typePetition: type}, self.emitt
 
 }
 
+
 //receive and decompress a package 
 function receive_package(self){
   var pull_folder = pullFolder;
+  var myself = self;
   fs.readdir(pull_folder, (err, files) => {
     files.forEach(file => {
-      console.log(file);
-      decompress(pull_folder+file, pull_folder+"dist_"+file.split("_")[0]).then(files_decompress => {
-        files_decompress.forEach(file_decompress => {
-          var name_search = file_decompress.path.split("_")[1].split(".")[0];
-          var typePetition = file.split("_")[file.split("_").length-2];
-          
-          var json = require(__dirname+"/pull/dist_"+file.split("_")[0]+"/"+file_decompress.path);
+      var typePetition = file.split("_")[file.split("_").length-2];
+      var distFolder = pull_folder+"dist_"+file.split("_")[0];
+      if (typePetition === "youtube"){
+        distFolder = videoDestination+file.split("_")[0];
+      }
+      fs.mkdirSync(distFolder);
+      tar.x({
+        file: pull_folder+file, 
+        cwd : distFolder
+        }).then(_=> {
+        fs.readdirSync(distFolder).forEach(function(file_decompress,index){
+      //decompress(pull_folder+file, pull_folder+"dist_"+file.split("_")[0]).then(files_decompress => {
+        //console.log("file: "+file_decompress);
+        //files_decompress.forEach(file_decompress => {
+          var name_search = file_decompress.split("_")[1].split(".")[0];
           var json_insert = {};
-          json_insert["name"] = json["name"];
-          json_insert["data"] = json;
-          
+          console.log(file.split("_")[0]);
+          if(typePetition !== "youtube"){
+            var json = require(__dirname+"/pull/dist_"+file.split("_")[0]+"/"+file_decompress);
+            json_insert["name"] = json["name"];
+            json_insert["data"] = json;
+          } else {
+            json_insert["name"] = file_decompress;
+            json_insert["data"] = {"name": file_decompress, "url": distFolder+"/"+file_decompress};
+            self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 2);
+          }
           if (typePetition === "wiki"){
             self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 1);
-          } else if (typePetition === "youtube"){
-            self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 2);
           } else if (typePetition === "vademecum"){
             self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 0);
           }
@@ -115,9 +132,8 @@ function receive_package(self){
         }); 
         if( fs.existsSync(__dirname+"/pull/"+file) ) {
           deleteFolderRecursive(__dirname+"/pull/dist_"+file.split("_")[0]);
-        }
-        if( fs.existsSync(__dirname+"/pull/"+file) ) {
           self.data.do(_model.op.remove,file.split("_")[0], {}, null);
+          console.log(file);
           fs.unlinkSync(__dirname+"/pull/"+file);
         }
       })
@@ -221,6 +237,7 @@ PH.prototype.search= function(callback, data, type){
     this.data.do(_model.content.getSome,{}, data, this.emitter, 1);
   }
   if(type === "youtube"){
+    console.log(data);
     this.data.do(_model.content.getSome,{}, data, this.emitter, 2);
   }
   if(type === "vademecum"){

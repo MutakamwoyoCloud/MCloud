@@ -81,7 +81,7 @@ var content = {
     },
     getSome : function(db, query, data, type, emitter){
         var data_reg = new RegExp(".*"+data+".*", "i");
-        db.collection(type).find({ "data.name" : data_reg}).toArray(function(err, results) {
+        db.collection(type).find({ name : data_reg}).toArray(function(err, results) {
             emitter.emit('findSomeone', results);
         });
     },
