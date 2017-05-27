@@ -19,7 +19,7 @@
 		}
 	},
 
-	"packet_limit" : 1,
+	"packet_limit" : 2,
 	"pullFolder" : "./src/core/pull/",
 	"pushFolder" : "./src/core/push/"
 }

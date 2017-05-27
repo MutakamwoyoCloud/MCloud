@@ -117,6 +117,10 @@ case "$arg_type" in
 
         mkdir $PHOME/MCloud/inet_side/received
         mkdir $PHOME/MCloud/inet_side/out
+        mkdir $PHOME/MCloud/inet_side/mcloud_iside/youtube
+        mkdir $PHOME/MCloud/inet_side/mcloud_iside/vademecum/resultsMedicamentos
+        mkdir $PHOME/MCloud/inet_side/mcloud_iside/vademecum/resultsTar
+        
 
         chown -R $PUSER:$PUSER $PHOME/MCloud
         (cd $PHOME/MCloud/inet_side && pip install -r requirements.txt)
