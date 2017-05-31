@@ -18,8 +18,8 @@ class Post(Item):
         soup = BeautifulSoup(urlopen(url))
         div = soup.findAll("div", { "class" : "left" })
         title = str(self['url'][0]).split('/')
-        #gs = goslate.Goslate()
-        #div = gs.translate(str(div), 'fr')
+        gs = goslate.Goslate()
+        div = gs.translate(str(div), 'fr')
         f = open("./vademecum/resultsMedicamentos/"+title[1] +".html", 'w')
         json = "{\
             'name': "+title[1]+"\

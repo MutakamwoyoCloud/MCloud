@@ -1,9 +1,5 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Editor de Spyder
-
-Este es un archivo temporal
-"""
 import goslate
 import requests
 from bs4 import BeautifulSoup
@@ -14,15 +10,36 @@ def enfermedades():
     f = open("config.txt", 'r')
     num = int(f.read())
     f.close()        
-    req = requests.get(url+entrada+ABECEDARIO[num]+"_1")
+    num = num + 1
+    if num > 24:
+        num = 0
+    f = open("config.txt", 'w')
+    f.write(str(num))
+    f.close()
+    req = requests.get(url+entrada+ABECEDARIO[num-1]+"_1")
     html = BeautifulSoup(req.text, "html.parser")
     ref = html.find('ul', {'class': 'no-bullet'})
     entradas = ref.find_all('a')
+    gs = goslate.Goslate()
     for i in entradas:
         pagina = requests.get(url+i.get('href'))
-        gs = goslate.Goslate()
-        pagina = gs.translate(pagina, 'fr')
-        f = open(i +".html", 'w')
+        soup = BeautifulSoup(urlopen(url))
+        div = soup.findAll("div", { "class" : "left" })
+        
+        div = gs.translate(div, 'fr')
+        json = "{\
+            'name': "+i.get('href')+"\
+            'data': '<!DOCTYPE html>\
+            <html>\
+            <head>\
+                <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\
+            </head>\
+            <body>'\
+                "+str(div)+"\
+            </body>\
+            </html>"
+        
+        f = open("./vademecum/resultadosEnfermedades/"+ i.get('href') +".html", 'w')
         f.write(pagina)
         f.close()
 #enfermedades()
