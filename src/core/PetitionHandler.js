@@ -101,9 +101,6 @@ function receive_package(self){
         cwd : distFolder
         }).then(_=> {
         fs.readdirSync(distFolder).forEach(function(file_decompress,index){
-      //decompress(pull_folder+file, pull_folder+"dist_"+file.split("_")[0]).then(files_decompress => {
-        //console.log("file: "+file_decompress);
-        //files_decompress.forEach(file_decompress => {
           var name_search = file_decompress.split("_")[1].split(".")[0];
           var json_insert = {};
           console.log(file.split("_")[0]);
@@ -263,6 +260,12 @@ PH.prototype.searchOne= function(callback, data, type){
     else
       callback({});
   });
-  if(type === "wiki")
+  console.log(type)
+  if(type === "Wikipedia") {
     this.data.do(_model.content.get,{}, data, this.emitter, 1);
+  } else if(type === "Youtube"){
+    this.data.do(_model.content.get,{}, data, this.emitter, 2);
+  } else if(type === "Vademecum"){
+    this.data.do(_model.content.get,{}, data, this.emitter, 0);
+  }
 };

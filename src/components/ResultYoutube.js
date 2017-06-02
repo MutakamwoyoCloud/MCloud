@@ -23,7 +23,7 @@ export default class ResultYoutube extends Component {
           <div className="search">
             <fieldset>
               <legend><h3>Contenido</h3></legend>
-              <video src={this.datos.video} width="600" controls />
+              <video src={this.datos.url} width="800" controls />
             </fieldset>
           </div>
         </Row>

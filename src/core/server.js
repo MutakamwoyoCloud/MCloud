@@ -30,7 +30,6 @@ app.post('/api/form', (req, res) => {
 app.get('/api/getData', (req, res, next) => {
   const name = req.query.data;
   const type= req.query.type;
-  console.log(name);
   if (!name) {
     res.json({
       error: 'Missing required parameter `data`',
