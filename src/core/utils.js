@@ -26,7 +26,6 @@ module.exports={
             else if (type == 2)
                 df="youtube";
             
-            console.log("type: "+type);
 
 
 
