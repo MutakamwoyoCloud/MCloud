@@ -79,6 +79,11 @@ class Scheduler:
     def isEmpty(self):
         return self.items == []
 
+    def fail(self, dirpath, petition):
+        os.chdir(self.path)
+        shutil.rmtree(dirpath)
+        time.sleep(15)
+
     def process(self, p = None):
         petition = self.dequeue() if p is None else p
         names = self.splitPath(petition)
@@ -104,16 +109,11 @@ class Scheduler:
                     self.youtube.search(l, names[0], list['dir']+"/result/", names[0])
         except OSError as osE:
             print osE
+            print "por akiii"
             print "error with a file"
             os.chdir(self.path)
             shutil.rmtree(list['dir'])
-        except Exception as eEx:
-            print eEx
-            os.chdir(self.path)
-            shutil.rmtree(list['dir'])
-            time.sleep(15)
-            self.process(petition)
-        except e: 
+        except Exception, e: 
             print e
             print "cannot get resources, check internet connection!"
             os.chdir(self.path)
