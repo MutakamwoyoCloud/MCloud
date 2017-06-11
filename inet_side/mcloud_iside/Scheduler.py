@@ -9,6 +9,7 @@ import subprocess
 import schedule
 import time
 import requests
+import traceback
 
 priority = {
     "wiki":0,
@@ -109,12 +110,12 @@ class Scheduler:
                     self.youtube.search(l, names[0], list['dir']+"/result/", names[0])
         except OSError as osE:
             print osE
-            print "por akiii"
             print "error with a file"
             os.chdir(self.path)
             shutil.rmtree(list['dir'])
         except Exception, e: 
             print e
+            traceback.print_exc()
             print "cannot get resources, check internet connection!"
             os.chdir(self.path)
             shutil.rmtree(list['dir'])
