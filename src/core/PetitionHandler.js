@@ -13,7 +13,7 @@ var ftpw = require("./FTPwrapper");
 var mongodb = require("mongodb");
 
 const pullFolder = "./src/core/pull/";
-const videoDestination = "./videos/";
+const videoDestination = "./public/videos/";
 
 /* Constructor
 * Create a new handler object

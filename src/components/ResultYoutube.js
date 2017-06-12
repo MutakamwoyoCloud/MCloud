@@ -17,14 +17,11 @@ export default class ResultYoutube extends Component {
     return (
       <div>
         <Row isColumn>
-         <h1 className="texto_principal_peticiones">{this.datos.name}</h1>
+          <h1 className="texto_principal_peticiones App-header">{this.datos.name}</h1>
         </Row>
         <Row isColumn>
-          <div className="search">
-            <fieldset>
-              <legend><h3>Contenido</h3></legend>
-              <video src={this.datos.url} width="800" controls />
-            </fieldset>
+          <div className="search" style={{display: 'flex', justifyContent: 'center'}}>
+              <video src={this.datos.url} width="800" controls type="video/3gp"/>
           </div>
         </Row>
       </div>
