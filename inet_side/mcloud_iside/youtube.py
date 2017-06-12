@@ -49,12 +49,12 @@ class Youtube:
                     self.i += 1
                     video = -1
                     ext = ""
-                    if len(yt.filter(resolution="240p")) > 0 and len(yt.filter("3gp")) > 0:
-                        video = yt.get("3gp", "240p")
-                        ext = ".3gp"
-                    elif len(yt.filter(resolution="480p")) > 0 and len(yt.filter("flv")) > 0:
-                        video = yt.get("flv", "420p")
-                        ext = ".flv"
+                    if len(yt.filter(resolution="240p")) > 0 and len(yt.filter("webm")) > 0:
+                        video = yt.get("webm", "360p")
+                        ext = ".webm"
+                    elif len(yt.filter(resolution="480p")) > 0 and len(yt.filter("mp4")) > 0:
+                        video = yt.get("mp4", "360p")
+                        ext = ".mp4"
                     if video != -1:
                         print 
                         self.dirOut = "./youtube/"

@@ -95,12 +95,18 @@ class Scheduler:
             os.chdir(self.path)
             shutil.rmtree("../out/"+names[0])
             self.process(petition)
+        except IOError as osIO:
+            print "ioerror"
+            os.chdir(self.path)
+            shutil.rmtree("../out/"+names[0])
+            return;
         listOut = []
         os.mkdir(list['dir']+"/result/")
         try:
             for l in list['listDir']:
                 if names[0].split("_")[1] == "wiki":
                     params = self.wiki.search(l, names[0], list['dir']+"/result/")
+                    print params
                     if params and len(params) > 0:
                         for d in params:
                             listOut.append(d)
@@ -124,8 +130,9 @@ class Scheduler:
         print "remove"
         print petition
         print os.getcwd()
-        os.remove(petition);
         os.chdir(self.path)
+        os.remove(petition)
+        shutil.rmtree(list['dir'])
         
 
     def insertOrderListPetition(self, num, petition):
