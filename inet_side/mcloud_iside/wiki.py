@@ -9,7 +9,7 @@ class Wiki:
         self = self
     def search(self, name, dir, dirOut):
         try:
-            archivo = open("../out/"+dir+"/"+name)
+            archivo = open("/home/mcloud/MCloud/inet_side/out/"+dir+"/"+name)
             archivo = archivo.read()
             links = json.loads(archivo)
             wikipedia.set_lang("es")
@@ -18,13 +18,18 @@ class Wiki:
             params = {}
             nombres = []
             for i in range(int(links['num'])):
+
                 data = wikipedia.page(options[i])
+
                 params['name'] = options[i]
                 params['content'] = data.content
                 params['url'] = data.url
                 params['links'] = data.links
-                nombres.append("wiki_"+links['search']+str(i+1)+".json")
-                archivo = open(dirOut+nombres[i], "w")
+
+                name ="wiki_"+links['search']+str(i+1)+".json"
+                nombres.append(name)
+                print("processing "+nombres[i])
+                archivo = open("/home/mcloud/MCloud/inet_side/out/"+dir+"/result/"+nombres[i], "w")
                 archivo.write(json.dumps(params))
             return nombres
         except wikipedia.exceptions.DisambiguationError as e:

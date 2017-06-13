@@ -90,43 +90,37 @@ class Scheduler:
         names = self.splitPath(petition)
         try:
             list = decompress(names[0], petition)
-        except OSError as osE:
-            print "error with a file"
-            os.chdir(self.path)
-            shutil.rmtree("../out/"+names[0])
-            self.process(petition)
-        except IOError as osIO:
-            print "ioerror"
-            os.chdir(self.path)
-            shutil.rmtree("../out/"+names[0])
-            return;
-        listOut = []
-        os.mkdir(list['dir']+"/result/")
-        try:
+            listOut = []
+            localid = list['dir'].split('/')[2]
+            os.mkdir(list['dir']+"/result/")
             for l in list['listDir']:
                 if names[0].split("_")[1] == "wiki":
+                    print("list[dir]: "+list['dir'])
                     params = self.wiki.search(l, names[0], list['dir']+"/result/")
                     print params
                     if params and len(params) > 0:
                         for d in params:
                             listOut.append(d)
                         compress_file = names[0]+"_out.tar.gz"
-                        compress(listOut,list['dir']+"/result/", list['dir']+"/../"+compress_file)
+                        toCompress=list['dir']+"/result/" 
+                        absCompress="/home/mcloud/MCloud/inet_side/out/"+localid+"/result"
+                        destination="/home/mcloud/MCloud/inet_side/out/"+compress_file
+                        print("esta es la ruta "+absCompress)
+                        compress(listOut, absCompress, destination)
                 elif names[0].split("_")[1] == "youtube":
                     self.youtube.search(l, names[0], list['dir']+"/result/", names[0])
         except OSError as osE:
             print osE
+            traceback.print_exc()
             print "error with a file"
-            os.chdir(self.path)
-            shutil.rmtree(list['dir'])
-        except Exception, e: 
+#            os.chdir(self.path)
+#            shutil.rmtree(list['dir'])
+        except Exception, e:        #generic 
             print e
             traceback.print_exc()
-            print "cannot get resources, check internet connection!"
-            os.chdir(self.path)
-            shutil.rmtree(list['dir'])
-            time.sleep(15)
-            self.process(petition)
+            #self.fail(list['dir'], 0)
+            #self.process(petition)
+            return
         print "remove"
         print petition
         print os.getcwd()
