@@ -10,6 +10,7 @@ export default class ResultYoutube extends Component {
       this.datos = props.location.state.data[0].data;
     else
       this.datos = props.location.state.data.data;
+    this.datos.url = '.'+this.datos.url.slice(8);
     //this.handleChange = this.handleChange.bind(this);
   }
 
@@ -21,7 +22,7 @@ export default class ResultYoutube extends Component {
         </Row>
         <Row isColumn>
           <div className="search" style={{display: 'flex', justifyContent: 'center'}}>
-              <video src={this.datos.url} width="800" controls type="video/3gp"/>
+              <video src={this.datos.url} width="800" controls type="video/webm"/>
           </div>
         </Row>
       </div>

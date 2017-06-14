@@ -4,7 +4,7 @@ var archiver = require("archiver");
 var tools = require("./utils");
 var events = require("events");
 var _model = require("./Data");
-var tar = require('tar')
+var tar = require('tar-fs')
 const decompress = require("decompress");
 
 var schedule = require("node-schedule");
@@ -97,49 +97,54 @@ function receive_package(self){
         if (typePetition === "youtube"){
             distFolder = videoDestination+file.split("_")[0];
         }
-        fs.mkdirSync(distFolder);
-        tar.x({
-            file: pull_folder+file, 
-            cwd : distFolder
-            }).then(_=> {
-                fs.readdirSync(distFolder).forEach(function(file_decompress,index){
-                    var name_search = file_decompress.split("_")[1].split(".")[0];
-                    var json_insert = {};
-                    console.log(file.split("_")[0]);
-                    if(typePetition !== "youtube"){
-                        var absolutepath=__dirname+"/pull/dist_"+file.split("_")[0]+"/"+file_decompress;
-                        console.log("processing received petition..."+absolutepath);
-                        var json = require(absolutepath);
-                        json_insert["name"] = json["name"];
-                        json_insert["data"] = json;
-                    } 
-                    else {//youtube
-                        json_insert["name"] = file_decompress;
-                        json_insert["data"] = {"name": file_decompress, "url": distFolder+"/"+file_decompress};
-                        self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 2);
-                    }
-                    if (typePetition === "wiki"){
-                        self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 1);
-                    } 
-                    else if (typePetition === "vademecum"){
-                        self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 0);
-                    }
+        if (!fs.existsSync(distFolder)) {
+          fs.mkdirSync(distFolder);
+        }
+        var extract = tar.extract(distFolder)
+        extract.on('finish',function(){
+          console.log("descompresion completada");
+          fs.readdirSync(distFolder).forEach(function(file_decompress,index){
+            var name_search = file_decompress.split("_")[1].split(".")[0];
+            var json_insert = {};
+            console.log(file.split("_")[0]);
+            if(typePetition !== "youtube"){
+                var absolutepath=__dirname+"/pull/dist_"+file.split("_")[0]+"/"+file_decompress;
+                console.log("processing received petition..."+absolutepath);
+                var json = require(absolutepath);
+                json_insert["name"] = json["name"];
+                json_insert["data"] = json;
+            }
+            else {//youtube
+                fs.rename(distFolder+"/"+file_decompress, distFolder+"/"+file_decompress.split(' ').join('_'), function (err) {
+                  if (err) throw err;
+                  json_insert["name"] = file_decompress;
+                  json_insert["data"] = {"name": file_decompress, "url": distFolder+"/"+file_decompress.split(' ').join('_')};
+                  self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 2);
                 });
+            }
+            if (typePetition === "wiki"){
+                self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 1);
+            }
+            else if (typePetition === "vademecum"){
+                self.data.do(_model.op.insertData,{}, json_insert, self.emitter, 0);
+            }
+          });
+        });
+        fs.createReadStream(pull_folder+file).pipe(extract);
+        self.emitter.on("pulled", function(){
+            fs.appendFile(__dirname+"/flush/remove.txt", file+"\n", function(err) {
+                if(err) {
+                    return console.log(err);
+                }
+                 console.log("The file was saved!");
             });
-            self.emitter.on("pulled", function(){
-                fs.appendFile(__dirname+"/flush/remove.txt", file+"\n", function(err) {
-                    if(err) {
-                        return console.log(err);
-                    }
-                     console.log("The file was saved!");
-                }); 
-                if( fs.existsSync(__dirname+"/pull/"+file) ) {
-                    deleteFolderRecursive(__dirname+"/pull/dist_"+file.split("_")[0]);
-                    self.data.do(_model.op.remove,file.split("_")[0], {}, null);
-                    console.log(file);
-                    fs.unlinkSync(__dirname+"/pull/"+file);
-               }
-            })
+            if( fs.existsSync(__dirname+"/pull/"+file) ) {
+                deleteFolderRecursive(__dirname+"/pull/dist_"+file.split("_")[0]);
+                self.data.do(_model.op.remove,file.split("_")[0], {}, null);
+                console.log(file);
+                fs.unlinkSync(__dirname+"/pull/"+file);
+           }
+        })
     });
   });
 }
