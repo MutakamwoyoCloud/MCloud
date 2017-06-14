@@ -33,7 +33,8 @@ def htmlToFile(entradas):
         div = gs.translate(div, 'fr')
         json = "{\
             'name': "+i.get('href')+"\
-            'data': '<!DOCTYPE html>\
+            'data': {'name':"+i.get('href')+",\
+                     'content':'<!DOCTYPE html>\
             <html>\
             <head>\
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\
@@ -41,7 +42,8 @@ def htmlToFile(entradas):
             <body>'\
                 "+str(div)+"\
             </body>\
-            </html>"
+            </html>'}\
+            }"
         
         f = open("./vademecum/resultadosEnfermedades/"+ i.get('href') +".html", 'w')
         f.write(json)

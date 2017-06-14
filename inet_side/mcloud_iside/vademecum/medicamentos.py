@@ -22,8 +22,9 @@ class Post(Item):
         div = gs.translate(str(div), 'fr')
         f = open("./vademecum/resultsMedicamentos/"+title[1] +".html", 'w')
         json = "{\
-            'name': "+title[1]+"\
-            'data': '<!DOCTYPE html>\
+            'name': "+title[1]+",\
+            'data': {'name':"+title[1]+",\
+                    'content':'<!DOCTYPE html>\
             <html>\
             <head>\
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />\
@@ -31,7 +32,8 @@ class Post(Item):
             <body>'\
                 "+str(div)+"\
             </body>\
-            </html>"
+            </html>'}\
+            }"
         f.write(json)
         f.close()
 
