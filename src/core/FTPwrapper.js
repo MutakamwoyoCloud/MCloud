@@ -12,10 +12,10 @@ var content = _model.content;
 
 const pushFolder = './src/core/push/';
 const flushFolder = './src/core/flush/';
-const pullFolder = './src/core/pull/'
-const fetchFolder = 'MCloud/inet_side/out/'
+const pullFolder = './src/core/pull/';
+const fetchFolder = 'MCloud/inet_side/out/';
 
-var options = {}
+var options = {};
 
 /*
 * Action describe us the all ftp states

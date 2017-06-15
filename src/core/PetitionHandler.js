@@ -4,7 +4,7 @@ var archiver = require("archiver");
 var tools = require("./utils");
 var events = require("events");
 var _model = require("./Data");
-var tar = require('tar-fs')
+var tar = require("tar-fs");
 const decompress = require("decompress");
 
 var schedule = require("node-schedule");
@@ -14,6 +14,7 @@ var mongodb = require("mongodb");
 
 const pullFolder = "./src/core/pull/";
 const videoDestination = "./public/videos/";
+const types=["wiki", "youtube", "vademecum"];
 
 /* Constructor
 * Create a new handler object
@@ -46,43 +47,56 @@ schedule.scheduleJob(timeFinish, function(){
 
 //this function create a package and enqueue
 function create_package(self, type){
+  if(types.indexOf(type) > -1){
+    self.emitter.on("newPackage", function(id){
 
-  self.emitter.on("newPackage", function(id){
+      var archive = archiver("tar", {
+        gzip: true,
+        store: true // Sets the compression method to STORE.
+      });
 
-    var archive = archiver("tar", {
-      gzip: true,
-      store: true // Sets the compression method to STORE.
+      // good practice to catch this error explicitly
+      archive.on("error", function(err) {
+        throw err;
+      });
+      var file_tar = __dirname + "/push/"+id+"_"+type+".tar.gz"
+      var output = fs.createWriteStream(file_tar);
+
+      // listen for all archive data to be written
+      output.on("close", function() {
+
+        console.log(archive.pointer() + " total bytes");
+        console.log("archiver has been finalized and the output file descriptor has closed.");
+      });
+
+      archive.pipe(output);
+
+      self.enqueue(id);
+
+      for (var i = 0, len = self._petitionsObj[type].length; i < len; i++){
+        archive.append(JSON.stringify(self._petitionsObj[type][i]), {name: i+".json"});
+      }
+      archive.finalize();
+      self.reset(type);
     });
 
-    // good practice to catch this error explicitly
-    archive.on("error", function(err) {
-      throw err;
-    });
-
-    var output = fs.createWriteStream(__dirname + "/push/"+id+"_"+type+".tar.gz");
-
-    // listen for all archive data to be written
-    output.on("close", function() {
-
-      console.log(archive.pointer() + " total bytes");
-      console.log("archiver has been finalized and the output file descriptor has closed.");
-    });
-
-    archive.pipe(output);
-
-    self.enqueue(id);
-
-    for (var i = 0, len = self._petitionsObj[type].length; i < len; i++){
-      archive.append(JSON.stringify(self._petitionsObj[type][i]), {name: i+".json"});
-    }
-    archive.finalize();
-    self.reset(type);
-  });
-
-self.data.do(_model.op.insert,{}, {ready: false, typePetition: type}, self.emitter);
-
+  self.data.do(_model.op.insert,{}, {ready: false, typePetition: type}, self.emitter);
+ }
 }
 
+function deleteFolderRecursive(path) {
+  if( fs.existsSync(path) ) {
+    fs.readdirSync(path).forEach(function(file,index){
+      var curPath = path + "/" + file;
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath);
+      } else { // delete file
+        fs.unlinkSync(curPath);
+      }
+    });
+    fs.rmdirSync(path);
+  }
+}
 
 //receive and decompress a package 
 function receive_package(self){
@@ -99,7 +113,7 @@ function receive_package(self){
           fs.mkdirSync(distFolder);
         }
         var extract = tar.extract(distFolder)
-        extract.on('finish',function(){
+        extract.on("finish",function(){
           console.log("descompresion completada");
           fs.readdirSync(distFolder).forEach(function(file_decompress,index){
             var name_search = file_decompress.split("_")[1].split(".")[0];
@@ -145,19 +159,7 @@ function receive_package(self){
   });
 }
 
-function deleteFolderRecursive(path) {
-  if( fs.existsSync(path) ) {
-    fs.readdirSync(path).forEach(function(file,index){
-      var curPath = path + "/" + file;
-      if(fs.lstatSync(curPath).isDirectory()) { // recurse
-        deleteFolderRecursive(curPath);
-      } else { // delete file
-        fs.unlinkSync(curPath);
-      }
-    });
-    fs.rmdirSync(path);
-  }
-}
+
 
 var PH = module.exports = function(package_size){
 
@@ -206,7 +208,10 @@ PH.prototype.dequeue = function(){
 };
 
 PH.prototype.reset = function(type){
-  this._petitionsNum[type] = 0; 
+
+  if(types.indexOf(type) > -1){
+    this._petitionsNum[type] = 0; 
+  }
 };
 
 

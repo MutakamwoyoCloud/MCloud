@@ -1,9 +1,8 @@
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require("mongodb").MongoClient;
 var mongodb = require('mongodb');
-var ObjectId = require('mongodb').ObjectId;
 var assert = require('assert');
-var ObjectId = require('mongodb').ObjectID;
-var _sys = require('./utils').module;
+var ObjectId = require("mongodb").ObjectID;
+var _sys = require("./utils").module;
 
 var url = 'mongodb://localhost:27017/mcloud';
 var u = 'mongodb://localhost:5223/mcloud';
@@ -16,8 +15,9 @@ var u = 'mongodb://localhost:5223/mcloud';
 * * */
 var _Data = function(server){
 
-    if (server)
+    if (server){
         url = server;
+    }
 
 }
 
@@ -61,7 +61,6 @@ var operation = {
     },
 
     remove: function(db, query, toModify,type, emmiter){
-        console.log("remove:'"+query+"'")
         db.collection(type).deleteOne({ "_id" : new mongodb.ObjectID(query) });
     }
 }
@@ -85,7 +84,6 @@ var content = {
         });
     },
     get : function(db, query, data, type, emitter){
-        console.log("data: "+data);
         db.collection(type).findOne({name : data}, function(err, result){
             emitter.emit('findOne', result);
         });        
@@ -93,19 +91,6 @@ var content = {
 
 
 }
-
-
-/* accesing Cursor ObjectI
-   Not mandatory!
-
-        if (cursor){
-            if (cursor.constructor.name == "Cursor"){
-                cursor.forEach(function(item, err) {
-                    console.log(item);
-                });
-            }
-        }  we iterate over the cursos printing all documents
-*/
  
 /*
  * MODEL's MAIN FUNCTION
@@ -129,8 +114,9 @@ _Data.prototype.do = function(callback, query, data, emitter, type){
 
     var default_col = 'fetch';
     
-    if (type)
+    if (type){
         default_col =_sys.get(type);
+    }
 
     MongoClient.connect(url, function(err,db){
         assert.equal(null, err);

@@ -1,5 +1,5 @@
-const express = require('express');
-const fs = require('fs');
+const express = require("express");
+const fs = require("fs");
 const bodyParser = require("body-parser");
 const app = express();
 
@@ -15,8 +15,8 @@ app.set('port', (process.env.PORT || 3001));
 app.use(bodyParser.json());
 
 // Express only serves static assets in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
 }
 
 app.post('/api/form', (req, res) => {
@@ -45,7 +45,7 @@ app.get('/api/search', (req, res, next) => {
 
   if (!param) {
     res.json({
-      error: 'Missing required parameter `data`',
+      error: "Missing required parameter `data`",
     });
     return;
   }
@@ -75,7 +75,7 @@ app.get('/api/push', (req, res, next) =>{
     res.redirect('http://localhost:3000/test')
 });
 
-app.get('/api/generate', (req, res, next)=>{
+app.get('/api/generate', (req, res, next) => {
     var dict = ["hitler", "africa", "madrid", "barcelona", "obama", "nadal", "opennebula", "arkano", "segovia", "mcdonald", "navidad", "microsoft", "google", "apple", "ebro", "extremoduro", "amazonas"];  
 
 	var petition = {};
