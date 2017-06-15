@@ -1,7 +1,7 @@
   module.exports = {
    list,
    newPetition
-  }
+  };
   var $ = require('jquery');
   function list(params, resource, path) {
     var callback = params.success;
@@ -27,14 +27,14 @@
   function newPetition(params, resource, path) {
       var callback = params.success;
       var callbackError = params.error;
-      var data = params.data;
+      var dataP = params.data;
       var request;
       var reqPath = path ? path : resource.toLowerCase();
 
       $.ajax({
         url: "/api/"+reqPath,
         type: "POST",
-        data: data,
+        data: dataP,
         contentype: "application/json",
         success: function(response) {
           return callback ? callback(request, response) : null;

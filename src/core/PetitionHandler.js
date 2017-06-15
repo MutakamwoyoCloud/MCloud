@@ -91,8 +91,6 @@ function receive_package(self){
   fs.readdir(pull_folder, (err, files) => {
     files.forEach(file => {
         var typePetition = file.split("_")[file.split("_").length-2];
-        console.log("procesando file: "+file)
-        console.log(typePetition);
         var distFolder = pull_folder+"dist_"+file.split("_")[0];
         if (typePetition === "youtube"){
             distFolder = videoDestination+file.split("_")[0];
@@ -106,7 +104,6 @@ function receive_package(self){
           fs.readdirSync(distFolder).forEach(function(file_decompress,index){
             var name_search = file_decompress.split("_")[1].split(".")[0];
             var json_insert = {};
-            console.log(file.split("_")[0]);
             if(typePetition !== "youtube"){
                 var absolutepath=__dirname+"/pull/dist_"+file.split("_")[0]+"/"+file_decompress;
                 console.log("processing received petition..."+absolutepath);
@@ -141,10 +138,9 @@ function receive_package(self){
             if( fs.existsSync(__dirname+"/pull/"+file) ) {
                 deleteFolderRecursive(__dirname+"/pull/dist_"+file.split("_")[0]);
                 self.data.do(_model.op.remove,file.split("_")[0], {}, null);
-                console.log(file);
                 fs.unlinkSync(__dirname+"/pull/"+file);
            }
-        })
+        });
     });
   });
 }
@@ -225,8 +221,6 @@ PH.prototype.add_petition= function(data){
 
   this._petitionsObj[data.type][this._petitionsNum[data.type]] = data;
   this._petitionsNum[data.type]++;
-  console.log(this._petitionsNum[data.type]);
-  console.log(this._package_size);
   if (this._petitionsNum[data.type] === this._package_size){
     create_package(this, data.type);
   }
@@ -245,7 +239,6 @@ PH.prototype.search= function(callback, data, type){
     this.data.do(_model.content.getSome,{}, data, this.emitter, 1);
   }
   if(type === "youtube"){
-    console.log(data);
     this.data.do(_model.content.getSome,{}, data, this.emitter, 2);
   }
   if(type === "vademecum"){
@@ -265,13 +258,11 @@ PH.prototype.fetch= function(){
 
 PH.prototype.searchOne= function(callback, data, type){
   this.emitter.once("findOne", function(dataFind){
-    console.log(dataFind);
     if(dataFind)
       callback(dataFind);
     else
       callback({});
   });
-  console.log(type)
   if(type === "Wikipedia") {
     this.data.do(_model.content.get,{}, data, this.emitter, 1);
   } else if(type === "Youtube"){

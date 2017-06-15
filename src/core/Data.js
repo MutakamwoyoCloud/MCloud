@@ -45,10 +45,9 @@ var operation = {
     },
 
     update: function(db, query, toModify, type, emmiter){
-        console.log(query);
-        db.collection(type).findAndModify(
+            db.collection(type).findAndModify(
             query, // query
-            [['_id','asc']],  // sort order
+            [["_id","asc"]],  // sort order
             {$set: toModify}, // replacement, replaces only the field "hi"
             {}, // options
             function(err, object) {

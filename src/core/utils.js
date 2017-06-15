@@ -19,16 +19,13 @@ module.exports={
         get: function(type){
             var df = "NaN";
 
-            if (type == 0)
+            if (type == 0) {
                 df="vademecum";
-            else if (type == 1)
+            } else if (type == 1) {
                 df="wiki";
-            else if (type == 2)
+            } else if (type == 2) {
                 df="youtube";
-            
-
-
-
+            }
             return df;
         }
 

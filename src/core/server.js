@@ -6,13 +6,11 @@ const app = express();
 var ph = require('./PetitionHandler');
 var ftpw = require('./FTPwrapper');
 var tools = require('./utils');
-var config = require('../../config.json')
+var config = require("../../config.json");
 
 var petition_handler = new ph(config.packet_limit);
 ftpw.init(petition_handler, config.provider);
 
-console.log(config);
-//console.log(config);
 app.set('port', (process.env.PORT || 3001));
 app.use(bodyParser.json());
 
@@ -37,7 +35,6 @@ app.get('/api/getData', (req, res, next) => {
     return;
   }
   petition_handler.searchOne(function(dataRes){
-    console.log(dataRes);
     res.send(dataRes);
   },name, type);
 });
@@ -59,7 +56,6 @@ app.get('/api/search', (req, res, next) => {
 });
 
 app.get('/api/flush', (req, res, next) => {
-    console.log("flush")
     ftpw.exec(ftpw.action.flush);
     res.redirect('http://localhost:3000/test')
 });

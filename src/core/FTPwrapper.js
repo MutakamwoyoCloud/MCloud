@@ -1,7 +1,7 @@
 var Client = require('ftp');
 var c = new Client();
 const fs = require('fs');
-var Id = require('mongodb').ObjectID;
+var Id = require("mongodb").ObjectID;
 
 var _p = require('./PetitionHandler');
 
@@ -78,8 +78,7 @@ c.on('ready', function() {
                 fs.readdir(pushFolder, (err, files) => {
                   if (err)
                     console.log("provider not reached\n");
-                  files.forEach(file => {
-                    console.log(file);
+                  files.forEach((file) => {
                     c.put(pushFolder+file, "MCloud/inet_side/received/"+file, function(err) {
                       if (err) //throwable -> throw err
                         throw err;
@@ -92,11 +91,8 @@ c.on('ready', function() {
               break;
 
               case action.flush:
-              console.log("flush");
                 fs.readdir(flushFolder, (err, files) => {
-                  console.log(files);
-                  files.forEach(file => {
-                    console.log(file);
+                  files.forEach((file) => {
                     c.put(flushFolder+file, "MCloud/inet_side/received/"+file, function(err) {
                       if (err) //throwable -> throw err
                         throw err;
@@ -128,12 +124,9 @@ c.on('ready', function() {
                   break;
 
               case action.fetch:
-
                   c.list(fetchFolder, function(err, list) {
-                    console.log(list);
                     if (err) throw err;
                       list.forEach(function(elem){
-                        console.log(elem.name.split("_")[0]);
                         if (handler && elem.name.split("_")[0] !== "medicamentos") {
                           handler.data.do(ops.update, {_id: Id(elem.name.split("_")[0])}, {ready:true}, handler.emitter);
                         }
