@@ -3,12 +3,10 @@ from utils.utils import compress
 from wiki import Wiki
 import time
 from youtube import Youtube
-import os, shutil, json
+import os, shutil
 import threading
 import subprocess
 import schedule
-import time
-import requests
 import traceback
 
 priority = {
@@ -20,8 +18,7 @@ priority = {
 class Scheduler:
     def callThread(self, onExit, popenArgs):
         def runInThread(onExit, popenArgs):
-            proc = subprocess.call(popenArgs)
-            #proc.wait()
+            subprocess.call(popenArgs)
             onExit()
             return
         thread = threading.Thread(target=runInThread,args=(onExit, popenArgs))
@@ -102,7 +99,6 @@ class Scheduler:
                         for d in params:
                             listOut.append(d)
                         compress_file = names[0]+"_out.tar.gz"
-                        toCompress=list['dir']+"/result/" 
                         absCompress="/home/mcloud/MCloud/inet_side/out/"+localid+"/result"
                         destination="/home/mcloud/MCloud/inet_side/out/"+compress_file
                         print("esta es la ruta "+absCompress)
@@ -146,6 +142,6 @@ class Scheduler:
                 i+=1
 
             lenA = len(self.items)
-            for j, val in self.items:
+            for j in self.items:
                 self.items.insert(lenA-j, self.items[lenA-j-1])        
         self.items.insert(i, petition)

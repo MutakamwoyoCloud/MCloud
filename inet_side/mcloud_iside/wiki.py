@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import wikipedia, json
-import tarfile
 
 class Wiki:
     def __init__(self):

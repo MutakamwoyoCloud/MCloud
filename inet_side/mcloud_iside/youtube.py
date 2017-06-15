@@ -1,10 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
-import pytube, json, os
+import json, os
 from utils.utils import compress
 from pytube import YouTube
-from urlparse import urlparse
 from urllib2 import urlopen
 from urllib import urlencode
 import re

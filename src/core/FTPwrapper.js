@@ -166,7 +166,7 @@ function exec(action){
   status = action;
   c.connect(options); //
 
-};
+}
 
 
 

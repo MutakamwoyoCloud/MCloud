@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from scrapy import Field, Spider, Item, Selector 
-from lxml import html
 from bs4 import BeautifulSoup
-from urlparse import urlparse
 from urllib2 import urlopen
-from urllib import urlencode
-import builtins
 import goslate
 ABECEDARIO='abcdefghijkmnopqrstuvwxyz'
+
 class Post(Item):
     url = Field()
     title = Field()
