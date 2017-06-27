@@ -48,8 +48,7 @@ schedule.scheduleJob(timeFinish, function(){
 //this function create a package and enqueue
 function create_package(self, type){
   if(types.indexOf(type) > -1){
-    self.emitter.on("newPackage", function(id){
-
+    self.emitter.once("newPackage", function(id){
       var archive = archiver("tar", {
         gzip: true,
         store: true // Sets the compression method to STORE.
@@ -59,9 +58,9 @@ function create_package(self, type){
       archive.on("error", function(err) {
         throw err;
       });
+
       var file_tar = __dirname + "/push/"+id+"_"+type+".tar.gz"
       var output = fs.createWriteStream(file_tar);
-
       // listen for all archive data to be written
       output.on("close", function() {
 
@@ -79,8 +78,7 @@ function create_package(self, type){
       archive.finalize();
       self.reset(type);
     });
-
-  self.data.do(_model.op.insert,{}, {ready: false, typePetition: type}, self.emitter);
+    self.data.do(_model.op.insert,{}, {ready: false, typePetition: type}, self.emitter);
  }
 }
 
@@ -210,7 +208,8 @@ PH.prototype.dequeue = function(){
 PH.prototype.reset = function(type){
 
   if(types.indexOf(type) > -1){
-    this._petitionsNum[type] = 0; 
+    this._petitionsNum[type] = 0;
+    this._petitionsObj[type] = {};
   }
 };
 
@@ -226,6 +225,7 @@ PH.prototype.add_petition= function(data){
 
   this._petitionsObj[data.type][this._petitionsNum[data.type]] = data;
   this._petitionsNum[data.type]++;
+
   if (this._petitionsNum[data.type] === this._package_size){
     create_package(this, data.type);
   }
